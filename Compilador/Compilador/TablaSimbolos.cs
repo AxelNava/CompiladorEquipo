@@ -5,17 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Compilador {
+    /// <summary>
+    /// This class save the symbol table.
+    /// This class containts all the methods to manipulate the Symbol Table
+    /// </summary>
     internal class TablaSimbolos {
-        Dictionary<string, Dictionary<int, string>> symbolTable = new Dictionary<string, Dictionary<int, string>>();
-        private int countSymbolTable;
-        public TablaSimbolos() {
+        private static TablaSimbolos _tablaSimbolos;
+        private static Dictionary<string, Dictionary<int, string>> symbolTable = new Dictionary<string, Dictionary<int, string>>();
+        private static int countSymbolTable;
+        private TablaSimbolos() {
             countSymbolTable = 6;
             //Lexema diccionary
             Dictionary<int, string> lexemaDiccionary = new Dictionary<int, string>();
             //Token Diccionary
-            Dictionary<int, string> tokenDiciconary= new Dictionary<int, string>();
+            Dictionary<int, string> tokenDiciconary = new Dictionary<int, string>();
             //Tipe diccionary
-            Dictionary<int, string> tipeDiccionary= new Dictionary<int, string>();
+            Dictionary<int, string> tipeDiccionary = new Dictionary<int, string>();
             //Number line diccionary
             Dictionary<int, string> numLineDiccioanry = new Dictionary<int, string>();
 
@@ -56,12 +61,20 @@ namespace Compilador {
             symbolTable.Add("Tipe", tipeDiccionary);
             symbolTable.Add("NumLine", numLineDiccioanry);
 
-            lexemaDiccionary.Clear();
+            /*lexemaDiccionary.Clear();
             tokenDiciconary.Clear();
             tipeDiccionary.Clear();
-            numLineDiccioanry.Clear();
+            numLineDiccioanry.Clear();*/
         }
-
+        /// <summary>
+        /// This method allow to acces to the first class instance
+        /// </summary>
+        /// <returns>The first instance of the class</returns>
+        public static TablaSimbolos GetInstance() {
+            if ( _tablaSimbolos == null )
+                _tablaSimbolos = new TablaSimbolos();
+            return _tablaSimbolos;
+        }
         /// <summary>
         /// This method Adds a lexema to the Symbol Table
         /// </summary>
@@ -69,9 +82,9 @@ namespace Compilador {
         /// <param name="value">The token value for the lexema</param>
         /// <param name="line">The number of line where the lexeama was found</param>
 
-        public void AddLexema(string title, string value, int line) {
+        public static void AddLexema( string title, string value, int line ) {
             countSymbolTable++;
-            foreach(var keysDic in symbolTable.Keys ) {
+            foreach ( var keysDic in symbolTable.Keys ) {
                 Dictionary<int, string> auxDicc = new Dictionary<int, string>();
                 symbolTable.TryGetValue(keysDic, out auxDicc);
                 switch ( keysDic ) {
@@ -89,6 +102,31 @@ namespace Compilador {
                         break;
                 }
             }
+        }
+
+        public static Dictionary<string, Dictionary<int, string>> GetSymbolTable() {
+            return symbolTable;
+        }
+        public static Dictionary<int,string> GetLexemasValues() {
+            var values = new Dictionary<int, string>();
+            symbolTable.TryGetValue("Lexema", out values);
+            return values;
+        }
+        public static Dictionary<int,string> GetTypesValues() {
+            var values = new Dictionary<int, string>();
+            symbolTable.TryGetValue("Tipe", out values);
+            return values;
+        }
+
+        public static Dictionary<int,string> GetNumLine() {
+            var values = new Dictionary<int, string>();
+            symbolTable.TryGetValue("NumLine", out values);
+            return values;
+        }
+        public static Dictionary<int,string> GetTokensValues() {
+            var values = new Dictionary<int, string>();
+            symbolTable.TryGetValue("Token", out values);
+            return values;
         }
     }
 }

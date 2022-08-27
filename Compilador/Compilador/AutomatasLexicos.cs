@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Compilador {
     internal class AutomatasLexicos {
-        TablaSimbolos tablesymbol = new TablaSimbolos();
-        AutomatasLexicos( TablaSimbolos tablesymbol ) {
-            
-        }
+        
+        
     }
 }
