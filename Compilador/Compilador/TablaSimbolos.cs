@@ -85,7 +85,7 @@ namespace Compilador {
         public static void AddLexema( string title, string value, int line ) {
             countSymbolTable++;
             foreach ( var keysDic in symbolTable.Keys ) {
-                Dictionary<int, string> auxDicc = new Dictionary<int, string>();
+                Dictionary<int, string> auxDicc;
                 symbolTable.TryGetValue(keysDic, out auxDicc);
                 switch ( keysDic ) {
                     case "Lexema":
@@ -103,10 +103,14 @@ namespace Compilador {
                 }
             }
         }
-
-        public static Dictionary<string, Dictionary<int, string>> GetSymbolTable() {
+        /// <summary>
+        /// Obtain all the symbol Table
+        /// </summary>
+        /// <returns>Symbol Table</returns>
+        public static Dictionary<string, Dictionary<int, string>> GetSymbolTable() {            
             return symbolTable;
         }
+
         public static Dictionary<int,string> GetLexemasValues() {
             var values = new Dictionary<int, string>();
             symbolTable.TryGetValue("Lexema", out values);

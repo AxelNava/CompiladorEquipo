@@ -15,12 +15,10 @@ namespace Compilador {
             InitializeComponent();
         }
 
-        private void button1_Click( object sender, EventArgs e ) {
-            string message = "";
-            foreach ( var values in TablaSimbolos.GetTokensValues() ) {
-                message += String.Format("values: {0}\n", values.ToString());
-            }
-            MessageBox.Show(message);
+        private void button1_Click( object sender, EventArgs e ) {            
+            string message = EntradaCompiladorTextBox.Text;
+            string [] messa = message.Split(new string [] {"\r\n"}, StringSplitOptions.None);            
         }
+
     }
 }
