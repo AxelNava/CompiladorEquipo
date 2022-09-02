@@ -78,21 +78,21 @@ namespace Compilador {
         /// <summary>
         /// This method Adds a lexema to the Symbol Table
         /// </summary>
-        /// <param name="title">The name of lexema</param>
-        /// <param name="value">The token value for the lexema</param>
+        /// <param name="lexemaName">The name of lexema</param>
+        /// <param name="tokenName">The token value for the lexema</param>
         /// <param name="line">The number of line where the lexeama was found</param>
 
-        public static void AddLexema( string title, string value, int line ) {
+        public static void AddLexema( string lexemaName, string tokenName, int line ) {
             countSymbolTable++;
             foreach ( var keysDic in symbolTable.Keys ) {
                 Dictionary<int, string> auxDicc;
                 symbolTable.TryGetValue(keysDic, out auxDicc);
                 switch ( keysDic ) {
                     case "Lexema":
-                        auxDicc.Add(countSymbolTable, title);
+                        auxDicc.Add(countSymbolTable, lexemaName);
                         break;
                     case "Token":
-                        auxDicc.Add(countSymbolTable, value);
+                        auxDicc.Add(countSymbolTable, tokenName);
                         break;
                     case "Tipe":
                         auxDicc.Add(countSymbolTable, string.Empty);

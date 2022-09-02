@@ -5,8 +5,174 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Compilador {
-    internal class AutomatasLexicos {
+    internal class AutomatasLexicos {        
+        char [] charsCodeText;
+        public AutomatasLexicos(string Alltext) {
+            this.charsCodeText = Alltext.ToCharArray();            
+        }
+        int lastIndexFound;
+        /// <summary>
+        /// The first value is the lexema and the second is the token
+        /// </summary>
         
+        Dictionary<string, string> tokenTable = new Dictionary<string, string>();
+        int lengthText;
+        public Dictionary<string, string> ExecuteAnalizer() {            
+            int lengthText = charsCodeText.Length;
+            lastIndexFound = 0;
+            for ( int i = 0 ; i < lengthText ;i++ ) {
+                char letter = charsCodeText [i];
+                string token;
+                switch (letter) {
+                    case '/':
+                        token = Q8(i);
+                        if ( token == "Operador" )                            
+                            tokenTable.Add(letter.ToString(), token);
+                        break;
+                    case '-':                        
+                        token = Q14(i);
+                        if(token != "Operador" )
+                            tokenTable.Add(string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token);
+                        tokenTable.Add(letter.ToString(), token);
+                        break;
+                    case '*':
+                    case '%':
+                    case '^':
+                        //Add to the diccionary the lexema and the token
+                        tokenTable.Add(letter.ToString(), "Operador");
+                        continue;                        
+                    case '+':
+                        token = Q16(i);
+                        if ( token != "Operador" )
+                            tokenTable.Add(string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token);
+                        tokenTable.Add(letter.ToString(), token);
+                        break;
+                }
+            }
+            return new Dictionary<string, string>();
+        }
+        #region AutomatasAxel
+        //This region covers Q7 to Q12
+        #region AutomataComentario_Operador
         
+        /// <summary>
+        /// This method analize whether the text is a line comment, if not, call Q10
+        /// </summary>
+        /// <param name="stringText">Is the text to analice</param>
+        /// <returns>The token of line Comment, multi line comment, or operator "/"</returns>
+        public string Q8(int indexString) {
+            indexString = ((indexString + 1) < lengthText)? ++indexString: indexString;            
+            return (charsCodeText [indexString].Equals('/')) ? Q9(++indexString) : Q10(indexString);            
+        }
+        public string Q9( int indexString ) {
+            for(int i = indexString ; i < lengthText ; i++ ) {
+                if ( charsCodeText [i].Equals('\n') ) {
+                    lastIndexFound = indexString;
+                    return "ComentarioLinea";
+                }                    
+            }
+            return "ComentarioLinea";
+        }
+        /// <summary>
+        /// Determine if the text begins with "*", if not, is an operator "/"
+        /// </summary>
+        /// <param name="stringText">Is the text to analice</param>
+        /// <returns>The token of Multi line comment or operator "/"</returns>
+        public string Q10( int indexString ) {
+            indexString = ((indexString + 1) < lengthText) ? ++indexString : indexString;
+            return (charsCodeText.Equals('*')) ? Q11(indexString): "Operador";
+        }
+        /// <summary>
+        /// Determine if the text recived begins with "/", that defined the end of the commend
+        /// </summary>
+        /// <param name="stringText">Is the text to analice</param>
+        /// <returns>The token of Multi line comment</returns>
+        /// <exception cref="Exception">If the end of the line there aren't any termination of the comment</exception>
+        public string Q11(int indexString ) {
+            for (int i = indexString ; i < charsCodeText.Length ; i++ ) {
+                if ( charsCodeText [i] == '*' ) {
+                    try {
+                        if ( Q12(charsCodeText [i + 1]) ) {
+                            return "ComentarioMultilinea";
+                        }
+                    }
+                    catch ( Exception ) {
+                        throw;
+                    }                    
+                }                
+            }
+            throw new Exception("Se esperaba *");
+        }
+        /// <summary>
+        /// Verify wheter the character is the end of comment
+        /// </summary>
+        bool Q12(char character) {
+            lastIndexFound++;
+            return character.Equals('/') ? true : false;
+        }
+        #endregion
+        
+        /// <summary>
+        /// Analice wheter the characters are operators of type "*", "%", "^"
+        /// </summary>
+        /// <param name="stringText">The text to analice</param>
+        /// <returns>The token Operator</returns>
+        
+        #region OperadorMinus_OperadorDecremento
+        /// <summary>
+        /// The state Q14 analice wheter the character is a "-", if not, is an operator
+        /// </summary>
+        /// <param name="stringText">The text to analice</param>
+        /// <returns>The token "Operador" or "Decremento"</returns>
+        public string Q14( int indexString ) {
+            if((indexString + 1) < lengthText ) {
+                indexString++;
+                lastIndexFound = indexString;
+                return (charsCodeText [indexString].Equals('-')) ? "Decremento" : "Operador";
+            }
+            else {
+                //This is the case when its the last character
+                return "Operador";
+            }
+            
+        }
+        #endregion
+        #region Incremento_Suma_Operadores
+        /// <summary>
+        /// The state Q16 analice wheter the character is a "+", if not, is an operator
+        /// </summary>
+        /// <param name="stringText">The text to analice</param>
+        /// <returns>The token "Operador" or "Incremento"</returns>
+        public string Q16( int indexString) {
+            if ( (indexString + 1) < lengthText ) {
+                indexString++;
+                lastIndexFound = indexString;
+                return (charsCodeText [indexString].Equals('+')) ? "Incremento" : "Operador";
+            }
+            else {
+                //This is the case when its the last character
+                return "Operador";
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }
+/*public string Q1_Q2( string line ) {            
+            string characterRescue = line.Substring(line.IndexOf('+'));            
+            if ( !characterRescue.Contains('+') ) return "Operador";
+            string secondCharacterRescue = characterRescue.Substring(0, characterRescue.IndexOf('+'));            
+            return "Incremento";
+        }
+        
+        public string Q2_Q3( string line ) {
+            string characterRescue = line.Substring(line.IndexOf('-'));
+            if ( !characterRescue.Contains('-') ) return "Operador";
+            string secondCharacterRescue = characterRescue.Substring(0, characterRescue.IndexOf('-'));
+            return "Decremento";
+        }*/
+
+/*public string Q4_Q5_Q6( string line ) {
+    return (line.Contains('*') || line.Contains('%') || line.Contains('^')) ? "Operador" : throw new Exception("No es un operador" + line);
+}*/
