@@ -18,7 +18,9 @@ namespace Compilador {
         Dictionary<string, string> tokenTable = new Dictionary<string, string>();
         int lengthText;
         public Dictionary<string, string> ExecuteAnalizer() {            
+            
             int lengthText = charsCodeText.Length;
+            
             lastIndexFound = 0;
             for ( int i = 0 ; i < lengthText ;i++ ) {
                 char letter = charsCodeText [i];
@@ -40,7 +42,7 @@ namespace Compilador {
                     case '^':
                         //Add to the diccionary the lexema and the token
                         tokenTable.Add(letter.ToString(), "Operador");
-                        continue;                        
+                        break;
                     case '+':
                         token = Q16(i);
                         if ( token != "Operador" )
