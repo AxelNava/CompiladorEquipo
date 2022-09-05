@@ -12,7 +12,7 @@ namespace Compilador {
     public partial class Form1 : Form {
         int countLines;        
         public Form1() {
-            countLines = 0;
+            countLines = 1;
             TablaSimbolos tablesymbol = TablaSimbolos.GetInstance();
             InitializeComponent();
         }
@@ -24,5 +24,11 @@ namespace Compilador {
             }
         }
 
+        private void EnterPressedEvent( object sender, KeyEventArgs e ) {
+            if ( e.KeyCode == Keys.Enter ) { 
+                countLines++;
+                labeLineas.Text += countLines.ToString();
+            }
+        }
     }
 }
