@@ -14,42 +14,44 @@ namespace Compilador {
         /// <summary>
         /// The first value is the lexema and the second is the token
         /// </summary>
-        
-        Dictionary<string, string> tokenTable = new Dictionary<string, string>();
-        int lengthText;
+        List<string []> tokenTableList = new List<string []>();
+        readonly int lengthText;
         public Dictionary<string, string> ExecuteAnalizer() {            
             
             int lengthText = charsCodeText.Length;
             
             lastIndexFound = 0;
+
             for ( int i = 0 ; i < lengthText ;i++ ) {
                 char letter = charsCodeText [i];
                 string token;
+                //Find the first state of each automat
                 switch (letter) {
                     case '/':
                         token = Q8(i);
-                        if ( token == "Operador" )                            
-                            tokenTable.Add(letter.ToString(), token);
+                        if ( token == "Operador" )
+                            tokenTableList.Add(new string [] { letter.ToString(), token });                            
                         break;
                     case '-':                        
                         token = Q14(i);
-                        if(token != "Operador" )
-                            tokenTable.Add(string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token);
-                        tokenTable.Add(letter.ToString(), token);
+                        if ( token != "Operador" )
+                            tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token });
+                        tokenTableList.Add(new string [] { letter.ToString(), token });
                         break;
                     case '*':
                     case '%':
                     case '^':
                         //Add to the diccionary the lexema and the token
-                        tokenTable.Add(letter.ToString(), "Operador");
-                        break;
+                        tokenTableList.Add(new string [] { letter.ToString(), "Operador" });
+                        continue;
                     case '+':
                         token = Q16(i);
-                        if ( token != "Operador" )
-                            tokenTable.Add(string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token);
-                        tokenTable.Add(letter.ToString(), token);
+                        if ( token != "Operador" )                            
+                            tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token }) ;
+                        tokenTableList.Add(new string [] { letter.ToString(), token });
                         break;
                 }
+                i = lastIndexFound;
             }
             return new Dictionary<string, string>();
         }
@@ -161,20 +163,3 @@ namespace Compilador {
         #endregion
     }
 }
-/*public string Q1_Q2( string line ) {            
-            string characterRescue = line.Substring(line.IndexOf('+'));            
-            if ( !characterRescue.Contains('+') ) return "Operador";
-            string secondCharacterRescue = characterRescue.Substring(0, characterRescue.IndexOf('+'));            
-            return "Incremento";
-        }
-        
-        public string Q2_Q3( string line ) {
-            string characterRescue = line.Substring(line.IndexOf('-'));
-            if ( !characterRescue.Contains('-') ) return "Operador";
-            string secondCharacterRescue = characterRescue.Substring(0, characterRescue.IndexOf('-'));
-            return "Decremento";
-        }*/
-
-/*public string Q4_Q5_Q6( string line ) {
-    return (line.Contains('*') || line.Contains('%') || line.Contains('^')) ? "Operador" : throw new Exception("No es un operador" + line);
-}*/
