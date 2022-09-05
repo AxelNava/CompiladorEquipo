@@ -10,16 +10,17 @@ using System.Windows.Forms;
 
 namespace Compilador {
     public partial class Form1 : Form {
+        int countLines;        
         public Form1() {
+            countLines = 0;
             TablaSimbolos tablesymbol = TablaSimbolos.GetInstance();
             InitializeComponent();
         }
-
         private void button1_Click( object sender, EventArgs e ) {
             AutomatasLexicos auLex = new AutomatasLexicos(EntradaCompiladorTextBox.Text);
-            Dictionary<string, string> map = auLex.ExecuteAnalizer();
+            var map = auLex.ExecuteAnalizer();
             foreach(var todo in map ) {
-                MessageBox.Show(String.Concat("Lexema: ",todo.Key, "\nToken: ",todo.Value));
+                MessageBox.Show(String.Concat("Lexema: ", todo [0], "\nToken: ",todo[1]));
             }
         }
 

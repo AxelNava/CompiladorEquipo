@@ -15,11 +15,9 @@ namespace Compilador {
         /// The first value is the lexema and the second is the token
         /// </summary>
         List<string []> tokenTableList = new List<string []>();
-        readonly int lengthText;
-        public Dictionary<string, string> ExecuteAnalizer() {            
-            
-            int lengthText = charsCodeText.Length;
-            
+        int lengthText;
+        public List<string []> ExecuteAnalizer() {  
+            lengthText = charsCodeText.Length;            
             lastIndexFound = 0;
 
             for ( int i = 0 ; i < lengthText ;i++ ) {
@@ -34,9 +32,12 @@ namespace Compilador {
                         break;
                     case '-':                        
                         token = Q14(i);
-                        if ( token != "Operador" )
+                        if ( token != "Operador" ) {
                             tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token });
-                        tokenTableList.Add(new string [] { letter.ToString(), token });
+                        }
+                        else {
+                            tokenTableList.Add(new string [] { letter.ToString(), token });
+                        }
                         break;
                     case '*':
                     case '%':
@@ -46,14 +47,20 @@ namespace Compilador {
                         continue;
                     case '+':
                         token = Q16(i);
-                        if ( token != "Operador" )                            
-                            tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token }) ;
-                        tokenTableList.Add(new string [] { letter.ToString(), token });
+                        if ( token != "Operador" ) {
+                            tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token });
+                        }
+                        else {
+                            tokenTableList.Add(new string [] { letter.ToString(), token });
+                        }
+                        break;
+                    default:
+                        lastIndexFound++;
                         break;
                 }
                 i = lastIndexFound;
             }
-            return new Dictionary<string, string>();
+            return tokenTableList;
         }
         #region AutomatasAxel
         //This region covers Q7 to Q12
@@ -65,8 +72,9 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of line Comment, multi line comment, or operator "/"</returns>
         public string Q8(int indexString) {
-            indexString = ((indexString + 1) < lengthText)? ++indexString: indexString;            
-            return (charsCodeText [indexString].Equals('/')) ? Q9(++indexString) : Q10(indexString);            
+            indexString = ((indexString + 1) < lengthText)? ++indexString: indexString;
+            lastIndexFound = indexString;
+            return charsCodeText [indexString].Equals('/') ? Q9(++indexString) : Q10(indexString);            
         }
         public string Q9( int indexString ) {
             for(int i = indexString ; i < lengthText ; i++ ) {
@@ -83,8 +91,7 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of Multi line comment or operator "/"</returns>
         public string Q10( int indexString ) {
-            indexString = ((indexString + 1) < lengthText) ? ++indexString : indexString;
-            return (charsCodeText.Equals('*')) ? Q11(indexString): "Operador";
+            return (charsCodeText [indexString].Equals('*')) ? Q11(indexString): "Operador";
         }
         /// <summary>
         /// Determine if the text recived begins with "/", that defined the end of the commend
@@ -95,6 +102,7 @@ namespace Compilador {
         public string Q11(int indexString ) {
             for (int i = indexString ; i < charsCodeText.Length ; i++ ) {
                 if ( charsCodeText [i] == '*' ) {
+                    lastIndexFound = i;
                     try {
                         if ( Q12(charsCodeText [i + 1]) ) {
                             return "ComentarioMultilinea";
