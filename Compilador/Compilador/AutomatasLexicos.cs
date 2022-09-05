@@ -15,10 +15,10 @@ namespace Compilador {
         /// The first value is the lexema and the second is the token
         /// </summary>
         List<string []> tokenTableList = new List<string []>();
-        readonly int lengthText;
-        public Dictionary<string, string> ExecuteAnalizer() {            
-            
-            int lengthText = charsCodeText.Length;
+        int lengthText;
+        public Dictionary<string, string> ExecuteAnalizer() {
+
+            lengthText = charsCodeText.Length;
             
             lastIndexFound = 0;
 
@@ -50,6 +50,12 @@ namespace Compilador {
                             tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token }) ;
                         tokenTableList.Add(new string [] { letter.ToString(), token });
                         break;
+                    case '(':
+                        token = Q18(i);
+                        if (token == "ParentesisAbierto")
+                            tokenTableList.Add(new string[] { letter.ToString(), token });
+                        break;
+                    
                 }
                 i = lastIndexFound;
             }
@@ -161,5 +167,11 @@ namespace Compilador {
         #endregion
 
         #endregion
+
+       
+
+       
+
+
     }
 }
