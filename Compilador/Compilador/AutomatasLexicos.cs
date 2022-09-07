@@ -58,6 +58,12 @@ namespace Compilador {
                     default:
                         lastIndexFound++;
                         break;
+
+                    case '(':
+                            token = Q18(i);
+                        if (token == "ParentesisAbierto")
+                            tokenTableList.Add(new string[] { letter.ToString(), token });
+                        break;
                     
                     
                 }
@@ -174,7 +180,10 @@ namespace Compilador {
         #endregion
 
        
-
+        public string Q18 (int indexString)
+        {
+            indexString = ((indexString + 1));
+        }
        
 
 
