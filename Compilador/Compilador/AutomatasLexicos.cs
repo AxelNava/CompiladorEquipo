@@ -20,7 +20,6 @@ namespace Compilador {
         public List<string []> ExecuteAnalizer() {  
             lengthText = charsCodeText.Length;            
             lastIndexFound = 0;
-
             for ( int i = 0 ; i < lengthText ;i++ ) {
                 char letter = charsCodeText [i];
                 string token;
@@ -55,11 +54,7 @@ namespace Compilador {
                             tokenTableList.Add(new string [] { letter.ToString(), token });
                         }
                         break;
-                    default:
-                        lastIndexFound++;
-                        break;
-
-                    case '(':
+                         case '(':
                             token = Q18(i);
                         if (token == "ParentesisAbierto")
                             tokenTableList.Add(new string[] { letter.ToString(), token });
@@ -70,6 +65,11 @@ namespace Compilador {
                             tokenTableList.Add(new string[] {letter.ToString(), token });
                         break;
                     
+                    default:
+                        lastIndexFound++;
+                        break;
+
+                   
                     
                 }
                 i = lastIndexFound;
@@ -182,6 +182,10 @@ namespace Compilador {
         }
         #endregion
 
+        #endregion   
+        public int GetIndexError() {
+            return lastIndexFound;
+        }
         #endregion
 
        
@@ -196,8 +200,6 @@ namespace Compilador {
             indexString = ((indexString + 1));
             return indexString.ToString();
         }
-       
-
 
     }
 }
