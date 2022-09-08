@@ -54,15 +54,13 @@ namespace Compilador {
                             tokenTableList.Add(new string [] { letter.ToString(), token });
                         }
                         break;
-                         case '(':
-                            token = Q18(i);
-                        if (token == "ParentesisAbierto")
-                            tokenTableList.Add(new string[] { letter.ToString(), token });
+                    case '(':
+                          
+                            tokenTableList.Add(new string[] { letter.ToString(), "ParentesisAbre" });
                         break;
                     case ')':
-                        token = Q19(i);
-                        if(token == "ParentesisCerrado")
-                            tokenTableList.Add(new string[] {letter.ToString(), token });
+                       
+                            tokenTableList.Add(new string[] {letter.ToString(), "ParentesisCierra" });
                         break;
                     
                     default:
@@ -186,20 +184,10 @@ namespace Compilador {
         public int GetIndexError() {
             return lastIndexFound;
         }
-        #endregion
+        
 
        
-        public string Q18 (int indexString)
-        {
-            indexString = ((indexString + 1));
-            return indexString.ToString ();
-        }
-
-        public string Q19 (int indexString)
-        {
-            indexString = ((indexString + 1));
-            return indexString.ToString();
-        }
+        
 
     }
 }
