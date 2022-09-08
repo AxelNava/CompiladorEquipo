@@ -64,6 +64,11 @@ namespace Compilador {
                         if (token == "ParentesisAbierto")
                             tokenTableList.Add(new string[] { letter.ToString(), token });
                         break;
+                    case ')':
+                        token = Q19(i);
+                        if(token == "ParentesisCerrado")
+                            tokenTableList.Add(new string[] {letter.ToString(), token });
+                        break;
                     
                     
                 }
@@ -183,6 +188,12 @@ namespace Compilador {
         public string Q18 (int indexString)
         {
             indexString = ((indexString + 1));
+            return indexString.ToString ();
+        }
+
+        public string Q19 (int indexString)
+        {
+            indexString =
         }
        
 
