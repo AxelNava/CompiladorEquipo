@@ -193,7 +193,8 @@ namespace Compilador {
 
         public string Q19 (int indexString)
         {
-            indexString =
+            indexString = ((indexString + 1));
+            return indexString.ToString();
         }
        
 
