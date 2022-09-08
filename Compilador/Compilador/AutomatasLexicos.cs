@@ -20,7 +20,6 @@ namespace Compilador {
         public List<string []> ExecuteAnalizer() {  
             lengthText = charsCodeText.Length;            
             lastIndexFound = 0;
-
             for ( int i = 0 ; i < lengthText ;i++ ) {
                 char letter = charsCodeText [i];
                 string token;
@@ -58,8 +57,6 @@ namespace Compilador {
                     default:
                         lastIndexFound++;
                         break;
-                    
-                    
                 }
                 i = lastIndexFound;
             }
@@ -171,12 +168,9 @@ namespace Compilador {
         }
         #endregion
 
-        #endregion
-
-       
-
-       
-
-
+        #endregion   
+        public int GetIndexError() {
+            return lastIndexFound;
+        }
     }
 }
