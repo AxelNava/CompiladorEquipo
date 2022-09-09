@@ -77,8 +77,16 @@ namespace Compilador {
                     case ';':
                         tokenTableList.Add(new string[] { letter.ToString(), "PuntoyComa" });
                         continue;
-                    //case '\"':
-                        //tokenTableList.Add(new string[] { letter.ToString() });
+                    case '\"':
+                        token = Q19(i);
+                        if (token != "Cadenas")
+                        {
+                            tokenTableList.Add(new string[] { letter.ToString(), token });
+                        }
+                        break;
+                    case '\'':
+                        tokenTableList.Add(new string[] { letter.ToString(), "Caracteres" });
+                        break;
           
                     
                     default:
@@ -201,6 +209,13 @@ namespace Compilador {
         #endregion   
         public int GetIndexError() {
             return lastIndexFound;
+        }
+
+       
+
+        public string Q19(int indexString)
+        {
+            
         }
         
 
