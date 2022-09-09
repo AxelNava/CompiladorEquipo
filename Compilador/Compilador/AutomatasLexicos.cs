@@ -57,11 +57,29 @@ namespace Compilador {
                     case '(':
                           
                             tokenTableList.Add(new string[] { letter.ToString(), "ParentesisAbre" });
-                        break;
+                        continue;
                     case ')':
                        
                             tokenTableList.Add(new string[] {letter.ToString(), "ParentesisCierra" });
-                        break;
+                        continue;
+                    case '{':
+                        tokenTableList.Add(new string[] { letter.ToString(), "LlaveAbre" });
+                        continue;
+                    case '}':
+                        tokenTableList.Add(new string[] { letter.ToString(), "LlaveCierra" });
+                        continue;
+                    case '[':
+                        tokenTableList.Add(new string[] { letter.ToString(), "CorcheteAbre" });
+                        continue;
+                    case ']':
+                        tokenTableList.Add(new string[] { letter.ToString(), "CorcheteCierra" });
+                        continue;
+                    case ';':
+                        tokenTableList.Add(new string[] { letter.ToString(), "PuntoyComa" });
+                        continue;
+                    //case '\"':
+                        //tokenTableList.Add(new string[] { letter.ToString() });
+          
                     
                     default:
                         lastIndexFound++;
