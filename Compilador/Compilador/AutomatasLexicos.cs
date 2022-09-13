@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Compilador {
     internal class AutomatasLexicos {        
         char [] charsCodeText;
@@ -78,11 +79,9 @@ namespace Compilador {
                         tokenTableList.Add(new string[] { letter.ToString(), "PuntoyComa" });
                         continue;
                     case '\"':
-                        token = Q19(i);
-                        if (token != "Cadenas")
-                        {
-                            tokenTableList.Add(new string[] { letter.ToString(), token });
-                        }
+                        token = Q18(i); 
+                         tokenTableList.Add(new string[] { letter.ToString(), "Cadena" });
+                        
                         break;
                     case '\'':
                         tokenTableList.Add(new string[] { letter.ToString(), "Caracteres" });
@@ -206,17 +205,40 @@ namespace Compilador {
         }
         #endregion
 
-        #endregion   
+
+
+        #endregion 
+        
+        public string Q18 (int indexString)
+        {
+            for (int i = indexString; i< charsCodeText.Length; i++ )
+            {
+                try
+                {
+                    if (charsCodeText[i] == '\"')
+                    {
+                        lastIndexFound = i;
+                    }
+      
+                     return "Caracter";
+      
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
+            throw new Exception("Se esperaba un \"");
+        }
+
         public int GetIndexError() {
             return lastIndexFound;
         }
 
        
 
-        public string Q19(int indexString)
-        {
-            
-        }
+       
         
 
        
