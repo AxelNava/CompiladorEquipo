@@ -7,7 +7,7 @@ namespace Compilador {
         public AutomatasLexicos( string Alltext ) {
             this.charsCodeText = Alltext.ToCharArray();
         }
-        string messasgesErros;
+        public string messasgesErros;
         int lastIndexFound;
         /// <summary>
         /// The first value is the lexema and the second is the token
@@ -86,10 +86,12 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of line Comment, multi line comment, or operator "/"</returns>
         public string Q8( int indexString ) {
-            if( (indexString + 1) < lengthText ) {
-                indexString++;
-                lastIndexFound = indexString;
-                return charsCodeText [indexString].Equals('/') ? Q9(++indexString) : Q10(indexString);
+            if( (indexString + 1) < lengthText ) {                                
+                if( charsCodeText [++indexString].Equals('/') ) {
+                    lastIndexFound = indexString;
+                    return Q9(++indexString);
+                }                
+                return Q10(indexString);
             }
             else {
                 lastIndexFound = indexString;
@@ -113,7 +115,12 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of Multi line comment or operator "/"</returns>
         public string Q10( int indexString ) {
-            return (charsCodeText [indexString].Equals('*')) ? Q11(indexString) : "Operador";
+            if( charsCodeText [indexString].Equals('*') ) {
+                lastIndexFound = indexString;
+                return Q11(++indexString);                
+            }
+            lastIndexFound = --indexString;
+            return "Operador";
         }
         /// <summary>
         /// Determine if the text recived begins with "/", that defined the end of the commend
@@ -122,6 +129,10 @@ namespace Compilador {
         /// <returns>The token of Multi line comment</returns>
         /// <exception cref="Exception">If the end of the line there aren't any termination of the comment</exception>
         public string Q11( int indexString ) {
+            if(indexString >= lengthText ) {
+                messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
+                return String.Empty;
+            }
             for ( int i = indexString ; i < charsCodeText.Length ; i++ ) {
                 if ( charsCodeText [i].Equals('\n') )
                     countLines++;
@@ -138,7 +149,7 @@ namespace Compilador {
                     catch ( Exception ) { }
                 }
             }
-            messasgesErros += String.Format("Se esperaba */ -- Linea {0}\n",countLines);
+            messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n",countLines);
             return String.Empty;
         }
         /// <summary>
@@ -157,12 +168,16 @@ namespace Compilador {
         /// <param name="stringText">The text to analice</param>
         /// <returns>The token "Operador" or "Decremento"</returns>
         public string Q14( int indexString ) {
-            if ( (indexString + 1) < lengthText ) {
-                indexString++;
-                lastIndexFound = indexString;
-                return (charsCodeText [indexString].Equals('-')) ? "Decremento" : "Operador";
+            if ( (indexString + 1) < lengthText ) {                
+                if( charsCodeText [++indexString].Equals('-') ) {
+                    lastIndexFound = indexString;
+                    return "Decremento";
+                }                
+                lastIndexFound = --indexString;
+                return "Operador";              
             }
             else {
+                lastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }
@@ -176,12 +191,16 @@ namespace Compilador {
         /// <param name="stringText">The text to analice</param>
         /// <returns>The token "Operador" or "Incremento"</returns>
         public string Q16( int indexString ) {
-            if ( (indexString + 1) < lengthText ) {
-                indexString++;
-                lastIndexFound = indexString;
-                return (charsCodeText [indexString].Equals('+')) ? "Incremento" : "Operador";
+            if ( (indexString + 1) < lengthText ) {                
+                if ( charsCodeText [++indexString].Equals('+') ) {
+                    lastIndexFound = indexString;
+                    return "Incremento";
+                }
+                lastIndexFound = --indexString;
+                return "Operador";
             }
             else {
+                lastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }

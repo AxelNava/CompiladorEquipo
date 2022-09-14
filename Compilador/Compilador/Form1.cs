@@ -27,6 +27,7 @@ namespace Compilador {
                     dataGridTableToken.Rows.Add(todo [0], todo [1]);
                     dataGridLexema.Rows.Add(todo [0]);
                 }
+                textBoxErrores.Text = auLex.messasgesErros;
             }
             catch ( Exception ex ) {
                 MessageBox.Show("Ha habido un eror " + ex.Message);
