@@ -80,11 +80,12 @@ namespace Compilador {
                         continue;
                     case '\"':
                         token = Q18(i); 
-                         tokenTableList.Add(new string[] { letter.ToString(), "Cadena" });
+                         tokenTableList.Add(new string[] { subcadena(i, lastIndexFound), token });
                         
                         break;
                     case '\'':
-                        tokenTableList.Add(new string[] { letter.ToString(), "Caracteres" });
+                        token = Q19(i);
+                        tokenTableList.Add(new string[] { subcadena(i, lastIndexFound), token });
                         break;
           
                     
@@ -211,16 +212,18 @@ namespace Compilador {
         
         public string Q18 (int indexString)
         {
-            for (int i = indexString; i< charsCodeText.Length; i++ )
+            for (int i = ++indexString; i< charsCodeText.Length; i++ )
             {
                 try
                 {
                     if (charsCodeText[i] == '\"')
                     {
                         lastIndexFound = i;
+                        return "Cadena";
                     }
+
       
-                     return "Caracter";
+                     
       
                 }
                 catch (Exception)
@@ -231,6 +234,50 @@ namespace Compilador {
             }
             throw new Exception("Se esperaba un \"");
         }
+
+        public string subcadena (int inicio,  int final)
+        {
+            string palabra = string.Empty;
+            for(int i = inicio; i<= final; i++)
+            {
+                palabra += charsCodeText[i].ToString();
+
+            }
+
+            return palabra;
+        }
+
+        public string Q19(int indexString)
+        {
+            if( ++indexString < lengthText ) 
+            {
+                if (charsCodeText[indexString] == '\'')
+                {
+                    lastIndexFound = indexString;
+                    return "Caracter";
+                }
+                if (++indexString < lengthText && charsCodeText[indexString] == '\'')
+                {
+                    lastIndexFound = indexString;
+                    return "Caracter";
+                }
+                else
+                {
+                    //Mensaje de error
+                }
+
+
+            }
+            else
+            {
+                //Mensaje de error
+                return string.Empty;
+            }
+
+            return string.Empty;
+        }
+        
+        
 
         public int GetIndexError() {
             return lastIndexFound;
