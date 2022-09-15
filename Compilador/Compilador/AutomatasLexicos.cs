@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Compilador {
     internal class AutomatasLexicos {
         char [] charsCodeText;
         public AutomatasLexicos( string Alltext ) {
             this.charsCodeText = Alltext.ToCharArray();
         }
+        public string messasgesErros;
         int lastIndexFound;
         /// <summary>
         /// The first value is the lexema and the second is the token
         /// </summary>
         List<string []> tokenTableList = new List<string []>();
         int lengthText;
+        int countLines;
 
         public List<string []> ExecuteAnalizer() {
+            messasgesErros = String.Empty;
+            countLines = 1;
             lengthText = charsCodeText.Length;
             lastIndexFound = 0;
             for ( int i = 0 ; i < lengthText ; i++ ) {
@@ -24,10 +27,13 @@ namespace Compilador {
                 if ( letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122 || letter == '_' ) {
                     token = Q25(i);
                     tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                    i = lastIndexFound;
+                    continue;
                 }
-                if ( char.IsDigit(letter) ) {
-
-                }
+                /*if ( char.IsDigit(letter) ) {
+                    i = lastIndexFound;
+                    continue;
+                }*/
                 else {
                     //Find the first state of each automat
                     switch ( letter ) {
@@ -61,7 +67,6 @@ namespace Compilador {
                             }
                             break;
                         case '(':
-
                             tokenTableList.Add(new string [] { letter.ToString(), "ParentesisAbre" });
                             continue;
                         case ')':
@@ -112,9 +117,13 @@ namespace Compilador {
                         case '|':
                             token = Q24(i);
                             tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
-                            break;                        
+                            break;
+                        case '\n':
+                            countLines++;
+                            continue;
                         default:
                             continue;
+                            //lastIndexFound++;
                     }
                 }
                 i = lastIndexFound;
@@ -131,13 +140,23 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of line Comment, multi line comment, or operator "/"</returns>
         public string Q8( int indexString ) {
-            indexString = ((indexString + 1) < lengthText) ? ++indexString : indexString;
-            lastIndexFound = indexString;
-            return charsCodeText [indexString].Equals('/') ? Q9(++indexString) : Q10(indexString);
+
+            if ( (indexString + 1) < lengthText ) {
+                if ( charsCodeText [++indexString].Equals('/') ) {
+                    lastIndexFound = indexString;
+                    return Q9(++indexString);
+                }
+                return Q10(indexString);
+            }
+            else {
+                lastIndexFound = indexString;
+                return "Operador";
+            }
         }
         public string Q9( int indexString ) {
             for ( int i = indexString ; i < lengthText ; i++ ) {
                 if ( charsCodeText [i].Equals('\n') ) {
+                    countLines++;
                     lastIndexFound = indexString;
                     return "ComentarioLinea";
                 }
@@ -150,7 +169,12 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of Multi line comment or operator "/"</returns>
         public string Q10( int indexString ) {
-            return (charsCodeText [indexString].Equals('*')) ? Q11(indexString) : "Operador";
+            if ( charsCodeText [indexString].Equals('*') ) {
+                lastIndexFound = indexString;
+                return Q11(++indexString);
+            }
+            lastIndexFound = --indexString;
+            return "Operador";
         }
         /// <summary>
         /// Determine if the text recived begins with "/", that defined the end of the commend
@@ -159,20 +183,28 @@ namespace Compilador {
         /// <returns>The token of Multi line comment</returns>
         /// <exception cref="Exception">If the end of the line there aren't any termination of the comment</exception>
         public string Q11( int indexString ) {
+            if ( indexString >= lengthText ) {
+                messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
+                return String.Empty;
+            }
             for ( int i = indexString ; i < charsCodeText.Length ; i++ ) {
+                if ( charsCodeText [i].Equals('\n') )
+                    countLines++;
                 if ( charsCodeText [i] == '*' ) {
                     lastIndexFound = i;
                     try {
                         if ( Q12(charsCodeText [i + 1]) ) {
                             return "ComentarioMultilinea";
                         }
+                        else {
+                            continue;
+                        }
                     }
-                    catch ( Exception ) {
-                        throw;
-                    }
+                    catch ( Exception ) { }
                 }
             }
-            throw new Exception("Se esperaba *");
+            messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
+            return String.Empty;
         }
         /// <summary>
         /// Verify wheter the character is the end of comment
@@ -182,13 +214,6 @@ namespace Compilador {
             return character.Equals('/') ? true : false;
         }
         #endregion
-
-        /// <summary>
-        /// Analice wheter the characters are operators of type "*", "%", "^"
-        /// </summary>
-        /// <param name="stringText">The text to analice</param>
-        /// <returns>The token Operator</returns>
-
         #region OperadorMinus_OperadorDecremento
         /// <summary>
         /// The state Q14 analice wheter the character is a "-", if not, is an operator
@@ -197,11 +222,15 @@ namespace Compilador {
         /// <returns>The token "Operador" or "Decremento"</returns>
         public string Q14( int indexString ) {
             if ( (indexString + 1) < lengthText ) {
-                indexString++;
-                lastIndexFound = indexString;
-                return (charsCodeText [indexString].Equals('-')) ? "Decremento" : "Operador";
+                if ( charsCodeText [++indexString].Equals('-') ) {
+                    lastIndexFound = indexString;
+                    return "Decremento";
+                }
+                lastIndexFound = --indexString;
+                return "Operador";
             }
             else {
+                lastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }
@@ -216,11 +245,16 @@ namespace Compilador {
         /// <returns>The token "Operador" or "Incremento"</returns>
         public string Q16( int indexString ) {
             if ( (indexString + 1) < lengthText ) {
-                indexString++;
-                lastIndexFound = indexString;
-                return (charsCodeText [indexString].Equals('+')) ? "Incremento" : "Operador";
+                if ( charsCodeText [++indexString].Equals('+') ) {
+                    lastIndexFound = indexString;
+                    return "Incremento";
+                }
+                lastIndexFound = --indexString;
+                return "Operador";
+
             }
             else {
+                lastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }
@@ -246,6 +280,7 @@ namespace Compilador {
                 return "Negacion";
             }
         }
+        //Comparador mayor que menor que
         public string Q21( int indexString ) {
             if ( ++indexString < lengthText ) {
                 if ( charsCodeText [indexString] == '=' ) {
@@ -263,6 +298,7 @@ namespace Compilador {
                 return "Comparador";
             }
         }
+        //Comparador igual y asignador
         public string Q22( int indexString ) {
             if ( ++indexString < lengthText ) {
                 if ( charsCodeText [indexString] == '=' ) {
@@ -280,6 +316,7 @@ namespace Compilador {
                 return "Asignacion";
             }
         }
+        //Comparador de &&
         public string Q23( int indexString ) {
             if ( ++indexString < lengthText ) {
                 if ( charsCodeText [indexString] == '&' ) {
@@ -298,6 +335,7 @@ namespace Compilador {
                 return string.Empty;
             }
         }
+        //comparador de ||
         public string Q24( int indexString ) {
             if ( ++indexString < lengthText ) {
                 if ( charsCodeText [indexString] == '|' ) {
@@ -316,6 +354,7 @@ namespace Compilador {
                 return string.Empty;
             }
         }
+        //Comparador de identificadores
         public string Q25( int indexString ) {
             for ( int i = indexString ; i < lengthText ; i++ ) {
                 if ( !(charsCodeText [i] >= 65 && charsCodeText [i] <= 90 || charsCodeText [i] >= 97 && charsCodeText [i] <= 122) && charsCodeText [i] != '_' && !char.IsDigit(charsCodeText [i]) ) {
@@ -326,7 +365,9 @@ namespace Compilador {
             lastIndexFound = lengthText - 1;
             return "Identificador";
         }
+
         #endregion
+        //Analiza las cadenas
         public string Q18( int indexString ) {
             for ( int i = ++indexString ; i < charsCodeText.Length ; i++ ) {
                 try {
@@ -339,18 +380,17 @@ namespace Compilador {
                     throw;
                 }
             }
-            throw new Exception("Se esperaba un \"");
+            lastIndexFound = lengthText-1;
+            messasgesErros += String.Format("Se esperaba \" para cerrar cadena -- Linea:{0} \n", countLines);
+            return String.Empty;
         }
         public string subcadena( int inicio, int final ) {
             string palabra = string.Empty;
             for ( int i = inicio ; i <= final ; i++ ) {
                 palabra += charsCodeText [i].ToString();
-
             }
-
             return palabra;
         }
-
         public string Q19( int indexString ) {
             if ( ++indexString < lengthText ) {
                 if ( charsCodeText [indexString] == '\'' ) {
@@ -370,6 +410,6 @@ namespace Compilador {
                 return string.Empty;
             }
             return string.Empty;
-        }     
+        }
     }
 }
