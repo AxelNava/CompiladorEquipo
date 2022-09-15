@@ -16,6 +16,10 @@ namespace Compilador {
         int lengthText;
         int countLines;
 
+        /// <summary>
+        /// Execute the analizer to check all the lexemas and asign their token
+        /// </summary>
+        /// <returns>A list of lexemas with token</returns>
         public List<string []> ExecuteAnalizer() {
             messasgesErros = String.Empty;
             countLines = 1;
@@ -24,11 +28,20 @@ namespace Compilador {
             for ( int i = 0 ; i < lengthText ; i++ ) {
                 char letter = charsCodeText [i];
                 string token;
+                //Check if the character is a letter between a-z and A-Z or begins with "_"
                 if ( letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122 || letter == '_' ) {
                     token = Q25(i);
-                    tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
-                    i = lastIndexFound;
-                    continue;
+                    string lexema = subcadena(i, lastIndexFound);
+                    string tokenFromSymbolTable = TablaSimbolos.GetTokenName(lexema);
+                    if ( tokenFromSymbolTable == string.Empty ) {
+                        tokenTableList.Add(new string [] { lexema, token });
+                        TablaSimbolos.AddLexema(lexema, token, countLines);
+                        i = lastIndexFound;
+                        continue;
+                    }
+                    else {
+                        tokenTableList.Add(new string [] { lexema, tokenFromSymbolTable });
+                    }
                 }
                 /*if ( char.IsDigit(letter) ) {
                     i = lastIndexFound;
@@ -325,12 +338,14 @@ namespace Compilador {
                 }
                 else {
                     //Mensaje de error
+                    messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
                     lastIndexFound = indexString - 1;
                     return string.Empty;
                 }
             }
             else {
                 //Mensaje de error
+                messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
                 lastIndexFound = indexString - 1;
                 return string.Empty;
             }
@@ -344,12 +359,14 @@ namespace Compilador {
                 }
                 else {
                     //Mensaje de error
+                    messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
                     lastIndexFound = indexString - 1;
                     return string.Empty;
                 }
             }
             else {
                 //Mensaje de error
+                messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
                 lastIndexFound = indexString - 1;
                 return string.Empty;
             }
@@ -380,7 +397,7 @@ namespace Compilador {
                     throw;
                 }
             }
-            lastIndexFound = lengthText-1;
+            lastIndexFound = lengthText - 1;
             messasgesErros += String.Format("Se esperaba \" para cerrar cadena -- Linea:{0} \n", countLines);
             return String.Empty;
         }
@@ -403,10 +420,12 @@ namespace Compilador {
                 }
                 else {
                     //Mensaje de error
+                    messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 }
             }
             else {
                 //Mensaje de error
+                messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 return string.Empty;
             }
             return string.Empty;

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Compilador {
     /// <summary>
@@ -13,8 +10,7 @@ namespace Compilador {
         private static TablaSimbolos _tablaSimbolos;
         private static Dictionary<string, Dictionary<int, string>> symbolTable = new Dictionary<string, Dictionary<int, string>>();
         private static int countSymbolTable;
-        private TablaSimbolos() {
-            countSymbolTable = 6;
+        private TablaSimbolos() {            
             //Lexema diccionary
             Dictionary<int, string> lexemaDiccionary = new Dictionary<int, string>();
             //Token Diccionary
@@ -31,6 +27,9 @@ namespace Compilador {
             lexemaDiccionary.Add(4, "if");
             lexemaDiccionary.Add(5, "while");
             lexemaDiccionary.Add(6, "else");
+            lexemaDiccionary.Add(7, "using");
+            lexemaDiccionary.Add(8, "do");
+            lexemaDiccionary.Add(9, "class");            
 
             tokenDiciconary.Add(0, "TIPO");
             tokenDiciconary.Add(1, "TIPO");
@@ -39,6 +38,9 @@ namespace Compilador {
             tokenDiciconary.Add(4, "IF");
             tokenDiciconary.Add(5, "WHILE");
             tokenDiciconary.Add(6, "ELSE");
+            tokenDiciconary.Add(7, "USING");
+            tokenDiciconary.Add(8, "DO");
+            tokenDiciconary.Add(9, "CLASS");
 
             tipeDiccionary.Add(0, "int");
             tipeDiccionary.Add(1, "char");
@@ -47,6 +49,9 @@ namespace Compilador {
             tipeDiccionary.Add(4, "reserveWord");
             tipeDiccionary.Add(5, "reserveWord");
             tipeDiccionary.Add(6, "reserveWord");
+            tipeDiccionary.Add(7, "reserveWord");
+            tipeDiccionary.Add(8, "reserveWord");
+            tipeDiccionary.Add(9, "reserveWord");
 
             numLineDiccioanry.Add(0, String.Empty);
             numLineDiccioanry.Add(1, String.Empty);
@@ -55,6 +60,11 @@ namespace Compilador {
             numLineDiccioanry.Add(4, String.Empty);
             numLineDiccioanry.Add(5, String.Empty);
             numLineDiccioanry.Add(6, String.Empty);
+            numLineDiccioanry.Add(7, String.Empty); 
+            numLineDiccioanry.Add(8, String.Empty); 
+            numLineDiccioanry.Add(9, String.Empty);
+
+            countSymbolTable = numLineDiccioanry.Count-1;
 
             symbolTable.Add("Lexema", lexemaDiccionary);
             symbolTable.Add("Token", tokenDiciconary);
@@ -82,7 +92,7 @@ namespace Compilador {
         /// <param name="tokenName">The token value for the lexema</param>
         /// <param name="line">The number of line where the lexeama was found</param>
 
-        public static void AddLexema( string lexemaName, string tokenName, int line ) {
+        public static void AddLexema( string lexemaName, string tokenName, int line ) {            
             countSymbolTable++;
             foreach ( var keysDic in symbolTable.Keys ) {
                 Dictionary<int, string> auxDicc;
@@ -97,7 +107,7 @@ namespace Compilador {
                     case "Tipe":
                         auxDicc.Add(countSymbolTable, string.Empty);
                         break;
-                    case "Numline":
+                    case "NumLine":
                         auxDicc.Add(countSymbolTable, line.ToString());
                         break;
                 }
@@ -107,30 +117,47 @@ namespace Compilador {
         /// Obtain all the symbol Table
         /// </summary>
         /// <returns>Symbol Table</returns>
-        public static Dictionary<string, Dictionary<int, string>> GetSymbolTable() {            
+        public static Dictionary<string, Dictionary<int, string>> GetSymbolTable() {
             return symbolTable;
         }
 
-        public static Dictionary<int,string> GetLexemasValues() {
+        public static Dictionary<int, string> GetLexemasValues() {
             var values = new Dictionary<int, string>();
             symbolTable.TryGetValue("Lexema", out values);
             return values;
         }
-        public static Dictionary<int,string> GetTypesValues() {
+        public static Dictionary<int, string> GetTypesValues() {
             var values = new Dictionary<int, string>();
             symbolTable.TryGetValue("Tipe", out values);
             return values;
         }
 
-        public static Dictionary<int,string> GetNumLine() {
+        public static Dictionary<int, string> GetNumLine() {
             var values = new Dictionary<int, string>();
             symbolTable.TryGetValue("NumLine", out values);
             return values;
         }
-        public static Dictionary<int,string> GetTokensValues() {
+        public static Dictionary<int, string> GetTokensValues() {
             var values = new Dictionary<int, string>();
             symbolTable.TryGetValue("Token", out values);
             return values;
+        }
+        /// <summary>
+        /// Check if there is a identifier already exists
+        /// </summary>
+        /// <param name="lexemaName"></param>
+        /// <returns>The token from the symbol table
+        /// A empty string if there aren't 
+        /// </returns>
+        public static string GetTokenName( string lexemaName ) {
+            foreach ( var dics in symbolTable ["Lexema"] ) {
+                if ( dics.Value == lexemaName ) {
+                    string token;
+                    symbolTable ["Token"].TryGetValue(dics.Key, out token);
+                    return token;
+                }
+            }
+            return string.Empty;
         }
     }
 }

@@ -177,7 +177,8 @@
             // textBoxErrores
             // 
             this.textBoxErrores.Enabled = false;
-            this.textBoxErrores.Font = new System.Drawing.Font("JetBrains Mono", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxErrores.Font = new System.Drawing.Font("JetBrains Mono", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxErrores.ForeColor = System.Drawing.Color.Red;
             this.textBoxErrores.Location = new System.Drawing.Point(978, 639);
             this.textBoxErrores.Multiline = true;
             this.textBoxErrores.Name = "textBoxErrores";
