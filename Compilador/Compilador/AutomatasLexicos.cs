@@ -134,7 +134,10 @@ namespace Compilador {
                         case '\n':
                             countLines++;
                             continue;
+                        case '\r':
+                            continue;                            
                         default:
+                            messasgesErros += String.Format("Caracter no reconocido: {0}  --- Linea: {1}", charsCodeText [i], countLines);
                             continue;
                             //lastIndexFound++;
                     }
@@ -247,7 +250,6 @@ namespace Compilador {
                 //This is the case when its the last character
                 return "Operador";
             }
-
         }
         #endregion
         #region Incremento_Suma_Operadores
@@ -264,7 +266,6 @@ namespace Compilador {
                 }
                 lastIndexFound = --indexString;
                 return "Operador";
-
             }
             else {
                 lastIndexFound = indexString;
@@ -317,7 +318,6 @@ namespace Compilador {
                 if ( charsCodeText [indexString] == '=' ) {
                     lastIndexFound = indexString;
                     return "Comparador";
-
                 }
                 else {
                     lastIndexFound = indexString - 1;
@@ -420,10 +420,12 @@ namespace Compilador {
                 }
                 else {
                     //Mensaje de error
+                    lastIndexFound = indexString-1;
                     messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 }
             }
             else {
+                lastIndexFound = indexString-1;
                 //Mensaje de error
                 messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 return string.Empty;

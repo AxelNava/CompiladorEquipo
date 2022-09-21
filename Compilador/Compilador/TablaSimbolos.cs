@@ -30,6 +30,8 @@ namespace Compilador {
             lexemaDiccionary.Add(7, "using");
             lexemaDiccionary.Add(8, "do");
             lexemaDiccionary.Add(9, "class");            
+            lexemaDiccionary.Add(10, "or");            
+            lexemaDiccionary.Add(11, "and");            
 
             tokenDiciconary.Add(0, "TIPO");
             tokenDiciconary.Add(1, "TIPO");
@@ -41,6 +43,8 @@ namespace Compilador {
             tokenDiciconary.Add(7, "USING");
             tokenDiciconary.Add(8, "DO");
             tokenDiciconary.Add(9, "CLASS");
+            tokenDiciconary.Add(10, "OR");
+            tokenDiciconary.Add(11, "AND");
 
             tipeDiccionary.Add(0, "int");
             tipeDiccionary.Add(1, "char");
@@ -52,6 +56,8 @@ namespace Compilador {
             tipeDiccionary.Add(7, "reserveWord");
             tipeDiccionary.Add(8, "reserveWord");
             tipeDiccionary.Add(9, "reserveWord");
+            tipeDiccionary.Add(10, "reserveWord");
+            tipeDiccionary.Add(11, "reserveWord");
 
             numLineDiccioanry.Add(0, String.Empty);
             numLineDiccioanry.Add(1, String.Empty);
@@ -63,6 +69,8 @@ namespace Compilador {
             numLineDiccioanry.Add(7, String.Empty); 
             numLineDiccioanry.Add(8, String.Empty); 
             numLineDiccioanry.Add(9, String.Empty);
+            numLineDiccioanry.Add(10, String.Empty);
+            numLineDiccioanry.Add(11, String.Empty);
 
             countSymbolTable = numLineDiccioanry.Count-1;
 
@@ -71,10 +79,6 @@ namespace Compilador {
             symbolTable.Add("Tipe", tipeDiccionary);
             symbolTable.Add("NumLine", numLineDiccioanry);
 
-            /*lexemaDiccionary.Clear();
-            tokenDiciconary.Clear();
-            tipeDiccionary.Clear();
-            numLineDiccioanry.Clear();*/
         }
         /// <summary>
         /// This method allow to acces to the first class instance
