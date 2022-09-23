@@ -32,6 +32,7 @@ namespace Compilador {
             lexemaDiccionary.Add(9, "class");            
             lexemaDiccionary.Add(10, "or");            
             lexemaDiccionary.Add(11, "and");            
+            lexemaDiccionary.Add(12, "void");            
 
             tokenDiciconary.Add(0, "TIPO");
             tokenDiciconary.Add(1, "TIPO");
@@ -45,6 +46,7 @@ namespace Compilador {
             tokenDiciconary.Add(9, "CLASS");
             tokenDiciconary.Add(10, "OR");
             tokenDiciconary.Add(11, "AND");
+            tokenDiciconary.Add(12, "VOID");
 
             tipeDiccionary.Add(0, "int");
             tipeDiccionary.Add(1, "char");
@@ -58,6 +60,7 @@ namespace Compilador {
             tipeDiccionary.Add(9, "reserveWord");
             tipeDiccionary.Add(10, "reserveWord");
             tipeDiccionary.Add(11, "reserveWord");
+            tipeDiccionary.Add(12, "reserveWord");
 
             numLineDiccioanry.Add(0, String.Empty);
             numLineDiccioanry.Add(1, String.Empty);
@@ -71,6 +74,7 @@ namespace Compilador {
             numLineDiccioanry.Add(9, String.Empty);
             numLineDiccioanry.Add(10, String.Empty);
             numLineDiccioanry.Add(11, String.Empty);
+            numLineDiccioanry.Add(12, String.Empty);
 
             countSymbolTable = numLineDiccioanry.Count-1;
 
