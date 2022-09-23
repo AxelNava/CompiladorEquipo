@@ -10,74 +10,18 @@ namespace Compilador {
         private static TablaSimbolos _tablaSimbolos;
         private static Dictionary<string, Dictionary<int, string>> symbolTable = new Dictionary<string, Dictionary<int, string>>();
         private static int countSymbolTable;
-        private TablaSimbolos() {            
-            //Lexema diccionary
-            Dictionary<int, string> lexemaDiccionary = new Dictionary<int, string>();
-            //Token Diccionary
-            Dictionary<int, string> tokenDiciconary = new Dictionary<int, string>();
-            //Tipe diccionary
-            Dictionary<int, string> tipeDiccionary = new Dictionary<int, string>();
-            //Number line diccionary
-            Dictionary<int, string> numLineDiccioanry = new Dictionary<int, string>();
-
-            lexemaDiccionary.Add(0, "int");
-            lexemaDiccionary.Add(1, "char");
-            lexemaDiccionary.Add(2, "string");
-            lexemaDiccionary.Add(3, "for");
-            lexemaDiccionary.Add(4, "if");
-            lexemaDiccionary.Add(5, "while");
-            lexemaDiccionary.Add(6, "else");
-            lexemaDiccionary.Add(7, "using");
-            lexemaDiccionary.Add(8, "do");
-            lexemaDiccionary.Add(9, "class");            
-            lexemaDiccionary.Add(10, "or");            
-            lexemaDiccionary.Add(11, "and");            
-            lexemaDiccionary.Add(12, "void");            
-
-            tokenDiciconary.Add(0, "TIPO");
-            tokenDiciconary.Add(1, "TIPO");
-            tokenDiciconary.Add(2, "TIPO");
-            tokenDiciconary.Add(3, "FOR");
-            tokenDiciconary.Add(4, "IF");
-            tokenDiciconary.Add(5, "WHILE");
-            tokenDiciconary.Add(6, "ELSE");
-            tokenDiciconary.Add(7, "USING");
-            tokenDiciconary.Add(8, "DO");
-            tokenDiciconary.Add(9, "CLASS");
-            tokenDiciconary.Add(10, "OR");
-            tokenDiciconary.Add(11, "AND");
-            tokenDiciconary.Add(12, "VOID");
-
-            tipeDiccionary.Add(0, "int");
-            tipeDiccionary.Add(1, "char");
-            tipeDiccionary.Add(2, "string");
-            tipeDiccionary.Add(3, "reserveWord");
-            tipeDiccionary.Add(4, "reserveWord");
-            tipeDiccionary.Add(5, "reserveWord");
-            tipeDiccionary.Add(6, "reserveWord");
-            tipeDiccionary.Add(7, "reserveWord");
-            tipeDiccionary.Add(8, "reserveWord");
-            tipeDiccionary.Add(9, "reserveWord");
-            tipeDiccionary.Add(10, "reserveWord");
-            tipeDiccionary.Add(11, "reserveWord");
-            tipeDiccionary.Add(12, "reserveWord");
-
-            numLineDiccioanry.Add(0, String.Empty);
-            numLineDiccioanry.Add(1, String.Empty);
-            numLineDiccioanry.Add(2, String.Empty);
-            numLineDiccioanry.Add(3, String.Empty);
-            numLineDiccioanry.Add(4, String.Empty);
-            numLineDiccioanry.Add(5, String.Empty);
-            numLineDiccioanry.Add(6, String.Empty);
-            numLineDiccioanry.Add(7, String.Empty); 
-            numLineDiccioanry.Add(8, String.Empty); 
-            numLineDiccioanry.Add(9, String.Empty);
-            numLineDiccioanry.Add(10, String.Empty);
-            numLineDiccioanry.Add(11, String.Empty);
-            numLineDiccioanry.Add(12, String.Empty);
-
-            countSymbolTable = numLineDiccioanry.Count-1;
-
+        //Lexema diccionary
+        private static Dictionary<int, string> lexemaDiccionary = new Dictionary<int, string>();
+        //Token Diccionary
+        private static Dictionary<int, string> tokenDiciconary = new Dictionary<int, string>();
+        //Tipe diccionary
+        private static Dictionary<int, string> tipeDiccionary = new Dictionary<int, string>();
+        //Number line diccionary
+        private static Dictionary<int, string> numLineDiccioanry = new Dictionary<int, string>();
+        private TablaSimbolos() {
+            FillSymbolTable();            
+            countSymbolTable = numLineDiccioanry.Count-1;            
+            
             symbolTable.Add("Lexema", lexemaDiccionary);
             symbolTable.Add("Token", tokenDiciconary);
             symbolTable.Add("Tipe", tipeDiccionary);
@@ -166,6 +110,72 @@ namespace Compilador {
                 }
             }
             return string.Empty;
+        }
+        public static void ClearSymbolTable() {            
+            FillSymbolTable();
+        }
+        public static void FillSymbolTable() {
+            lexemaDiccionary.Clear();
+            tokenDiciconary.Clear();
+            tipeDiccionary.Clear();
+            numLineDiccioanry.Clear(); 
+
+            lexemaDiccionary.Add(0, "int");
+            lexemaDiccionary.Add(1, "char");
+            lexemaDiccionary.Add(2, "string");
+            lexemaDiccionary.Add(3, "for");
+            lexemaDiccionary.Add(4, "if");
+            lexemaDiccionary.Add(5, "while");
+            lexemaDiccionary.Add(6, "else");
+            lexemaDiccionary.Add(7, "using");
+            lexemaDiccionary.Add(8, "do");
+            lexemaDiccionary.Add(9, "class");
+            lexemaDiccionary.Add(10, "or");
+            lexemaDiccionary.Add(11, "and");
+            lexemaDiccionary.Add(12, "void");
+
+            tokenDiciconary.Add(0, "TIPO");
+            tokenDiciconary.Add(1, "TIPO");
+            tokenDiciconary.Add(2, "TIPO");
+            tokenDiciconary.Add(3, "FOR");
+            tokenDiciconary.Add(4, "IF");
+            tokenDiciconary.Add(5, "WHILE");
+            tokenDiciconary.Add(6, "ELSE");
+            tokenDiciconary.Add(7, "USING");
+            tokenDiciconary.Add(8, "DO");
+            tokenDiciconary.Add(9, "CLASS");
+            tokenDiciconary.Add(10, "OR");
+            tokenDiciconary.Add(11, "AND");
+            tokenDiciconary.Add(12, "VOID");
+
+            tipeDiccionary.Add(0, "int");
+            tipeDiccionary.Add(1, "char");
+            tipeDiccionary.Add(2, "string");
+            tipeDiccionary.Add(3, "reserveWord");
+            tipeDiccionary.Add(4, "reserveWord");
+            tipeDiccionary.Add(5, "reserveWord");
+            tipeDiccionary.Add(6, "reserveWord");
+            tipeDiccionary.Add(7, "reserveWord");
+            tipeDiccionary.Add(8, "reserveWord");
+            tipeDiccionary.Add(9, "reserveWord");
+            tipeDiccionary.Add(10, "reserveWord");
+            tipeDiccionary.Add(11, "reserveWord");
+            tipeDiccionary.Add(12, "reserveWord");
+
+            numLineDiccioanry.Add(0, String.Empty);
+            numLineDiccioanry.Add(1, String.Empty);
+            numLineDiccioanry.Add(2, String.Empty);
+            numLineDiccioanry.Add(3, String.Empty);
+            numLineDiccioanry.Add(4, String.Empty);
+            numLineDiccioanry.Add(5, String.Empty);
+            numLineDiccioanry.Add(6, String.Empty);
+            numLineDiccioanry.Add(7, String.Empty);
+            numLineDiccioanry.Add(8, String.Empty);
+            numLineDiccioanry.Add(9, String.Empty);
+            numLineDiccioanry.Add(10, String.Empty);
+            numLineDiccioanry.Add(11, String.Empty);
+            numLineDiccioanry.Add(12, String.Empty);
+
         }
     }
 }

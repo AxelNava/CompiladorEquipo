@@ -21,6 +21,7 @@ namespace Compilador {
         }
 
         private void button1_Click( object sender, EventArgs e ) {
+            TablaSimbolos.ClearSymbolTable();
             AutomatasLexicos auLex = new AutomatasLexicos(EntradaCompiladorTextBox.Text);
             dataGridLexema.Rows.Clear();
             dataGridTableToken.Rows.Clear();
