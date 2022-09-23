@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace Compilador {
     internal class AutomatasLexicos {
@@ -21,6 +22,7 @@ namespace Compilador {
         /// </summary>
         /// <returns>A list of lexemas with token</returns>
         public List<string []> ExecuteAnalizer() {
+            tokenTableList.Clear();
             messasgesErros = String.Empty;
             countLines = 1;
             lengthText = charsCodeText.Length;
@@ -41,14 +43,21 @@ namespace Compilador {
                     }
                     else {
                         tokenTableList.Add(new string [] { lexema, tokenFromSymbolTable });
+                        i = lastIndexFound;
+                        continue;
                     }
                 }
-                /*if ( char.IsDigit(letter) ) {
-                    i = lastIndexFound;
-                    continue;
-                }*/
+                if ( char.IsDigit(letter) ) {
+                    token = Q26(i);
+                    string lexema = subcadena(i, lastIndexFound);
+                    if(token != string.Empty ) {
+                        tokenTableList.Add(new string [] { lexema, token });                        
+                        i = lastIndexFound;
+                        continue;
+                    }                  
+                }
                 else {
-                    //Find the first state of each automat
+                    //Find the first state of each automat, except the numbers and identifiers
                     switch ( letter ) {
                         case '/':
                             token = Q8(i);
@@ -135,7 +144,7 @@ namespace Compilador {
                             countLines++;
                             continue;
                         case '\r':
-                            continue;                            
+                            continue;
                         default:
                             messasgesErros += String.Format("Caracter no reconocido: {0}  --- Linea: {1}", charsCodeText [i], countLines);
                             continue;
@@ -382,7 +391,52 @@ namespace Compilador {
             lastIndexFound = lengthText - 1;
             return "Identificador";
         }
+        //Comparador de números
+        public string Q26( int indexString ) {
+            for ( int i = indexString ; i < lengthText ; i++ ) {
+                if ( !char.IsDigit(charsCodeText [i]) ) {
+                    return Q27(i);
+                }
+            }
+            lastIndexFound = lengthText - 1;
+            return "Entero";
+        }
+        public string Q27( int indexString ) {
+            if ( charsCodeText [indexString] == '.' ) {
+                return Q28(++indexString);
+            }
+            else {
+                lastIndexFound = indexString - 1;
+                return "Entero";
+            }
+        }
+        public string Q28( int indexString ) {            
+            if ( indexString < lengthText ) {
+                if ( char.IsDigit(charsCodeText [indexString]) ) {
+                    return Q29(indexString);
+                }                
+            }
+            lastIndexFound = indexString - 1;
+            messasgesErros += string.Format("Se esperaba un número después del \'.\' -- Linea: {0}", countLines);
+            return string.Empty;
+        }
 
+        public string Q29( int indexString ) {
+            for ( int i = indexString ; i < lengthText ; i++ ) {
+                if ( !char.IsDigit(charsCodeText [i]) ) {
+                    if ( charsCodeText [i] == '.' ) {
+                        messasgesErros += String.Format("Caracter no reconocido : {0} -- Linea: {1}", charsCodeText [i], countLines);
+                        lastIndexFound = i - 1;
+                        return string.Empty;
+                    }
+                    lastIndexFound = i - 1;
+                    return "Decimal";
+                }
+            }
+            lastIndexFound = lengthText - 1;
+            return "Decimal";
+        }
+        
         #endregion
         //Analiza las cadenas
         public string Q18( int indexString ) {
@@ -420,12 +474,12 @@ namespace Compilador {
                 }
                 else {
                     //Mensaje de error
-                    lastIndexFound = indexString-1;
+                    lastIndexFound = indexString - 1;
                     messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 }
             }
             else {
-                lastIndexFound = indexString-1;
+                lastIndexFound = indexString - 1;
                 //Mensaje de error
                 messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 return string.Empty;

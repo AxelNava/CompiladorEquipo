@@ -45,10 +45,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(356, 60);
-            this.button1.Margin = new System.Windows.Forms.Padding(5);
+            this.button1.Location = new System.Drawing.Point(273, 45);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(122, 41);
+            this.button1.Size = new System.Drawing.Size(93, 31);
             this.button1.TabIndex = 0;
             this.button1.Text = "Analizar lexico";
             this.button1.UseVisualStyleBackColor = true;
@@ -56,10 +55,11 @@
             // 
             // EntradaCompiladorTextBox
             // 
-            this.EntradaCompiladorTextBox.Location = new System.Drawing.Point(91, 42);
+            this.EntradaCompiladorTextBox.Location = new System.Drawing.Point(70, 32);
+            this.EntradaCompiladorTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.EntradaCompiladorTextBox.Multiline = true;
             this.EntradaCompiladorTextBox.Name = "EntradaCompiladorTextBox";
-            this.EntradaCompiladorTextBox.Size = new System.Drawing.Size(257, 579);
+            this.EntradaCompiladorTextBox.Size = new System.Drawing.Size(198, 441);
             this.EntradaCompiladorTextBox.TabIndex = 1;
             this.EntradaCompiladorTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterPressedEvent);
             // 
@@ -72,11 +72,12 @@
             this.Tipo,
             this.NumeroLinea,
             this.Valor});
-            this.dataGridTableSymbols.Location = new System.Drawing.Point(504, 45);
+            this.dataGridTableSymbols.Location = new System.Drawing.Point(388, 34);
+            this.dataGridTableSymbols.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridTableSymbols.Name = "dataGridTableSymbols";
             this.dataGridTableSymbols.RowHeadersWidth = 51;
             this.dataGridTableSymbols.RowTemplate.Height = 24;
-            this.dataGridTableSymbols.Size = new System.Drawing.Size(745, 561);
+            this.dataGridTableSymbols.Size = new System.Drawing.Size(573, 426);
             this.dataGridTableSymbols.TabIndex = 3;
             // 
             // Lexema
@@ -117,12 +118,13 @@
             // countLinesBox
             // 
             this.countLinesBox.Enabled = false;
-            this.countLinesBox.Location = new System.Drawing.Point(12, 42);
-            this.countLinesBox.MaximumSize = new System.Drawing.Size(100, 580);
+            this.countLinesBox.Location = new System.Drawing.Point(9, 32);
+            this.countLinesBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.countLinesBox.MaximumSize = new System.Drawing.Size(77, 441);
             this.countLinesBox.Multiline = true;
             this.countLinesBox.Name = "countLinesBox";
             this.countLinesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.countLinesBox.Size = new System.Drawing.Size(50, 579);
+            this.countLinesBox.Size = new System.Drawing.Size(40, 441);
             this.countLinesBox.TabIndex = 4;
             this.countLinesBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.countLinesBox.Visible = false;
@@ -133,11 +135,12 @@
             this.dataGridTableToken.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Lexema_TableToken,
             this.Token_TableToken});
-            this.dataGridTableToken.Location = new System.Drawing.Point(504, 639);
+            this.dataGridTableToken.Location = new System.Drawing.Point(388, 485);
+            this.dataGridTableToken.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridTableToken.Name = "dataGridTableToken";
             this.dataGridTableToken.RowHeadersWidth = 51;
             this.dataGridTableToken.RowTemplate.Height = 24;
-            this.dataGridTableToken.Size = new System.Drawing.Size(448, 150);
+            this.dataGridTableToken.Size = new System.Drawing.Size(344, 113);
             this.dataGridTableToken.TabIndex = 5;
             // 
             // Lexema_TableToken
@@ -159,12 +162,13 @@
             this.dataGridLexema.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridLexema.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.LexemaEncontrado});
-            this.dataGridLexema.Location = new System.Drawing.Point(12, 650);
+            this.dataGridLexema.Location = new System.Drawing.Point(9, 493);
+            this.dataGridLexema.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridLexema.Name = "dataGridLexema";
             this.dataGridLexema.RowHeadersWidth = 51;
             this.dataGridLexema.RowTemplate.Height = 24;
             this.dataGridLexema.ShowRowErrors = false;
-            this.dataGridLexema.Size = new System.Drawing.Size(336, 150);
+            this.dataGridLexema.Size = new System.Drawing.Size(259, 113);
             this.dataGridLexema.TabIndex = 6;
             // 
             // LexemaEncontrado
@@ -176,20 +180,22 @@
             // 
             // textBoxErrores
             // 
+            this.textBoxErrores.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxErrores.Enabled = false;
             this.textBoxErrores.Font = new System.Drawing.Font("JetBrains Mono", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxErrores.ForeColor = System.Drawing.Color.Red;
-            this.textBoxErrores.Location = new System.Drawing.Point(978, 639);
+            this.textBoxErrores.Location = new System.Drawing.Point(752, 485);
+            this.textBoxErrores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxErrores.Multiline = true;
             this.textBoxErrores.Name = "textBoxErrores";
-            this.textBoxErrores.Size = new System.Drawing.Size(271, 150);
+            this.textBoxErrores.Size = new System.Drawing.Size(471, 115);
             this.textBoxErrores.TabIndex = 7;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 29F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1282, 853);
+            this.ClientSize = new System.Drawing.Size(1236, 647);
             this.Controls.Add(this.textBoxErrores);
             this.Controls.Add(this.dataGridLexema);
             this.Controls.Add(this.dataGridTableToken);
@@ -197,8 +203,7 @@
             this.Controls.Add(this.dataGridTableSymbols);
             this.Controls.Add(this.EntradaCompiladorTextBox);
             this.Controls.Add(this.button1);
-            this.Font = new System.Drawing.Font("JetBrains Mono", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Font = new System.Drawing.Font("JetBrains Mono", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableSymbols)).EndInit();

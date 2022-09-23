@@ -38,10 +38,8 @@ namespace Compilador {
                 foreach ( var item in TablaSimbolos.GetLexemasValues().Keys ) {
                     dataGridTableSymbols.Rows.Add(lexemas [item], tokens [item], types [item], numLines [item]);
                 }
-                /*for ( int i = dataGridTableSymbols.RowCount - 1 ; i < lexemas.Count ; i++ ) {                    
-                    dataGridTableSymbols.Rows.Add(lexemas [i], tokens [i], types [i], numLines [i], string.Empty);
-                }*/
                 textBoxErrores.Text = auLex.messasgesErros;
+                textBoxErrores.ForeColor = Color.Red;
             }
             catch ( Exception ex ) {
                 MessageBox.Show("Ha habido un error:\n" + ex.Message);
