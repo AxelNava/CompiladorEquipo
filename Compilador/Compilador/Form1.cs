@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.Gramaticas;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,6 +10,7 @@ namespace Compilador {
     public partial class Form1 : Form {
         int countLines;
         public Form1() {
+            GramaticaCondicion hola = new GramaticaCondicion();
             countLines = 1;
             TablaSimbolos tablesymbol = TablaSimbolos.GetInstance();
             InitializeComponent();
@@ -19,7 +23,6 @@ namespace Compilador {
                 dataGridTableSymbols.Rows.Add(lexemas [item], tokens [item], types [item], numLines [item]);
             }
         }
-
         private void button1_Click( object sender, EventArgs e ) {
             TablaSimbolos.ClearSymbolTable();
             AutomatasLexicos auLex = new AutomatasLexicos(EntradaCompiladorTextBox.Text);
@@ -38,9 +41,10 @@ namespace Compilador {
                 var numLines = TablaSimbolos.GetNumLine();
                 foreach ( var item in TablaSimbolos.GetLexemasValues().Keys ) {
                     dataGridTableSymbols.Rows.Add(lexemas [item], tokens [item], types [item], numLines [item]);
-                }
+                }   
+                AlmacenarTokens_EnStack(map);
                 textBoxErrores.Text = auLex.messasgesErros;
-                textBoxErrores.ForeColor = Color.Red;
+                textBoxErrores.ForeColor = Color.Red;                
             }
             catch ( Exception ex ) {
                 MessageBox.Show("Ha habido un error:\n" + ex.Message);
@@ -56,6 +60,13 @@ namespace Compilador {
                     countLinesBox.Size = new Size(72, 360);
                 }
                 countLinesBox.Text += "\n" + countLines;
+            }
+        }
+
+        private void AlmacenarTokens_EnStack( List<string []> lexema_tokens) {
+            lexema_tokens.Reverse();
+            foreach ( var token in lexema_tokens ) {
+                PilaTokens.GlobalTokens.Push(token [1]);
             }
         }
     }

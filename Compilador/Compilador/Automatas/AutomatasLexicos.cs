@@ -2,57 +2,60 @@
 using System.Collections.Generic;
 using System.Security.Policy;
 
-namespace Compilador {
+namespace Compilador {    
     internal class AutomatasLexicos {
-        char [] charsCodeText;
+        #region VariablesParaAutomata        
         public AutomatasLexicos( string Alltext ) {
-            this.charsCodeText = Alltext.ToCharArray();
+            VariablesGlobalesAutomatas.CharCodeText = Alltext.ToCharArray();
+            //This line is just for get the lenght of text but not asign anything to "LenghtText"
+            VariablesGlobalesAutomatas.LengthText = 0;
         }
-        public string messasgesErros;
-        int lastIndexFound;
+        public string messasgesErros;                      
+        #endregion
         /// <summary>
         /// The first value is the lexema and the second is the token
         /// </summary>
         List<string []> tokenTableList = new List<string []>();
-        int lengthText;
+        
         int countLines;
 
         /// <summary>
         /// Execute the analizer to check all the lexemas and asign their token
         /// </summary>
         /// <returns>A list of lexemas with token</returns>
-        public List<string []> ExecuteAnalizer() {
+        public List<string []> ExecuteAnalizer() {            
             tokenTableList.Clear();
             messasgesErros = String.Empty;
-            countLines = 1;
-            lengthText = charsCodeText.Length;
-            lastIndexFound = 0;
-            for ( int i = 0 ; i < lengthText ; i++ ) {
-                char letter = charsCodeText [i];
+            countLines = 1;            
+            VariablesGlobalesAutomatas.LengthText = VariablesGlobalesAutomatas.CharCodeText.Length;
+            Console.WriteLine("Tamaño de texto: {0}", VariablesGlobalesAutomatas.LengthText);
+            VariablesGlobalesAutomatas.LastIndexFound = 0;
+            for ( int i = 0 ; i < VariablesGlobalesAutomatas.LengthText ; i++ ) {
+                char letter = VariablesGlobalesAutomatas.CharCodeText [i];
                 string token;
                 //Check if the character is a letter between a-z and A-Z or begins with "_"
                 if ( letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122 || letter == '_' ) {
                     token = Q25(i);
-                    string lexema = subcadena(i, lastIndexFound);
+                    string lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
                     string tokenFromSymbolTable = TablaSimbolos.GetTokenName(lexema);
                     if ( tokenFromSymbolTable == string.Empty ) {
                         tokenTableList.Add(new string [] { lexema, token });
                         TablaSimbolos.AddLexema(lexema, token, countLines);
-                        i = lastIndexFound;
+                        i = VariablesGlobalesAutomatas.LastIndexFound;
                         continue;
                     }
                     else {
                         tokenTableList.Add(new string [] { lexema, tokenFromSymbolTable });
-                        i = lastIndexFound;
+                        i = VariablesGlobalesAutomatas.LastIndexFound;
                         continue;
-                    }
+                    }                    
                 }
                 if ( char.IsDigit(letter) ) {
                     token = Q26(i);
-                    string lexema = subcadena(i, lastIndexFound);
+                    string lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
                     if(token != string.Empty ) {
                         tokenTableList.Add(new string [] { lexema, token });                        
-                        i = lastIndexFound;
+                        i = VariablesGlobalesAutomatas.LastIndexFound;
                         continue;
                     }                  
                 }
@@ -67,7 +70,7 @@ namespace Compilador {
                         case '-':
                             token = Q14(i);
                             if ( token != "Operador" ) {
-                                tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token });
+                                tokenTableList.Add(new string [] { string.Concat(VariablesGlobalesAutomatas.CharCodeText [i], VariablesGlobalesAutomatas.CharCodeText [VariablesGlobalesAutomatas.LastIndexFound]), token });
                             }
                             else {
                                 tokenTableList.Add(new string [] { letter.ToString(), token });
@@ -82,7 +85,7 @@ namespace Compilador {
                         case '+':
                             token = Q16(i);
                             if ( token != "Operador" ) {
-                                tokenTableList.Add(new string [] { string.Concat(charsCodeText [i], charsCodeText [lastIndexFound]), token });
+                                tokenTableList.Add(new string [] { string.Concat(VariablesGlobalesAutomatas.CharCodeText [i], VariablesGlobalesAutomatas.CharCodeText [VariablesGlobalesAutomatas.LastIndexFound]), token });
                             }
                             else {
                                 tokenTableList.Add(new string [] { letter.ToString(), token });
@@ -112,46 +115,48 @@ namespace Compilador {
                             continue;
                         case '\"':
                             token = Q18(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
 
                             break;
                         case '\'':
                             token = Q19(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '!':
                             token = Q20(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '<':
                         case '>':
                             token = Q21(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '=':
                             token = Q22(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '&':
                             token = Q23(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '|':
                             token = Q24(i);
-                            tokenTableList.Add(new string [] { subcadena(i, lastIndexFound), token });
+                            tokenTableList.Add(new string [] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
                             break;
                         case '\n':
                             countLines++;
                             continue;
                         case '\r':
                             continue;
+                        case ' ':
+                            continue;
                         default:
-                            messasgesErros += String.Format("Caracter no reconocido: {0}  --- Linea: {1}", charsCodeText [i], countLines);
+                            messasgesErros += String.Format("Caracter no reconocido: {0}  --- Linea: {1}", VariablesGlobalesAutomatas.CharCodeText [i], countLines);
                             continue;
                             //lastIndexFound++;
                     }
                 }
-                i = lastIndexFound;
+                i = VariablesGlobalesAutomatas.LastIndexFound;
             }
             return tokenTableList;
         }
@@ -164,25 +169,25 @@ namespace Compilador {
         /// </summary>
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of line Comment, multi line comment, or operator "/"</returns>
+        
         public string Q8( int indexString ) {
-
-            if ( (indexString + 1) < lengthText ) {
-                if ( charsCodeText [++indexString].Equals('/') ) {
-                    lastIndexFound = indexString;
+            if ( (indexString + 1) < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [++indexString].Equals('/') ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return Q9(++indexString);
                 }
                 return Q10(indexString);
             }
             else {
-                lastIndexFound = indexString;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString;
                 return "Operador";
             }
         }
         public string Q9( int indexString ) {
-            for ( int i = indexString ; i < lengthText ; i++ ) {
-                if ( charsCodeText [i].Equals('\n') ) {
+            for ( int i = indexString ; i < VariablesGlobalesAutomatas.LengthText ; i++ ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [i].Equals('\n') ) {
                     countLines++;
-                    lastIndexFound = indexString;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "ComentarioLinea";
                 }
             }
@@ -194,11 +199,11 @@ namespace Compilador {
         /// <param name="stringText">Is the text to analice</param>
         /// <returns>The token of Multi line comment or operator "/"</returns>
         public string Q10( int indexString ) {
-            if ( charsCodeText [indexString].Equals('*') ) {
-                lastIndexFound = indexString;
+            if ( VariablesGlobalesAutomatas.CharCodeText [indexString].Equals('*') ) {
+                VariablesGlobalesAutomatas.LastIndexFound = indexString;
                 return Q11(++indexString);
             }
-            lastIndexFound = --indexString;
+            VariablesGlobalesAutomatas.LastIndexFound = --indexString;
             return "Operador";
         }
         /// <summary>
@@ -208,17 +213,17 @@ namespace Compilador {
         /// <returns>The token of Multi line comment</returns>
         /// <exception cref="Exception">If the end of the line there aren't any termination of the comment</exception>
         public string Q11( int indexString ) {
-            if ( indexString >= lengthText ) {
+            if ( indexString >= VariablesGlobalesAutomatas.LengthText ) {
                 messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
                 return String.Empty;
             }
-            for ( int i = indexString ; i < charsCodeText.Length ; i++ ) {
-                if ( charsCodeText [i].Equals('\n') )
+            for ( int i = indexString ; i < VariablesGlobalesAutomatas.CharCodeText.Length ; i++ ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [i].Equals('\n') )
                     countLines++;
-                if ( charsCodeText [i] == '*' ) {
-                    lastIndexFound = i;
+                if ( VariablesGlobalesAutomatas.CharCodeText [i] == '*' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = i;
                     try {
-                        if ( Q12(charsCodeText [i + 1]) ) {
+                        if ( Q12(VariablesGlobalesAutomatas.CharCodeText [i + 1]) ) {
                             return "ComentarioMultilinea";
                         }
                         else {
@@ -234,8 +239,8 @@ namespace Compilador {
         /// <summary>
         /// Verify wheter the character is the end of comment
         /// </summary>
-        bool Q12( char character ) {
-            lastIndexFound++;
+        public bool Q12( char character ) {
+            VariablesGlobalesAutomatas.LastIndexFound++;
             return character.Equals('/') ? true : false;
         }
         #endregion
@@ -246,16 +251,16 @@ namespace Compilador {
         /// <param name="stringText">The text to analice</param>
         /// <returns>The token "Operador" or "Decremento"</returns>
         public string Q14( int indexString ) {
-            if ( (indexString + 1) < lengthText ) {
-                if ( charsCodeText [++indexString].Equals('-') ) {
-                    lastIndexFound = indexString;
+            if ( (indexString + 1) < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [++indexString].Equals('-') ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Decremento";
                 }
-                lastIndexFound = --indexString;
+                VariablesGlobalesAutomatas.LastIndexFound = --indexString;
                 return "Operador";
             }
             else {
-                lastIndexFound = indexString;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }
@@ -268,16 +273,16 @@ namespace Compilador {
         /// <param name="stringText">The text to analice</param>
         /// <returns>The token "Operador" or "Incremento"</returns>
         public string Q16( int indexString ) {
-            if ( (indexString + 1) < lengthText ) {
-                if ( charsCodeText [++indexString].Equals('+') ) {
-                    lastIndexFound = indexString;
+            if ( (indexString + 1) < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [++indexString].Equals('+') ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Incremento";
                 }
-                lastIndexFound = --indexString;
+                VariablesGlobalesAutomatas.LastIndexFound = --indexString;
                 return "Operador";
             }
             else {
-                lastIndexFound = indexString;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString;
                 //This is the case when its the last character
                 return "Operador";
             }
@@ -287,163 +292,163 @@ namespace Compilador {
         #region AutomatasYahir
         //Negacion
         public string Q20( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '=' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '=' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Comparador";
 
                 }
                 else {
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     return "Negacion";
                 }
             }
             else {
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return "Negacion";
             }
         }
         //Comparador mayor que menor que
         public string Q21( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '=' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '=' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Comparador";
 
                 }
                 else {
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     return "Comparador";
                 }
             }
             else {
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return "Comparador";
             }
         }
         //Comparador igual y asignador
         public string Q22( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '=' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '=' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Comparador";
                 }
                 else {
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     return "Asignacion";
                 }
             }
             else {
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return "Asignacion";
             }
         }
         //Comparador de &&
         public string Q23( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '&' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '&' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "AND";
                 }
                 else {
                     //Mensaje de error
                     messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     return string.Empty;
                 }
             }
             else {
                 //Mensaje de error
                 messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return string.Empty;
             }
         }
         //comparador de ||
         public string Q24( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '|' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '|' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "OR";
                 }
                 else {
                     //Mensaje de error
                     messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     return string.Empty;
                 }
             }
             else {
                 //Mensaje de error
                 messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return string.Empty;
             }
         }
         //Comparador de identificadores
         public string Q25( int indexString ) {
-            for ( int i = indexString ; i < lengthText ; i++ ) {
-                if ( !(charsCodeText [i] >= 65 && charsCodeText [i] <= 90 || charsCodeText [i] >= 97 && charsCodeText [i] <= 122) && charsCodeText [i] != '_' && !char.IsDigit(charsCodeText [i]) ) {
-                    lastIndexFound = i - 1;
+            for ( int i = indexString ; i < VariablesGlobalesAutomatas.LengthText ; i++ ) {
+                if ( !(VariablesGlobalesAutomatas.CharCodeText [i] >= 65 && VariablesGlobalesAutomatas.CharCodeText [i] <= 90 || VariablesGlobalesAutomatas.CharCodeText [i] >= 97 && VariablesGlobalesAutomatas.CharCodeText [i] <= 122) && VariablesGlobalesAutomatas.CharCodeText [i] != '_' && !char.IsDigit(VariablesGlobalesAutomatas.CharCodeText [i]) ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = i - 1;
                     return "Identificador";
                 }
             }
-            lastIndexFound = lengthText - 1;
+            VariablesGlobalesAutomatas.LastIndexFound = VariablesGlobalesAutomatas.LengthText - 1;
             return "Identificador";
         }
         //Comparador de números
         public string Q26( int indexString ) {
-            for ( int i = indexString ; i < lengthText ; i++ ) {
-                if ( !char.IsDigit(charsCodeText [i]) ) {
+            for ( int i = indexString ; i < VariablesGlobalesAutomatas.LengthText ; i++ ) {
+                if ( !char.IsDigit(VariablesGlobalesAutomatas.CharCodeText [i]) ) {
                     return Q27(i);
                 }
             }
-            lastIndexFound = lengthText - 1;
+            VariablesGlobalesAutomatas.LastIndexFound = VariablesGlobalesAutomatas.LengthText - 1;
             return "Entero";
         }
         public string Q27( int indexString ) {
-            if ( charsCodeText [indexString] == '.' ) {
+            if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '.' ) {
                 return Q28(++indexString);
             }
             else {
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 return "Entero";
             }
         }
         public string Q28( int indexString ) {            
-            if ( indexString < lengthText ) {
-                if ( char.IsDigit(charsCodeText [indexString]) ) {
+            if ( indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( char.IsDigit(VariablesGlobalesAutomatas.CharCodeText [indexString]) ) {
                     return Q29(indexString);
                 }                
             }
-            lastIndexFound = indexString - 1;
+            VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
             messasgesErros += string.Format("Se esperaba un número después del \'.\' -- Linea: {0}", countLines);
             return string.Empty;
         }
 
         public string Q29( int indexString ) {
-            for ( int i = indexString ; i < lengthText ; i++ ) {
-                if ( !char.IsDigit(charsCodeText [i]) ) {
-                    if ( charsCodeText [i] == '.' ) {
-                        messasgesErros += String.Format("Caracter no reconocido : {0} -- Linea: {1}", charsCodeText [i], countLines);
-                        lastIndexFound = i - 1;
+            for ( int i = indexString ; i < VariablesGlobalesAutomatas.LengthText ; i++ ) {
+                if ( !char.IsDigit(VariablesGlobalesAutomatas.CharCodeText [i]) ) {
+                    if ( VariablesGlobalesAutomatas.CharCodeText [i] == '.' ) {
+                        messasgesErros += String.Format("Caracter no reconocido : {0} -- Linea: {1}", VariablesGlobalesAutomatas.CharCodeText [i], countLines);
+                        VariablesGlobalesAutomatas.LastIndexFound = i - 1;
                         return string.Empty;
                     }
-                    lastIndexFound = i - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = i - 1;
                     return "Decimal";
                 }
             }
-            lastIndexFound = lengthText - 1;
+            VariablesGlobalesAutomatas.LastIndexFound = VariablesGlobalesAutomatas.LengthText - 1;
             return "Decimal";
         }
         
         #endregion
         //Analiza las cadenas
         public string Q18( int indexString ) {
-            for ( int i = ++indexString ; i < charsCodeText.Length ; i++ ) {
+            for ( int i = ++indexString ; i < VariablesGlobalesAutomatas.CharCodeText.Length ; i++ ) {
                 try {
-                    if ( charsCodeText [i] == '\"' ) {
-                        lastIndexFound = i;
+                    if ( VariablesGlobalesAutomatas.CharCodeText [i] == '\"' ) {
+                        VariablesGlobalesAutomatas.LastIndexFound = i;
                         return "Cadena";
                     }
                 }
@@ -451,40 +456,41 @@ namespace Compilador {
                     throw;
                 }
             }
-            lastIndexFound = lengthText - 1;
+            VariablesGlobalesAutomatas.LastIndexFound = VariablesGlobalesAutomatas.LengthText - 1;
             messasgesErros += String.Format("Se esperaba \" para cerrar cadena -- Linea:{0} \n", countLines);
             return String.Empty;
         }
         public string subcadena( int inicio, int final ) {
             string palabra = string.Empty;
             for ( int i = inicio ; i <= final ; i++ ) {
-                palabra += charsCodeText [i].ToString();
+                palabra += VariablesGlobalesAutomatas.CharCodeText [i].ToString();
             }
             return palabra;
         }
         public string Q19( int indexString ) {
-            if ( ++indexString < lengthText ) {
-                if ( charsCodeText [indexString] == '\'' ) {
-                    lastIndexFound = indexString;
+            if ( ++indexString < VariablesGlobalesAutomatas.LengthText ) {
+                if ( VariablesGlobalesAutomatas.CharCodeText [indexString] == '\'' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Caracter";
                 }
-                if ( ++indexString < lengthText && charsCodeText [indexString] == '\'' ) {
-                    lastIndexFound = indexString;
+                if ( ++indexString < VariablesGlobalesAutomatas.LengthText && VariablesGlobalesAutomatas.CharCodeText [indexString] == '\'' ) {
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString;
                     return "Caracter";
                 }
                 else {
                     //Mensaje de error
-                    lastIndexFound = indexString - 1;
+                    VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                     messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 }
             }
             else {
-                lastIndexFound = indexString - 1;
+                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                 //Mensaje de error
                 messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
                 return string.Empty;
             }
             return string.Empty;
         }
+        
     }
 }
