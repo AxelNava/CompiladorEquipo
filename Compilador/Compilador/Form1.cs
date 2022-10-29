@@ -43,6 +43,7 @@ namespace Compilador {
                     dataGridTableSymbols.Rows.Add(lexemas [item], tokens [item], types [item], numLines [item]);
                 }   
                 AlmacenarTokens_EnStack(map);
+                Gramatica_IF prueba = new Gramatica_IF();
                 textBoxErrores.Text = auLex.messasgesErros;
                 textBoxErrores.ForeColor = Color.Red;                
             }
