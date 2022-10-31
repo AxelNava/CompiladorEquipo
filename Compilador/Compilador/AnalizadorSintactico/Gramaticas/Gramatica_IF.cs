@@ -409,7 +409,7 @@ namespace Compilador.Gramaticas
       public string EjecutarAnalisis()
       {
          analisisFinished = false;
-         for (int i = 0; i < PilaTokens.GlobalTokens.Count; i++)
+         while (PilaTokens.GlobalTokens.Count>=1)
          {
             int referenceState = pilaComprobacion.Peek().Item1;
             if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
@@ -420,7 +420,6 @@ namespace Compilador.Gramaticas
                if (analisisFinished) return "<IF>";
             }
          }
-
          return pilaComprobacion.Count.ToString();
       }
 
