@@ -72,7 +72,12 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_IF.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\GrammarErrors.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Gramar_If_Test.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\GRAMMARIF.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\testCondicion.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\testNetedGrammars.cs" />
+    <Compile Include="AnalizadorSintactico\tokensNameGlobal.cs" />
     <Compile Include="Automatas\AutomataComentarioOperador.cs" />
     <Compile Include="Automatas\AutomatasLexicos.cs" />
     <Compile Include="Form1.cs">

@@ -37,8 +37,6 @@ namespace Compilador.Gramaticas
          "bodyElse"
       };
 
-      private Stack<Tuple<int, string>> pilaComprobacion;
-
       public Gramatica_IF()
       {
          tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
@@ -82,7 +80,7 @@ namespace Compilador.Gramaticas
                      selectorString(notTerminalsForThis.BODYIF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 10)
                   },
-                  {selectorString(notTerminalsForThis.INSTRUCCION),new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)}
+                  { selectorString(notTerminalsForThis.INSTRUCCION), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6) }
                }
             },
             {
@@ -390,8 +388,8 @@ namespace Compilador.Gramaticas
                }
             }
          };
-         pilaComprobacion = new Stack<Tuple<int, string>>();
-         pilaComprobacion.Push(new Tuple<int, string>(0, "0"));
+         PilaComprobacion = new Stack<Tuple<int, string>>();
+         PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
 
       /// <summary>
@@ -403,29 +401,36 @@ namespace Compilador.Gramaticas
       {
          return notTerminalSymbols.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
       }
-
       private bool analisisFinished;
 
       public string EjecutarAnalisis()
       {
          analisisFinished = false;
-         while (PilaTokens.GlobalTokens.Count>=1)
+         while (PilaTokens.GlobalTokens.Count >= 1)
          {
-            int referenceState = pilaComprobacion.Peek().Item1;
-            if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            if (!CheckTokenInHandler())
             {
-               AbstractActionFunction.ActionEnum actionEnum;
-               actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
-               HandleActions(actionEnum);
-               if (analisisFinished) return "<IF>";
+               PilaTokens.GlobalTokens.Push("Lambda");
+               if (!CheckTokenInHandler())
+               {
+                  PilaTokens.GlobalTokens.Pop();
+                  PilaTokens.GlobalTokens.Push("FinCadena");
+                  if (!CheckTokenInHandler())
+                  {
+                     return string.Empty;
+                  }
+               }
             }
+            if (analisisFinished) return "<IF>";
+            GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"Hay un error en la línea: {PilaTokens.numLineToken[0].Item1}\n");
          }
-         return pilaComprobacion.Count.ToString();
+
+         return PilaComprobacion.Count.ToString();
       }
 
       void HandleActions(AbstractActionFunction.ActionEnum typeAction)
       {
-         int referenceState = pilaComprobacion.Peek().Item1;
+         int referenceState = PilaComprobacion.Peek().Item1;
          switch (typeAction)
          {
             case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
@@ -439,112 +444,26 @@ namespace Compilador.Gramaticas
                jumpStackToGlobalStack(referenceState);
                break;
          }
-      }
-
-      /// <summary>
-      /// Pop a token from the global stack tokens, and push it to the analysis stack
-      /// </summary>
-      void PushPopStacks_Shit_Goto(int referenceState)
+      }     
+      private bool CheckTokenInHandler()
       {
-         int nextState = 0;
-         AccionFuncion_TablaAnalisis classReserve;
-         classReserve =
-            tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as AccionFuncion_TablaAnalisis;
-         if (classReserve != null) nextState = classReserve._state;
-         pilaComprobacion.Push(new Tuple<int, string>(nextState, PilaTokens.GlobalTokens.Pop()));
-      }
-
-      public void jumpStackToGlobalStack(int referenceState)
-      {
-         PilaTokens.GlobalTokens.Push(reductionHandler(referenceState));
-      }
-
-      public string reductionHandler(int referenceState)
-      {
-         ReducedAction classReserve;
-         classReserve =
-            tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as ReducedAction;
-         int sizeRule = classReserve._ruled.Length;
-         string[] tokens = new string[sizeRule - 1];
-         for (int i = sizeRule; i >= 0; i--)
+         int referenceState = PilaComprobacion.Peek().Item1;
+         string tokenAux = string.Empty;
+         if (referenceState == 1 || referenceState == 13)
          {
-            tokens[i] = pilaComprobacion.Pop().Item2;
+            tokenAux = new GramaticaCondicion().EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
          }
-
-         return classReserve.ReduceTokens(tokens);
-      }
-
-      #region metodos para test
-
-      public string EjecutarAnalisisTest(Stack<string> pilaParaComprobar)
-      {
-         analisisFinished = false;
-         while (pilaParaComprobar.Count >= 1)
+         if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            int referenceState = pilaComprobacion.Peek().Item1;
-            if (tablaAnalisis[referenceState].ContainsKey(pilaParaComprobar.Peek()))
-            {
-               AbstractActionFunction.ActionEnum actionEnum;
-               actionEnum = tablaAnalisis[referenceState][pilaParaComprobar.Peek()].Action;
-               HandleActionsTest(actionEnum, pilaParaComprobar);
-               if (analisisFinished) return "<IF>";
-            }
+            // PilaTokens.numLineToken.RemoveAt(0);
+            AbstractActionFunction.ActionEnum actionEnum;
+            actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            HandleActions(actionEnum);
+            return true;
          }
-
-         return pilaComprobacion.Count.ToString();
+         return false;
       }
-
-      void HandleActionsTest(AbstractActionFunction.ActionEnum typeAction, Stack<string> pilaPrueba)
-      {
-         int referenceState = pilaComprobacion.Peek().Item1;
-         switch (typeAction)
-         {
-            case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
-            case AbstractActionFunction.ActionEnum.GOTO:
-               PushPopStacks_Shit_Goto_Test(referenceState, pilaPrueba);
-               break;
-            case AbstractActionFunction.ActionEnum.ACEPTACION:
-               analisisFinished = true;
-               break;
-            case AbstractActionFunction.ActionEnum.REDUCCION:
-               jumpStackToGlobalStackTest(referenceState, pilaPrueba);
-               break;
-         }
-      }
-
-      public string jumpStackToGlobalStackTest(int referenceStateStack,
-         Stack<string> pilaPrueba)
-      {
-         string reductionToken = (reductionHandlerTest(referenceStateStack, pilaPrueba));
-         pilaPrueba.Push(reductionToken);
-         return pilaPrueba.Peek();
-      }
-
-      public void PushPopStacks_Shit_Goto_Test(int referenceState, Stack<string> pilaprueba)
-      {
-         int nextState = 0;
-         AccionFuncion_TablaAnalisis classReserve;
-         classReserve =
-            tablaAnalisis[referenceState][pilaprueba.Peek()] as AccionFuncion_TablaAnalisis;
-         if (classReserve != null) nextState = classReserve._state;
-         pilaComprobacion.Push(new Tuple<int, string>(nextState, pilaprueba.Pop()));
-      }
-
-      public string reductionHandlerTest(int referenceStatem, Stack<string> pilaPrueba)
-      {
-         ReducedAction classReserve;
-         classReserve =
-            tablaAnalisis[referenceStatem][pilaPrueba.Peek()] as ReducedAction;
-         int sizeRule = classReserve._ruled.Length;
-         string[] tokens = new string[sizeRule];
-         for (int i = sizeRule - 1; i >= 0; i--)
-         {
-            tokens[i] = pilaComprobacion.Pop().Item2;
-         }
-
-         return classReserve.ReduceTokens(tokens);
-      }
-
-      #endregion
    }
 }
