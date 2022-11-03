@@ -70,6 +70,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AccionFuncion_TablaAnalisis.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\ReducedAction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_IF.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GrammarErrors.cs" />
