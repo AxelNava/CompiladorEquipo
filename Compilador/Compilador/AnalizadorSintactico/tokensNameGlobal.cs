@@ -25,7 +25,17 @@ namespace Compilador.AnalizadorSintactico
          LLAVEABRE,
          LLAVECIERRA,
          PARENTESISABRE,
-         PARENTESISCIERRA
+         PARENTESISCIERRA,
+         TIPO,
+         FOR,
+         IF,
+         WHILE,
+         ELSE,
+         USING,
+         DO,
+         CLASS,
+         VOID,
+         BOOL
       }
 
       private static readonly string[] tokens =
@@ -49,7 +59,17 @@ namespace Compilador.AnalizadorSintactico
          "LlaveAbre",
          "LlaveCierra",
          "ParentesisAbre",
-         "ParentesisCierra"
+         "ParentesisCierra",
+         "TIPO",
+         "FOR",
+         "IF",
+         "WHILE",
+         "ELSE",
+         "USING",
+         "DO",
+         "CLASS",
+         "VOID",
+         "BOOL"
       };
       public static string selectorString(tokensGlobals notTerminal)
       {
