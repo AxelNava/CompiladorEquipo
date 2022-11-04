@@ -1,25 +1,27 @@
+using System;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
+using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Xunit;
 namespace Compilador.Gramaticas.Tests
 {
-   public class testNetedGrammars
+   public class test_GramaticaWhile
    {
       [Theory]
       [MemberData(nameof(QDataTestStack))]
-      public void CheckIfTheGrammarNestedFunction_ShouldExecuteBoth(string expected, Stack<string> stackIn)
+      public void GrammarWhileShouldReturnToken_While(string expected, Stack<string> stackIN)
       {
-         PilaTokens.GlobalTokens = stackIn;
-         Gramatica_IF grammar = new Gramatica_IF();
-         Assert.Equal(expected, grammar.EjecutarAnalisis());
+         PilaTokens.GlobalTokens = stackIN;
+         var doWhileGrammar = new Gramatica_While();
+         Assert.Equal(expected, doWhileGrammar.Ejecutar_Analisis());
       }
+
       public static IEnumerable<object[]> QDataTestStack()
       {
-         
          string totalStack =
             string.Format(
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CADENA)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Comparador)} " +
@@ -31,11 +33,7 @@ namespace Compilador.Gramaticas.Tests
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE)} " +
-               $"cuerpoInstrucciones " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE)} " +
-               $"cuerpoInstrucciones " +
+               $"CuerpoInstrucciones " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA)} " +
                $"FinCadena");
          string[] tokensSeparate = totalStack.Split(' ');
@@ -44,7 +42,7 @@ namespace Compilador.Gramaticas.Tests
          {
             pilaEntrada.Push(tokensSeparate[i]);
          }
-         yield return new object[] { "<IF>", pilaEntrada };
+         yield return new object[] { "<While>", pilaEntrada };
       }
    }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 
@@ -44,7 +45,10 @@ namespace Compilador.Gramaticas
             {
                0, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "if", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1)
+                  },
                   {
                      selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 36)
@@ -54,7 +58,10 @@ namespace Compilador.Gramaticas
             {
                1, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "(", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2)
+                  }
                }
             },
             {
@@ -69,13 +76,19 @@ namespace Compilador.Gramaticas
             {
                3, new Dictionary<string, AbstractActionFunction>()
                {
-                  { ")", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4)
+                  }
                }
             },
             {
                4, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "{", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE), new AccionFuncion_TablaAnalisis(AbstractActionFunction
+                        .ActionEnum.DESPLAZAMIENTO, 5)
+                  },
                   {
                      selectorString(notTerminalsForThis.BODYIF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 10)
@@ -95,22 +108,34 @@ namespace Compilador.Gramaticas
             {
                6, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "else", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24)
+                  },
                   { "Lamda", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 12) }
                }
             },
             {
                7, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "}", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 8) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 8)
+                  }
                }
             },
             {
                8, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "else", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24)
+                  },
                   { "Lambda", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33) },
-                  { ";", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 32) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 32)
+                  },
                   { "Finbody", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 9) }
                }
             },
@@ -120,7 +145,12 @@ namespace Compilador.Gramaticas
                   {
                      "FinCadena",
                      new ReducedAction(selectorString(notTerminalsForThis.BODYIF),
-                        new[] { "{", selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES), "}", "Finbody" })
+                        new[]
+                        {
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                           selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), "Finbody"
+                        })
                   }
                }
             },
@@ -130,9 +160,12 @@ namespace Compilador.Gramaticas
                   {
                      "FinCadena",
                      new ReducedAction(selectorString(notTerminalsForThis.IF),
-                        new string[]
+                        new []
                         {
-                           "if", "(", selectorString(notTerminalsForThis.CONDICION), ")",
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                           selectorString(notTerminalsForThis.CONDICION),
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                            selectorString(notTerminalsForThis.BODYIF)
                         })
                   }
@@ -143,7 +176,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIF), new
-                        string[]
+                        []
                         {
                            selectorString(notTerminalsForThis.INSTRUCCION), selectorString(notTerminalsForThis.FINBODY)
                         })
@@ -153,8 +186,14 @@ namespace Compilador.Gramaticas
             {
                12, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "if", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 13) },
-                  { "{", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 26) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 13)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 26)
+                  },
                   {
                      selectorString(notTerminalsForThis.INSTRUCCION), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 15)
@@ -168,7 +207,10 @@ namespace Compilador.Gramaticas
             {
                13, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "(", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
+                  }
                }
             },
             {
@@ -176,7 +218,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new
-                        string[] { selectorString(notTerminalsForThis.IFA) })
+                        [] { selectorString(notTerminalsForThis.IFA) })
                   }
                }
             },
@@ -185,7 +227,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new
-                        string[] { selectorString(notTerminalsForThis.INSTRUCCION) })
+                        [] { selectorString(notTerminalsForThis.INSTRUCCION) })
                   }
                }
             },
@@ -201,13 +243,19 @@ namespace Compilador.Gramaticas
             {
                17, new Dictionary<string, AbstractActionFunction>()
                {
-                  { ")", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 18) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 18)
+                  }
                }
             },
             {
                18, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "{", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 20) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 20)
+                  },
                   {
                      selectorString(notTerminalsForThis.BODYIFA),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 19)
@@ -218,10 +266,12 @@ namespace Compilador.Gramaticas
                19, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.IFA), new string[]
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.IFA), new []
                      {
-                        "if", "(",
-                        selectorString(notTerminalsForThis.CONDICION), ")", selectorString(notTerminalsForThis.BODYIFA)
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        selectorString(notTerminalsForThis.CONDICION),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), selectorString(notTerminalsForThis.BODYIFA)
                      })
                   }
                }
@@ -238,13 +288,19 @@ namespace Compilador.Gramaticas
             {
                21, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "}", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
+                  }
                }
             },
             {
                22, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "else", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 24)
+                  },
                   {
                      selectorString(notTerminalsForThis.FINBODY),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 23)
@@ -255,10 +311,11 @@ namespace Compilador.Gramaticas
                23, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIFA), new string[]
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIFA), new []
                      {
-                        "{",
-                        selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES), "}",
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                        selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA),
                         selectorString(notTerminalsForThis.FINBODY)
                      })
                   }
@@ -267,8 +324,14 @@ namespace Compilador.Gramaticas
             {
                24, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "if", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1) },
-                  { "{", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 26) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 26)
+                  },
                   {
                      selectorString(notTerminalsForThis.INSTRUCCION),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 15)
@@ -283,9 +346,9 @@ namespace Compilador.Gramaticas
                25, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new string[]
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new []
                      {
-                        "else",
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE),
                         selectorString(notTerminalsForThis.BODYELSE)
                      })
                   }
@@ -303,14 +366,20 @@ namespace Compilador.Gramaticas
             {
                27, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "}", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28) }
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28)
+                  }
                }
             },
             {
                28, new Dictionary<string, AbstractActionFunction>()
                {
                   { "Lambda", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 31) },
-                  { ";", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 30) },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 30)
+                  },
                   {
                      selectorString(notTerminalsForThis.FINELSE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 29)
@@ -321,10 +390,11 @@ namespace Compilador.Gramaticas
                29, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new string[]
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new []
                      {
-                        "{",
-                        selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES), "}",
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
+                        selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA),
                         selectorString(notTerminalsForThis.FINELSE)
                      })
                   }
@@ -333,7 +403,11 @@ namespace Compilador.Gramaticas
             {
                30, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINELSE), new string[] { ";" }) }
+                  {
+                     "FinCadena",
+                     new ReducedAction(selectorString(notTerminalsForThis.FINELSE),
+                        new [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
+                  }
                }
             },
             {
@@ -341,14 +415,18 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(notTerminalsForThis.FINELSE), new string[] { "Lambda" })
+                     new ReducedAction(selectorString(notTerminalsForThis.FINELSE), new [] { "Lambda" })
                   }
                }
             },
             {
                32, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new string[] { ";" }) }
+                  {
+                     "FinCadena",
+                     new ReducedAction(selectorString(notTerminalsForThis.FINBODY),
+                        new [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
+                  }
                }
             },
             {
@@ -356,7 +434,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new string[] { "Lambda" })
+                     new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new [] { "Lambda" })
                   }
                }
             },
@@ -365,7 +443,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIFA), new
-                        string[]
+                        []
                         {
                            selectorString(notTerminalsForThis.INSTRUCCION), selectorString(notTerminalsForThis.FINBODYA)
                         })
@@ -377,7 +455,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new
-                        string[] { "Lambda" })
+                        [] { "Lambda" })
                   }
                }
             },
@@ -401,60 +479,44 @@ namespace Compilador.Gramaticas
       {
          return notTerminalSymbols.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
       }
-      private bool analisisFinished;
-
       public string EjecutarAnalisis()
       {
          analisisFinished = false;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
-            if (!CheckTokenInHandler())
+            if (!CheckTokenIn_Handler())
             {
                PilaTokens.GlobalTokens.Push("Lambda");
-               if (!CheckTokenInHandler())
+               if (!CheckTokenIn_Handler())
                {
                   PilaTokens.GlobalTokens.Pop();
                   PilaTokens.GlobalTokens.Push("FinCadena");
-                  if (!CheckTokenInHandler())
+                  if (!CheckTokenIn_Handler())
                   {
+                     PilaTokens.GlobalTokens.Pop();
                      return string.Empty;
                   }
                }
             }
+
             if (analisisFinished) return "<IF>";
-            GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"Hay un error en la línea: {PilaTokens.numLineToken[0].Item1}\n");
+            // GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"Hay un error en la línea: {PilaTokens.numLineToken[0].Item1}\n");
          }
 
          return PilaComprobacion.Count.ToString();
       }
-
-      void HandleActions(AbstractActionFunction.ActionEnum typeAction)
+      
+      private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-         switch (typeAction)
+         
+         if (referenceState == 2 || referenceState == 16)
          {
-            case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
-            case AbstractActionFunction.ActionEnum.GOTO:
-               PushPopStacks_Shit_Goto(referenceState);
-               break;
-            case AbstractActionFunction.ActionEnum.ACEPTACION:
-               analisisFinished = true;
-               break;
-            case AbstractActionFunction.ActionEnum.REDUCCION:
-               jumpStackToGlobalStack(referenceState);
-               break;
-         }
-      }     
-      private bool CheckTokenInHandler()
-      {
-         int referenceState = PilaComprobacion.Peek().Item1;
-         string tokenAux = string.Empty;
-         if (referenceState == 1 || referenceState == 13)
-         {
-            tokenAux = new GramaticaCondicion().EjecutarAnalisis();
+            string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
+
          if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);
@@ -463,6 +525,7 @@ namespace Compilador.Gramaticas
             HandleActions(actionEnum);
             return true;
          }
+
          return false;
       }
    }

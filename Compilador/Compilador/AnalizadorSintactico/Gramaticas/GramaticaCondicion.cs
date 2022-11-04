@@ -411,7 +411,7 @@ namespace Compilador.Gramaticas
                23, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "Lambda", new ReducedAction(selectorString(nonTerminalTokens.R), new[] { "Lambda" })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.R), new[] { "Lambda" })
                   }
                }
             },
@@ -716,11 +716,12 @@ namespace Compilador.Gramaticas
                   PilaTokens.GlobalTokens.Push("FinCadena");
                   if (!CheckTokenInHandler())
                   {
+                     PilaTokens.GlobalTokens.Pop();
                      return string.Empty;
                   }
                }
             }
-            if (analysisFinished) return "Condicion";
+            if (analysisFinished) return "condicion";
          }
          return string.Empty;
       }
@@ -754,6 +755,7 @@ namespace Compilador.Gramaticas
                PushPopStacks_Shit_Goto(referenceState);
                break;
             case AbstractActionFunction.ActionEnum.ACEPTACION:
+               PilaTokens.GlobalTokens.Pop();
                analysisFinished = true;
                break;
             case AbstractActionFunction.ActionEnum.REDUCCION:
