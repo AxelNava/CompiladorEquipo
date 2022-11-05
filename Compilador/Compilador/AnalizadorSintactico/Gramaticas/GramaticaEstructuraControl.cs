@@ -19,22 +19,24 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             FOR,
             DO,
             SWITCH
-
         }
 
         private static readonly string[] notTerminalSymbols =
         {
             "<estructuracontrol>",
-            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+            "if",
             "while",
             "for",
             "do",
             "switch"
         };
+
         public GramaticaEstructuraControl()
         {
             tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         {
             {
+
                 {
 
 
@@ -47,13 +49,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                              tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3)
                        },
                        {
-                              tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) 
+                              tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4)
                        },
                        {
                             tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
                        },
                        {
-                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6) 
+                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6)
 
                        }
                    }
@@ -113,64 +115,56 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    }
                 },
-
-
-
             };
             PilaComprobacion = new Stack<Tuple<int, string>>();
             PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
         }
-
- 
-
         public string EjecutarAnalisis()
         {
-            analisisFinished = false;
-            while (PilaTokens.GlobalTokens.Count >= 1)
-            {
-                if (!CheckTokenIn_Handler())
-                {
-                    PilaTokens.GlobalTokens.Push("Lambda");
+           analisisFinished = false;
+           while (PilaTokens.GlobalTokens.Count >= 1)
+           {
+              if (!CheckTokenIn_Handler())
+              {
+                  PilaTokens.GlobalTokens.Push("Lambda");
+                  if (!CheckTokenIn_Handler())
+                  {
+                      PilaTokens.GlobalTokens.Pop();
+                      PilaTokens.GlobalTokens.Push("FinCadena");
                     if (!CheckTokenIn_Handler())
                     {
                         PilaTokens.GlobalTokens.Pop();
-                        PilaTokens.GlobalTokens.Push("FinCadena");
-                        if (!CheckTokenIn_Handler())
-                        {
-                            PilaTokens.GlobalTokens.Pop();
-                            return string.Empty;
-                        }
+                        return string.Empty;
                     }
-                }
+                  }
+              }
 
-                if (analisisFinished) return "<estructuracontrol>";
-
-            }
+              if (analisisFinished) return "<estructuracontrol>";
+           }
 
             return PilaComprobacion.Count.ToString();
         }
-        private bool CheckTokenIn_Handler()
-        {
-            int referenceState = PilaComprobacion.Peek().Item1;
 
-            if (referenceState == 2 || referenceState == 16)
-            {
-                 string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
-                 if (!string.IsNullOrEmpty(tokenAux))
-                 PilaTokens.GlobalTokens.Push(tokenAux);
-            }
+      private bool CheckTokenIn_Handler()
+      {
+         int referenceState = PilaComprobacion.Peek().Item1;
 
-            if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
-            {
-                    
-                    AbstractActionFunction.ActionEnum actionEnum;
-                    actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
-                    HandleActions(actionEnum);
-                    return true;
-            }
+         if (referenceState == 2 || referenceState == 16)
+         {
+            string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
+         }
 
-           return false;
-        }
-        
-    }  
+         if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+         {
+            AbstractActionFunction.ActionEnum actionEnum;
+            actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            HandleActions(actionEnum);
+            return true;
+         }
+
+         return false;
+      }
+    }
 }

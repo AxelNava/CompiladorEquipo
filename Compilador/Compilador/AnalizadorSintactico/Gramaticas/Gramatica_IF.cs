@@ -37,7 +37,6 @@ namespace Compilador.Gramaticas
          "finElse",
          "bodyElse"
       };
-
       public Gramatica_IF()
       {
          tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
