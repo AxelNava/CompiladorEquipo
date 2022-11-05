@@ -71,7 +71,10 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\ReducedAction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
+<<<<<<< HEAD
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
+=======
+>>>>>>> parent of 0ed3a8d (Gramatica Archivo Clase)
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Declaracion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_DoWhile.cs" />
