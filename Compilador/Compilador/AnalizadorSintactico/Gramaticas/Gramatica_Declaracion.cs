@@ -243,7 +243,6 @@ namespace Compilador.Gramaticas
             HandleActions(actionEnum);
             return true;
          }
-
          return false;
       }
    }

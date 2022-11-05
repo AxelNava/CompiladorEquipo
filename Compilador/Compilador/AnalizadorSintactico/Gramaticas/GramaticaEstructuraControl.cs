@@ -36,7 +36,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    0, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.USING), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) },
 
                    }
                 },

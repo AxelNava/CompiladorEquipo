@@ -163,6 +163,10 @@ namespace Compilador
                      PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "PuntoyComa"));
                      tokenTableList.Add(new string[] { letter.ToString(), "PuntoyComa" });
                      continue;
+                  case ',':
+                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, ","));
+                     tokenTableList.Add(new []{letter.ToString(),"Coma"});
+                     break;
                   case '\"':
                      token = Q18(i);
                      tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });

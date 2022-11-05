@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Compilador {
     /// <summary>
@@ -26,7 +27,7 @@ namespace Compilador {
             symbolTable.Add("Token", tokenDiciconary);
             symbolTable.Add("Tipe", tipeDiccionary);
             symbolTable.Add("NumLine", numLineDiccioanry);
-
+            Dictionary<int, Tuple<int, string, string>> tokensLexemaLinea = new Dictionary<int, Tuple<int, string, string>>();
         }
         /// <summary>
         /// This method allow to acces to the first class instance
