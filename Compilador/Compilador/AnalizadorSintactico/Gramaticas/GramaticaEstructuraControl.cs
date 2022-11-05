@@ -17,17 +17,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             IF,
             WHILE,
             FOR,
-            DO
+            DO,
+            SWITCH
 
         }
 
         private static readonly string[] notTerminalSymbols =
         {
             "<estructuracontrol>",
-            "if",
+            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
             "while",
             "for",
-            "do"
+            "do",
+            "switch"
         };
         public GramaticaEstructuraControl()
         {
@@ -38,11 +40,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    0, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"if", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) },
-                       {"while", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3) },
-                       {"for", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) },
-                       {"do", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5) },
+                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6) },
                    }
+
                 },
                 {
 
@@ -58,7 +62,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    2, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<IF>", new ReducedAction("EC", new []{"IF"}) },
+                       {"<IF>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF)}) },
 
                    }
                 },
@@ -67,7 +71,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    3, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<WHILE>", new ReducedAction("EC", new []{"WHILE"}) },
+                       {"<WHILE>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE)}) },
 
                    }
                 },
@@ -76,7 +80,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    4, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<FOR>", new ReducedAction("EC", new []{"FOR"}) },
+                       {"<FOR>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR)}) },
 
                    }
                 },
@@ -85,10 +89,20 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    5, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<DO>", new ReducedAction("EC", new []{"DO"}) },
+                       {"<DO>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO)}) },
 
                    }
                 },
+                {
+
+
+                   6, new Dictionary<string, AbstractActionFunction>()
+                   {
+                       {"<SWITCH>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH)}) },
+
+                   }
+                },
+
 
 
             };
@@ -96,79 +110,56 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
         }
 
-        
-        public string selectorString(notTerminalsForThis notTerminal)
-        {
-            return notTerminalSymbols.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
-        }
-        private bool analisisFinished;
-
+ 
 
         public string EjecutarAnalisis()
         {
             analisisFinished = false;
             while (PilaTokens.GlobalTokens.Count >= 1)
             {
-                if (!CheckTokenInHandler())
+                if (!CheckTokenIn_Handler())
                 {
                     PilaTokens.GlobalTokens.Push("Lambda");
-                    if (!CheckTokenInHandler())
+                    if (!CheckTokenIn_Handler())
                     {
                         PilaTokens.GlobalTokens.Pop();
                         PilaTokens.GlobalTokens.Push("FinCadena");
-                        if (!CheckTokenInHandler())
+                        if (!CheckTokenIn_Handler())
                         {
+                            PilaTokens.GlobalTokens.Pop();
                             return string.Empty;
                         }
                     }
                 }
-                if (analisisFinished) return "<IF>";
-                GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"Hay un error en la línea: {PilaTokens.numLineToken[0].Item1}\n");
+
+                if (analisisFinished) return "<estructuracontrol>";
+
             }
 
             return PilaComprobacion.Count.ToString();
         }
-
-
-
-        void HandleActions(AbstractActionFunction.ActionEnum typeAction)
+        private bool CheckTokenIn_Handler()
         {
             int referenceState = PilaComprobacion.Peek().Item1;
-            switch (typeAction)
+
+            if (referenceState == 2 || referenceState == 16)
             {
-                case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
-                case AbstractActionFunction.ActionEnum.GOTO:
-                    PushPopStacks_Shit_Goto(referenceState);
-                    break;
-                case AbstractActionFunction.ActionEnum.ACEPTACION:
-                    analisisFinished = true;
-                    break;
-                case AbstractActionFunction.ActionEnum.REDUCCION:
-                    jumpStackToGlobalStack(referenceState);
-                    break;
+                 string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
+                 if (!string.IsNullOrEmpty(tokenAux))
+                 PilaTokens.GlobalTokens.Push(tokenAux);
             }
-        }
-        private bool CheckTokenInHandler()
-        {
-            int referenceState = PilaComprobacion.Peek().Item1;
-            string tokenAux = string.Empty;
-            if (referenceState == 1)
-            {
-                tokenAux = new GramaticaCondicion().EjecutarAnalisis();
-                if (!string.IsNullOrEmpty(tokenAux))
-                    PilaTokens.GlobalTokens.Push(tokenAux);
-            }
+
             if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
             {
-                // PilaTokens.numLineToken.RemoveAt(0);
-                AbstractActionFunction.ActionEnum actionEnum;
-                actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
-                HandleActions(actionEnum);
-                return true;
+                    
+                    AbstractActionFunction.ActionEnum actionEnum;
+                    actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+                    HandleActions(actionEnum);
+                    return true;
             }
-            return false;
-        }
-    }
 
-   
+           return false;
+        }
+        
+    }  
 }
