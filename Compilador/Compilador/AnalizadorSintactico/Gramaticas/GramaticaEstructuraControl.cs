@@ -40,11 +40,22 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    0, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2) },
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3) },
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) },
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5) },
-                       {tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6) },
+                       {
+                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2)
+                       },
+                       {
+                             tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3)
+                       },
+                       {
+                              tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4) 
+                       },
+                       {
+                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
+                       },
+                       {
+                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6) 
+
+                       }
                    }
 
                 },
@@ -53,7 +64,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    1, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"FinCadena", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.ACEPTACION, 6) },
+                       {"FinCadena", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.ACEPTACION, 6) }
 
                    }
                 },
@@ -62,7 +73,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    2, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<IF>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF)}) },
+                       {"<IF>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF)}) }
 
                    }
                 },
@@ -71,7 +82,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    3, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<WHILE>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE)}) },
+                       {"<WHILE>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE)}) }
 
                    }
                 },
@@ -80,7 +91,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    4, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<FOR>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR)}) },
+                       {"<FOR>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR)}) }
 
                    }
                 },
@@ -89,7 +100,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    5, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<DO>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO)}) },
+                       {"<DO>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO)}) }
 
                    }
                 },
@@ -98,7 +109,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
                    6, new Dictionary<string, AbstractActionFunction>()
                    {
-                       {"<SWITCH>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH)}) },
+                       {"<SWITCH>", new ReducedAction("EC", new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH)}) }
 
                    }
                 },

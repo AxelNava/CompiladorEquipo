@@ -135,6 +135,7 @@ namespace Compilador {
             lexemaDiccionary.Add(12, "void");
             lexemaDiccionary.Add(13, "bool");
             lexemaDiccionary.Add(14, "switch");
+            lexemaDiccionary.Add(15, "FinCadena");
 
             tokenDiciconary.Add(0, "TIPO");
             tokenDiciconary.Add(1, "TIPO");
@@ -151,6 +152,7 @@ namespace Compilador {
             tokenDiciconary.Add(12, "VOID");
             tokenDiciconary.Add(13, "BOOL");
             tokenDiciconary.Add(14, "SWITCH");
+            tokenDiciconary.Add(15, "FINCADENA");
 
             tipeDiccionary.Add(0, "int");
             tipeDiccionary.Add(1, "char");
@@ -167,6 +169,7 @@ namespace Compilador {
             tipeDiccionary.Add(12, "reserveWord");
             tipeDiccionary.Add(13, "bool");
             tipeDiccionary.Add(14, "reserveWord");
+            tipeDiccionary.Add(15, "reserveWord");
 
             numLineDiccioanry.Add(0, String.Empty);
             numLineDiccioanry.Add(1, String.Empty);
@@ -183,6 +186,7 @@ namespace Compilador {
             numLineDiccioanry.Add(12, String.Empty);
             numLineDiccioanry.Add(13, String.Empty);
             numLineDiccioanry.Add(14, String.Empty);
+            numLineDiccioanry.Add(15, String.Empty);
 
         }
     }
