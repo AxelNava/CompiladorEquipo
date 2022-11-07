@@ -36,7 +36,9 @@ namespace Compilador.AnalizadorSintactico
          CLASS,
          VOID,
          BOOL,
-         SWITCH
+         SWITCH,
+         CASSSE,
+         COMA
       }
 
       private static readonly string[] tokens =
@@ -71,7 +73,9 @@ namespace Compilador.AnalizadorSintactico
          "CLASS",
          "VOID",
          "BOOL",
-         "SWITCH"
+         "SWITCH",
+         "CASE",
+         "Coma"
       };
       public static string selectorString(tokensGlobals notTerminal)
       {
