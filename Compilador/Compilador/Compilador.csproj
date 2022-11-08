@@ -71,13 +71,11 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\ReducedAction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
-<<<<<<< HEAD
-    <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
-=======
->>>>>>> parent of 0ed3a8d (Gramatica Archivo Clase)
+
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Declaracion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_DoWhile.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_For.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_IF.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_While.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GrammarErrors.cs" />
@@ -87,7 +85,9 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\testNetedGrammars.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramatciaDeclaracion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaDoWhile.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaFor.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaWhile.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GrammaticaValores.cs" />
     <Compile Include="AnalizadorSintactico\tokensNameGlobal.cs" />
     <Compile Include="Automatas\AutomataComentarioOperador.cs" />
     <Compile Include="Automatas\AutomatasLexicos.cs" />

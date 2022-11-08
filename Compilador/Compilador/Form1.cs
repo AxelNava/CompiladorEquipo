@@ -45,6 +45,27 @@ namespace Compilador {
                 }   
                 AlmacenarTokens_EnStack(map);
                 Gramatica_IF prueba = new Gramatica_IF();
+                string resultado = prueba.EjecutarAnalisis();
+                if (!string.IsNullOrEmpty(resultado))
+                {
+                    MessageBox.Show("Se detectó una condición");
+                }
+                Gramatica_DoWhile pruebaDW = new Gramatica_DoWhile();
+                string restuladoDW = prueba.EjecutarAnalisis();
+                if(!string.IsNullOrEmpty(restuladoDW))
+                    MessageBox.Show("Se detectó un do while");
+
+                Gramatica_While prubaW = new Gramatica_While();
+                string restuldadoW = prubaW.Ejecutar_Analisis() ;
+                if(!string.IsNullOrEmpty(restuldadoW))
+                    MessageBox.Show("Se detectó un while");
+                GramaticaCondicion pruebaCondicion = new GramaticaCondicion();
+                string resultadoCondicion = pruebaCondicion.EjecutarAnalisis();
+                if (!string.IsNullOrEmpty(resultadoCondicion))
+                {
+                    MessageBox.Show("Se detectó una condición");
+                }
+
                 textBoxErrores.Text = auLex.messasgesErros;
                 textBoxErrores.ForeColor = Color.Red;                
             }
