@@ -72,6 +72,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_ArchivoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Declaracion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_DoWhile.cs" />
