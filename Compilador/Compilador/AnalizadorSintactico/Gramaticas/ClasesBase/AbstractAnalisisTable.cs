@@ -51,6 +51,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          ReducedAction classReserve;
          classReserve =
             tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as ReducedAction;
+         if (classReserve._ruled[0] == string.Empty)
+         {
+            return classReserve.ReturnTokenReduced();
+         }
          int sizeRule = classReserve._ruled.Length;
          string[] tokens = new string[sizeRule];
          for (int i = sizeRule - 1; i >= 0; i--)
@@ -71,6 +75,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                PushPopStacks_Shit_Goto(referenceState);
                break;
             case AbstractActionFunction.ActionEnum.ACEPTACION:
+               PilaTokens.GlobalTokens.Pop();
                analisisFinished = true;
                break;
             case AbstractActionFunction.ActionEnum.REDUCCION:
