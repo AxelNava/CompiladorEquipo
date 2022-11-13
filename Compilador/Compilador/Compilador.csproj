@@ -69,7 +69,9 @@
     <Compile Include="AnalizadorSemantico\EvaluadorNotacion_PosFija.cs" />
     <Compile Include="AnalizadorSemantico\Test_ConversorNotacionPosFija\test_EvaluacionNotaionPosFija.cs" />
     <Compile Include="AnalizadorSemantico\Test_ConversorNotacionPosFija\test_NotaciónPosFija.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Instrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Valores_boolOpe.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_ParametrosFuncion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\Analysis_table_Valores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AbstractActionFunction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AbstractAnalisisTable.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaFor.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GrammaticaValores.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Test_InstruccionGramatica.cs" />
     <Compile Include="AnalizadorSintactico\tokensNameGlobal.cs" />
     <Compile Include="Automatas\AutomataComentarioOperador.cs" />
     <Compile Include="Automatas\AutomatasLexicos.cs" />

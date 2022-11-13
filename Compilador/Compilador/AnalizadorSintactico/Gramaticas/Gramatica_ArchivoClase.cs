@@ -170,7 +170,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   }
                }
             }
-
             if (analisisFinished) return "<archivoclase>";
          }
 

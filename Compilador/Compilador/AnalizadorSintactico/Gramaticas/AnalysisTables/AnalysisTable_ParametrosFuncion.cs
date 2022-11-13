@@ -1,36 +1,35 @@
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using System;
-
+using System.Security.Permissions;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
 {
-   public class AnalisysTable_Valores_boolOpe : AbstractAnalisisTable
+   public class AnalysisTable_ParametrosFuncion
    {
-      public enum nonTerminalsForThisGrammar
+      public enum nonTerminalTokens
       {
-         VS,
          Valores,
-         InstruccionesIDentificador,
-         RM,
-         Para,
-         R,
-         PR
+         OperacionIdentificicador,
+         Recursividad,
+         RecursividadMetodo,
+         Parametros
       }
 
-      private static readonly string[] nonTerminalsTokenString =
+      private static readonly string[] nonTerminalsStrings =
       {
-         "VS",
          "Valores",
-         "InstruccionesIdentificador",
-         "RM",
-         "Params",
-         "R",
-         "PR"
+         "OperacionIdentificador",
+         "Recursividad",
+         "RecursividadMetodo",
+         "Parametros"
       };
-
-      public static Dictionary<int, Dictionary<string, AbstractActionFunction>> globalDictionaryValores =
-         new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+      public static string selectorString(nonTerminalTokens nonTerminal)
+      {
+         return nonTerminalsStrings.GetValue((int)Convert.ChangeType(nonTerminal, nonTerminal.GetTypeCode())).ToString();
+      }
+      
+      public static Dictionary<int, Dictionary<string, AbstractActionFunction>> GlobalDictionaryParametros = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -64,11 +63,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 9)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Valores), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Parametros), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 3)
                   }
                }
@@ -109,7 +108,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 10)
                   }
                }
@@ -119,7 +118,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.Valores), new[] { selectorString(nonTerminalsForThisGrammar.VS) })
+                     new ReducedAction(selectorString(nonTerminalTokens.Parametros), new[] { selectorString(nonTerminalTokens.Valores) })
                   }
                }
             },
@@ -141,14 +140,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador), new AccionFuncion_TablaAnalisis(AbstractActionFunction
+                     selectorString(nonTerminalTokens.OperacionIdentificicador), new AccionFuncion_TablaAnalisis(AbstractActionFunction
                         .ActionEnum.GOTO, 17)
                   }
                }
@@ -161,10 +160,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 21)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 21)
                   }
                }
             },
@@ -176,10 +175,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 23)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 23)
                   }
                }
             },
@@ -191,10 +190,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 24)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 24)
                   }
                }
             },
@@ -206,10 +205,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 25)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 25)
                   }
                }
             },
@@ -221,10 +220,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 26)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 26)
                   }
                }
             },
@@ -246,11 +245,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.INCREMENTO), new AccionFuncion_TablaAnalisis
@@ -261,7 +260,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 31)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador),
+                     selectorString(nonTerminalTokens.OperacionIdentificicador),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 28)
                   }
                }
@@ -271,14 +270,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 32)
                   }
                }
@@ -288,14 +287,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 34)
                   }
                }
@@ -305,14 +304,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 35)
                   }
                }
@@ -322,14 +321,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 36)
                   }
                }
@@ -339,14 +338,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 37)
                   }
                }
@@ -359,10 +358,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 38)
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 38)
                   }
                }
             },
@@ -371,7 +370,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalTokens.RecursividadMetodo), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -398,11 +397,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 46)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 39)
+                     selectorString(nonTerminalTokens.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 39)
                   }
                }
             },
@@ -411,7 +410,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -419,7 +418,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -432,7 +431,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -440,7 +439,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -452,10 +451,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                21, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CADENA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -492,11 +491,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 9)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 49)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.PR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 47)
+                     selectorString(nonTerminalTokens.PR), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 47)
                   }
                }
             },
@@ -504,10 +503,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                23, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -516,10 +515,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                24, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ENTERO),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -528,10 +527,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                25, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECIMAL),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -540,10 +539,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                26, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -556,13 +555,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 50)
                   }
                }
@@ -571,7 +570,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                28, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
@@ -582,7 +581,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
 
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 51)
                   }
                }
@@ -592,7 +591,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalTokens.Para), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -619,11 +618,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 46)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 52)
+                     selectorString(nonTerminalTokens.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 52)
                   }
                }
             },
@@ -632,7 +631,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -640,7 +639,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -653,7 +652,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -661,7 +660,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -674,10 +673,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CADENA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -714,11 +713,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 55)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.PR), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.PR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 53)
                   }
                }
@@ -728,10 +727,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -741,10 +740,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ENTERO),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -754,10 +753,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECIMAL),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -767,10 +766,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -780,11 +779,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
-                        selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.OperacionIdentificicador),
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -803,7 +802,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.RM), new[]
+                        (nonTerminalTokens.RecursividadM), new[]
                      {
                         string
                            .Empty
@@ -814,7 +813,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         .ActionEnum.DESPLAZAMIENTO, 58)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.RM), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 57)
+                     selectorString(nonTerminalTokens.RecursividadM), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 57)
                   }
                }
             },
@@ -827,11 +826,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                     new ReducedAction(selectorString(nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.INCREMENTO),
@@ -843,10 +842,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[] { string.Empty })
+                        (nonTerminalTokens.OperacionIdentificicador), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador), new AccionFuncion_TablaAnalisis(AbstractActionFunction
+                     selectorString(nonTerminalTokens.OperacionIdentificicador), new AccionFuncion_TablaAnalisis(AbstractActionFunction
                         .ActionEnum.GOTO, 59)
                   }
                }
@@ -856,7 +855,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -864,10 +863,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 63)
                   }
                }
@@ -877,7 +876,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -885,10 +884,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 65)
                   }
                }
@@ -898,7 +897,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -906,10 +905,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 66)
                   }
                }
@@ -919,7 +918,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -927,10 +926,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 67)
                   }
                }
@@ -940,7 +939,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -948,10 +947,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 68)
                   }
                }
@@ -960,10 +959,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                47, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR),
-                        selectorString(nonTerminalsForThisGrammar.PR)
+                        selectorString(nonTerminalTokens.PR)
                      })
                   }
                }
@@ -996,7 +995,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 69)
                   }
                }
@@ -1005,9 +1004,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                49, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.PR), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.PR), new[]
                      {
-                        selectorString(nonTerminalsForThisGrammar.VS)
+                        selectorString(nonTerminalTokens.Valores)
                      })
                   }
                }
@@ -1016,12 +1015,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                50, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.Valores), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.VS),
+                        selectorString(nonTerminalTokens.Valores),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1031,11 +1030,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
-                        selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.OperacionIdentificicador),
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1054,10 +1053,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR),
-                        selectorString(nonTerminalsForThisGrammar.PR)
+                        selectorString(nonTerminalTokens.PR)
                      })
                   }
                }
@@ -1090,7 +1089,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 71)
                   }
                }
@@ -1100,9 +1099,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
-                        selectorString(nonTerminalsForThisGrammar.VS)
+                        selectorString(nonTerminalTokens.Valores)
                      })
                   }
                }
@@ -1112,19 +1111,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }
@@ -1135,10 +1134,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[]
+                        (nonTerminalTokens.Para), new[]
                      {
-                        selectorString(nonTerminalsForThisGrammar.VS),
-                        selectorString(nonTerminalsForThisGrammar.RM)
+                        selectorString(nonTerminalTokens.Valores),
+                        selectorString(nonTerminalTokens.RecursividadM)
                      })
                   }
                }
@@ -1148,7 +1147,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalTokens.Para), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -1175,11 +1174,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 46)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 72)
+                     selectorString(nonTerminalTokens.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 72)
                   }
                }
             },
@@ -1188,7 +1187,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                     (nonTerminalsForThisGrammar.R), new []{string.Empty})
+                     (nonTerminalTokens.Recursividad), new []{string.Empty})
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new AccionFuncion_TablaAnalisis
@@ -1196,10 +1195,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[] { string.Empty })
+                        (nonTerminalTokens.Recursividad), new[] { string.Empty })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 73)
                   }
                }
@@ -1209,7 +1208,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalTokens.Para), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -1236,11 +1235,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 46)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 74)
+                     selectorString(nonTerminalTokens.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 74)
                   }
                }
             },
@@ -1249,7 +1248,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -1257,7 +1256,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -1265,7 +1264,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .INCREMENTO)
@@ -1278,7 +1277,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -1286,7 +1285,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -1294,7 +1293,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .DECREMENTO)
@@ -1307,20 +1306,20 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .CADENA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals
                            .CADENA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1357,11 +1356,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 46)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 77)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.PR), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.PR), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 75)
                   }
                }
@@ -1371,18 +1370,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.VS), new[]
+                        (nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1392,18 +1391,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ENTERO),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ENTERO),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -1413,18 +1412,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECIMAL),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECIMAL),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -1434,18 +1433,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(
-                        selectorString(nonTerminalsForThisGrammar.VS), new[]
+                        selectorString(nonTerminalTokens.Valores), new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),
-                           selectorString(nonTerminalsForThisGrammar.R)
+                           selectorString(nonTerminalTokens.Recursividad)
                         })
                   }
                }
@@ -1464,19 +1463,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }
@@ -1496,10 +1495,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.RM), new[]
+                        (nonTerminalTokens.RecursividadM), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA),
-                        selectorString(nonTerminalsForThisGrammar.Para)
+                        selectorString(nonTerminalTokens.Para)
                      })
                   }
                }
@@ -1509,20 +1508,20 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
-                        selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.OperacionIdentificicador),
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.VS), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Valores), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
-                        selectorString(nonTerminalsForThisGrammar.InstruccionesIDentificador),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.OperacionIdentificicador),
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1541,18 +1540,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR),
-                        selectorString(nonTerminalsForThisGrammar.PR)
+                        selectorString(nonTerminalTokens.PR)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA),
-                     new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR),
-                        selectorString(nonTerminalsForThisGrammar.PR)
+                        selectorString(nonTerminalTokens.PR)
                      })
                   }
                }
@@ -1585,7 +1584,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 81)
                   }
                }
@@ -1595,16 +1594,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
-                        selectorString(nonTerminalsForThisGrammar.VS)
+                        selectorString(nonTerminalTokens.Valores)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
-                        selectorString(nonTerminalsForThisGrammar.VS)
+                        selectorString(nonTerminalTokens.Valores)
                      })
                   }
                }
@@ -1617,13 +1616,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.R), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 82)
                   }
                }
@@ -1633,7 +1632,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[]
+                        (nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
@@ -1644,7 +1643,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
 
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 83)
                   }
                }
@@ -1654,28 +1653,28 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
+                        (nonTerminalTokens.OperacionIdentificicador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalTokens.Para),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }
@@ -1694,12 +1693,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                82, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsForThisGrammar.PR), new[]
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.VS),
+                        selectorString(nonTerminalTokens.Valores),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1709,12 +1708,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.VS),
+                        selectorString(nonTerminalTokens.Valores),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
@@ -1724,7 +1723,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[]
+                        (nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
@@ -1735,13 +1734,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.R), new[]
+                        (nonTerminalTokens.Recursividad), new[]
                      {
                         string.Empty
                      })
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.R), new AccionFuncion_TablaAnalisis
+                     selectorString(nonTerminalTokens.Recursividad), new AccionFuncion_TablaAnalisis
                         (AbstractActionFunction.ActionEnum.GOTO, 85)
                   }
                }
@@ -1751,31 +1750,28 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.VS),
+                        selectorString(nonTerminalTokens.Valores),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.COMA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalTokens.PR), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.VS),
+                        selectorString(nonTerminalTokens.Valores),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
-                        selectorString(nonTerminalsForThisGrammar.R)
+                        selectorString(nonTerminalTokens.Recursividad)
                      })
                   }
                }
             }
          };
 
-      public static string selectorString(nonTerminalsForThisGrammar nonTerminal)
-      {
-         return nonTerminalsTokenString.GetValue((int)Convert.ChangeType(nonTerminal, nonTerminal.GetTypeCode())).ToString();
-      }
+
    }
 }
