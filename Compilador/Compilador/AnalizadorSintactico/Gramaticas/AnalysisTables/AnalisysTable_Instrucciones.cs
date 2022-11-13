@@ -13,7 +13,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          ComplementoDeclaracion,
          ComplementoIdentificador,
          Instruccion,
-         Valores
+         Valores,
+         ParametroMetodo
       }
 
       private static readonly string[] nonTerminalsString =
@@ -22,7 +23,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          "ComplementoDeclaracion",
          "ComplementoIdenti",
          "Instruccion",
-         "Valores"
+         "Valores",
+         "ParametrosMetodo"
       };
 
       public static string selectorString(nonTerminalsInstrucciones nonTerminal)
@@ -154,7 +156,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                8, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     "ParametrosMetodo",
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 15)
                   }
                }
@@ -420,7 +422,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsInstrucciones.ComplementoIdentificador), new []
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        
+                        selectorString(nonTerminalsInstrucciones.ParametroMetodo),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
                      })
@@ -429,8 +431,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
                         (nonTerminalsInstrucciones.ComplementoIdentificador), new []
                      {
-                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
-                        selectorString(nonTerminalsInstrucciones.Valores),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        selectorString(nonTerminalsInstrucciones.ParametroMetodo),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
                      })
                   },
@@ -438,8 +441,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      "FinCadena", new ReducedAction(selectorString
                         (nonTerminalsInstrucciones.ComplementoIdentificador), new []
                      {
-                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
-                        selectorString(nonTerminalsInstrucciones.Valores),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        selectorString(nonTerminalsInstrucciones.ParametroMetodo),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
                      })
                   }

@@ -71,11 +71,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          switch (typeAction)
          {
             case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
+               PushPopStacks_Shit_Goto(referenceState);
+               LexemaCount.CountLexemas++;
+               break;
             case AbstractActionFunction.ActionEnum.GOTO:
                PushPopStacks_Shit_Goto(referenceState);
                break;
             case AbstractActionFunction.ActionEnum.ACEPTACION:
-               PilaTokens.GlobalTokens.Pop();
+               if(PilaTokens.GlobalTokens.Count != 1 && PilaTokens.GlobalTokens.Peek() == "FinCadena")
+                  PilaTokens.GlobalTokens.Pop();
                analisisFinished = true;
                break;
             case AbstractActionFunction.ActionEnum.REDUCCION:

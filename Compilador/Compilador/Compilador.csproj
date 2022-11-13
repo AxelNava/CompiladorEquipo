@@ -77,9 +77,11 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AbstractAnalisisTable.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AccionFuncion_TablaAnalisis.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\ReducedAction.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\LexemaCount.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaInstruccion.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaParametrosMetodo.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_ArchivoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaArchivoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaDoWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaFor.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Test_GramaticaParametros_Funcion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GrammaticaValores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Test_InstruccionGramatica.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Mensajes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TablasGlobales\TablaLexemaToken.cs" />
     <Compile Include="TablaSimbolos.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Automatas\VariablesGlobalesAutomatas.cs" />
