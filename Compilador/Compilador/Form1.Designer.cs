@@ -19,18 +19,14 @@
         #region Código generado por el Diseñador de Windows Forms
 
         /// <summary>
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.button1 = new System.Windows.Forms.Button();
             this.EntradaCompiladorTextBox = new System.Windows.Forms.TextBox();
             this.dataGridTableSymbols = new System.Windows.Forms.DataGridView();
-            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NumeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countLinesBox = new System.Windows.Forms.TextBox();
             this.dataGridTableToken = new System.Windows.Forms.DataGridView();
             this.Lexema_TableToken = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,6 +34,12 @@
             this.dataGridLexema = new System.Windows.Forms.DataGridView();
             this.LexemaEncontrado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBoxErrores = new System.Windows.Forms.TextBox();
+            this.Desplazamiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NumeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Token = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableSymbols)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridTableToken)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridLexema)).BeginInit();
@@ -56,7 +58,7 @@
             // EntradaCompiladorTextBox
             // 
             this.EntradaCompiladorTextBox.Location = new System.Drawing.Point(70, 32);
-            this.EntradaCompiladorTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EntradaCompiladorTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.EntradaCompiladorTextBox.Multiline = true;
             this.EntradaCompiladorTextBox.Name = "EntradaCompiladorTextBox";
             this.EntradaCompiladorTextBox.Size = new System.Drawing.Size(198, 441);
@@ -66,60 +68,20 @@
             // dataGridTableSymbols
             // 
             this.dataGridTableSymbols.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridTableSymbols.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Lexema,
-            this.Token,
-            this.Tipo,
-            this.NumeroLinea,
-            this.Valor});
+            this.dataGridTableSymbols.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Lexema, this.Token, this.Tipo, this.NumeroLinea, this.Valor, this.Desplazamiento });
             this.dataGridTableSymbols.Location = new System.Drawing.Point(388, 34);
-            this.dataGridTableSymbols.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridTableSymbols.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridTableSymbols.Name = "dataGridTableSymbols";
             this.dataGridTableSymbols.RowHeadersWidth = 51;
             this.dataGridTableSymbols.RowTemplate.Height = 24;
-            this.dataGridTableSymbols.Size = new System.Drawing.Size(573, 426);
+            this.dataGridTableSymbols.Size = new System.Drawing.Size(835, 426);
             this.dataGridTableSymbols.TabIndex = 3;
-            // 
-            // Lexema
-            // 
-            this.Lexema.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Lexema.HeaderText = "Lexema";
-            this.Lexema.MinimumWidth = 6;
-            this.Lexema.Name = "Lexema";
-            // 
-            // Token
-            // 
-            this.Token.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Token.HeaderText = "Token";
-            this.Token.MinimumWidth = 6;
-            this.Token.Name = "Token";
-            // 
-            // Tipo
-            // 
-            this.Tipo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Tipo.HeaderText = "Tipo";
-            this.Tipo.MinimumWidth = 6;
-            this.Tipo.Name = "Tipo";
-            // 
-            // NumeroLinea
-            // 
-            this.NumeroLinea.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NumeroLinea.HeaderText = "Numero de Linea";
-            this.NumeroLinea.MinimumWidth = 6;
-            this.NumeroLinea.Name = "NumeroLinea";
-            // 
-            // Valor
-            // 
-            this.Valor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Valor.HeaderText = "Valor";
-            this.Valor.MinimumWidth = 6;
-            this.Valor.Name = "Valor";
             // 
             // countLinesBox
             // 
             this.countLinesBox.Enabled = false;
             this.countLinesBox.Location = new System.Drawing.Point(9, 32);
-            this.countLinesBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.countLinesBox.Margin = new System.Windows.Forms.Padding(2);
             this.countLinesBox.MaximumSize = new System.Drawing.Size(77, 441);
             this.countLinesBox.Multiline = true;
             this.countLinesBox.Name = "countLinesBox";
@@ -132,11 +94,9 @@
             // dataGridTableToken
             // 
             this.dataGridTableToken.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridTableToken.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Lexema_TableToken,
-            this.Token_TableToken});
+            this.dataGridTableToken.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Lexema_TableToken, this.Token_TableToken });
             this.dataGridTableToken.Location = new System.Drawing.Point(388, 485);
-            this.dataGridTableToken.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridTableToken.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridTableToken.Name = "dataGridTableToken";
             this.dataGridTableToken.RowHeadersWidth = 51;
             this.dataGridTableToken.RowTemplate.Height = 24;
@@ -160,10 +120,9 @@
             // dataGridLexema
             // 
             this.dataGridLexema.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridLexema.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.LexemaEncontrado});
+            this.dataGridLexema.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.LexemaEncontrado });
             this.dataGridLexema.Location = new System.Drawing.Point(9, 493);
-            this.dataGridLexema.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridLexema.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridLexema.Name = "dataGridLexema";
             this.dataGridLexema.RowHeadersWidth = 51;
             this.dataGridLexema.RowTemplate.Height = 24;
@@ -185,11 +144,52 @@
             this.textBoxErrores.Font = new System.Drawing.Font("JetBrains Mono", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxErrores.ForeColor = System.Drawing.Color.Red;
             this.textBoxErrores.Location = new System.Drawing.Point(752, 485);
-            this.textBoxErrores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxErrores.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxErrores.Multiline = true;
             this.textBoxErrores.Name = "textBoxErrores";
             this.textBoxErrores.Size = new System.Drawing.Size(471, 115);
             this.textBoxErrores.TabIndex = 7;
+            // 
+            // Desplazamiento
+            // 
+            this.Desplazamiento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Desplazamiento.HeaderText = "Desplazamiento";
+            this.Desplazamiento.Name = "Desplazamiento";
+            // 
+            // Valor
+            // 
+            this.Valor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Valor.HeaderText = "Valor";
+            this.Valor.MinimumWidth = 6;
+            this.Valor.Name = "Valor";
+            // 
+            // NumeroLinea
+            // 
+            this.NumeroLinea.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NumeroLinea.HeaderText = "Numero de Linea";
+            this.NumeroLinea.MinimumWidth = 6;
+            this.NumeroLinea.Name = "NumeroLinea";
+            // 
+            // Tipo
+            // 
+            this.Tipo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.MinimumWidth = 6;
+            this.Tipo.Name = "Tipo";
+            // 
+            // Token
+            // 
+            this.Token.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Token.HeaderText = "Token";
+            this.Token.MinimumWidth = 6;
+            this.Token.Name = "Token";
+            // 
+            // Lexema
+            // 
+            this.Lexema.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Lexema.HeaderText = "Lexema";
+            this.Lexema.MinimumWidth = 6;
+            this.Lexema.Name = "Lexema";
             // 
             // Form1
             // 
@@ -211,8 +211,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridLexema)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
+        private System.Windows.Forms.DataGridViewTextBoxColumn Desplazamiento;
 
         #endregion
 

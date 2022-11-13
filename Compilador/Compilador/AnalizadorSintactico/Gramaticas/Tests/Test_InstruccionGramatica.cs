@@ -28,6 +28,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.Tests
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CADENA)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA)} " +
                $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
                $"FinCadena");
          string[] tokensSeparate = totalStack.Split(' ');

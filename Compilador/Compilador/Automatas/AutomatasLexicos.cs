@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.TablasGlobales;
 
 namespace Compilador
 {
@@ -24,20 +25,19 @@ namespace Compilador
       /// </summary>
       List<string[]> tokenTableList = new List<string[]>();
 
-      int countLines;
-
+      private int _countLines;
+      private int _lexemaCount;
       /// <summary>
       /// Execute the analizer to check all the lexemas and asign their token
       /// </summary>
       /// <returns>A list of lexemas with token</returns>
       public List<string[]> ExecuteAnalizer()
       {
-         PilaTokens.numLineToken.Clear();
+         TablaLexemaToken.ClearTable();
          tokenTableList.Clear();
          messasgesErros = String.Empty;
-         countLines = 1;
+         _countLines = 1;
          VariablesGlobalesAutomatas.LengthText = VariablesGlobalesAutomatas.CharCodeText.Length;
-         Console.WriteLine("Tamaño de texto: {0}", VariablesGlobalesAutomatas.LengthText);
          VariablesGlobalesAutomatas.LastIndexFound = 0;
          for (int i = 0; i < VariablesGlobalesAutomatas.LengthText; i++)
          {
@@ -49,21 +49,19 @@ namespace Compilador
                token = Q25(i);
                string lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
                string tokenFromSymbolTable = TablaSimbolos.GetTokenName(lexema);
+               _lexemaCount++;
                if (tokenFromSymbolTable == string.Empty)
                {
                   tokenTableList.Add(new string[] { lexema, token });
-                  PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
-                  TablaSimbolos.AddLexema(lexema, token, countLines);
+                  TablaSimbolos.AddLexema(lexema, token, _countLines);
                   i = VariablesGlobalesAutomatas.LastIndexFound;
+                  TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                   continue;
                }
-               else
-               {
-                  tokenTableList.Add(new string[] { lexema, tokenFromSymbolTable });
-                  PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
-                  i = VariablesGlobalesAutomatas.LastIndexFound;
-                  continue;
-               }
+               tokenTableList.Add(new string[] { lexema, tokenFromSymbolTable });
+               i = VariablesGlobalesAutomatas.LastIndexFound;
+               TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, tokenFromSymbolTable);
+               continue;
             }
 
             if (char.IsDigit(letter))
@@ -72,14 +70,16 @@ namespace Compilador
                string lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
                if (token != string.Empty)
                {
-                  PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                  _lexemaCount++;
                   tokenTableList.Add(new string[] { lexema, token });
                   i = VariablesGlobalesAutomatas.LastIndexFound;
+                  TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                   continue;
                }
             }
             else
             {
+               string lexema;
                //Find the first state of each automat, except the numbers and identifiers
                switch (letter)
                {
@@ -87,124 +87,156 @@ namespace Compilador
                      token = Q8(i);
                      if (token == "Operador")
                      {
+                        _lexemaCount++;
                         tokenTableList.Add(new string[] { letter.ToString(), token });
-                        PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                        
+                        //Agrega el lexema encontrado a la tabla que contiene los lexemas y los tokens con sus números de líneas
+                        TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "/", token);
                      }
                      break;
                   case '-':
                      token = Q14(i);
+                     _lexemaCount++;
                      if (token != "Operador")
                      {
-                        tokenTableList.Add(new string[]
+                        lexema = string.Concat(VariablesGlobalesAutomatas.CharCodeText[i],
+                           VariablesGlobalesAutomatas.CharCodeText[VariablesGlobalesAutomatas.LastIndexFound]);
+                        tokenTableList.Add(new []
                         {
-                           string.Concat(VariablesGlobalesAutomatas.CharCodeText[i],
-                              VariablesGlobalesAutomatas.CharCodeText[VariablesGlobalesAutomatas.LastIndexFound]),
+                          lexema,
                            token
                         });
-                        PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                        TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
+                        
                      }
                      else
                      {
+                        TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "-", token);
                         tokenTableList.Add(new string[] { letter.ToString(), token });
-                        PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                        
                      }
+                     
                      break;
                   case '*':
                   case '%':
                   case '^':
+                     _lexemaCount++;
                      //Add to the diccionary the lexema and the token
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "Operador"));
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount,_countLines, letter.ToString(), "Operador");
                      tokenTableList.Add(new string[] { letter.ToString(), "Operador" });
                      continue;
                   case '+':
                      token = Q16(i);
+                     _lexemaCount++;
                      if (token != "Operador")
                      {
+                        lexema = string.Concat(VariablesGlobalesAutomatas.CharCodeText[i],
+                           VariablesGlobalesAutomatas.CharCodeText[VariablesGlobalesAutomatas.LastIndexFound]);
                         tokenTableList.Add(new string[]
                         {
-                           string.Concat(VariablesGlobalesAutomatas.CharCodeText[i],
-                              VariablesGlobalesAutomatas.CharCodeText[VariablesGlobalesAutomatas.LastIndexFound]),
+                           lexema,
                            token
                         });
-                        PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                      TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);  
                      }
                      else
                      {
                         tokenTableList.Add(new string[] { letter.ToString(), token });
-                        PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines,token));
+                        TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "+", token);
                      }
-
                      break;
                   case '(':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "ParentesisAbre"));
                      tokenTableList.Add(new string[] { letter.ToString(), "ParentesisAbre" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "(", "ParentesisAbre");
                      continue;
                   case ')':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "ParentesisAbre"));
                      tokenTableList.Add(new string[] { letter.ToString(), "ParentesisCierra" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ")", "ParentesisCierra");
                      continue;
                   case '{':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "LlaveAbre"));
                      tokenTableList.Add(new string[] { letter.ToString(), "LlaveAbre" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "{", "LlaveAbre");
                      continue;
                   case '}':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "LlaveCierra"));
                      tokenTableList.Add(new string[] { letter.ToString(), "LlaveCierra" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "}", "LlaveCierra");
                      continue;
                   case '[':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "CorcheteAbre"));
                      tokenTableList.Add(new string[] { letter.ToString(), "CorcheteAbre" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "[", "CorcheteAbre");
                      continue;
                   case ']':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "CorcheteCierra"));
                      tokenTableList.Add(new string[] { letter.ToString(), "CorcheteCierra" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, "]", "CorcheteCierra");
                      continue;
                   case ';':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, "PuntoyComa"));
                      tokenTableList.Add(new string[] { letter.ToString(), "PuntoyComa" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ";", "PuntoyComa");
                      continue;
                   case ',':
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, ","));
-                     tokenTableList.Add(new []{letter.ToString(),"Coma"});
+                     tokenTableList.Add(new[] { letter.ToString(), "Coma" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ",", "Coma");
                      break;
                   case '\"':
                      token = Q18(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '\'':
                      token = Q19(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '!':
                      token = Q20(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '<':
                   case '>':
                      token = Q21(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '=':
                      token = Q22(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '&':
                      token = Q23(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '|':
                      token = Q24(i);
-                     tokenTableList.Add(new string[] { subcadena(i, VariablesGlobalesAutomatas.LastIndexFound), token });
-                     PilaTokens.numLineToken.Add(new Tuple<int, string>(countLines, token));
+                     lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);
+                     tokenTableList.Add(new string[] { lexema, token });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, lexema, token);
                      break;
                   case '\n':
-                     countLines++;
+                     _countLines++;
                      continue;
                   case '\r':
                      continue;
@@ -212,13 +244,15 @@ namespace Compilador
                      continue;
                   default:
                      messasgesErros += String.Format("Caracter no reconocido: {0}  --- Linea: {1}", VariablesGlobalesAutomatas.CharCodeText[i],
-                        countLines);
+                        _countLines);
                      continue;
                   //lastIndexFound++;
                }
             }
+
             i = VariablesGlobalesAutomatas.LastIndexFound;
          }
+
          return tokenTableList;
       }
 
@@ -258,7 +292,7 @@ namespace Compilador
          {
             if (VariablesGlobalesAutomatas.CharCodeText[i].Equals('\n'))
             {
-               countLines++;
+               _countLines++;
                VariablesGlobalesAutomatas.LastIndexFound = indexString;
                return "ComentarioLinea";
             }
@@ -294,14 +328,14 @@ namespace Compilador
       {
          if (indexString >= VariablesGlobalesAutomatas.LengthText)
          {
-            messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
+            messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", _countLines);
             return String.Empty;
          }
 
          for (int i = indexString; i < VariablesGlobalesAutomatas.CharCodeText.Length; i++)
          {
             if (VariablesGlobalesAutomatas.CharCodeText[i].Equals('\n'))
-               countLines++;
+               _countLines++;
             if (VariablesGlobalesAutomatas.CharCodeText[i] == '*')
             {
                VariablesGlobalesAutomatas.LastIndexFound = i;
@@ -322,7 +356,7 @@ namespace Compilador
             }
          }
 
-         messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", countLines);
+         messasgesErros += string.Format("Se esperaba */ -- Linea {0}\n", _countLines);
          return String.Empty;
       }
 
@@ -483,7 +517,7 @@ namespace Compilador
             else
             {
                //Mensaje de error
-               messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
+               messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", _countLines);
                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                return string.Empty;
             }
@@ -491,7 +525,7 @@ namespace Compilador
          else
          {
             //Mensaje de error
-            messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", countLines);
+            messasgesErros += String.Format("Hace falta un : \"&\"  -- Linea: {0}  \n", _countLines);
             VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
             return string.Empty;
          }
@@ -510,7 +544,7 @@ namespace Compilador
             else
             {
                //Mensaje de error
-               messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
+               messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", _countLines);
                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
                return string.Empty;
             }
@@ -518,7 +552,7 @@ namespace Compilador
          else
          {
             //Mensaje de error
-            messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", countLines);
+            messasgesErros += String.Format("Hace falta un : \"|\"  -- Linea: {0}  \n", _countLines);
             VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
             return string.Empty;
          }
@@ -581,7 +615,7 @@ namespace Compilador
          }
 
          VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
-         messasgesErros += string.Format("Se esperaba un número después del \'.\' -- Linea: {0}", countLines);
+         messasgesErros += string.Format("Se esperaba un número después del \'.\' -- Linea: {0}", _countLines);
          return string.Empty;
       }
 
@@ -594,7 +628,7 @@ namespace Compilador
                if (VariablesGlobalesAutomatas.CharCodeText[i] == '.')
                {
                   messasgesErros += String.Format("Caracter no reconocido : {0} -- Linea: {1}", VariablesGlobalesAutomatas.CharCodeText[i],
-                     countLines);
+                     _countLines);
                   VariablesGlobalesAutomatas.LastIndexFound = i - 1;
                   return string.Empty;
                }
@@ -630,7 +664,7 @@ namespace Compilador
          }
 
          VariablesGlobalesAutomatas.LastIndexFound = VariablesGlobalesAutomatas.LengthText - 1;
-         messasgesErros += String.Format("Se esperaba \" para cerrar cadena -- Linea:{0} \n", countLines);
+         messasgesErros += String.Format("Se esperaba \" para cerrar cadena -- Linea:{0} \n", _countLines);
          return String.Empty;
       }
 
@@ -664,14 +698,14 @@ namespace Compilador
             {
                //Mensaje de error
                VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
-               messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
+               messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", _countLines);
             }
          }
          else
          {
             VariablesGlobalesAutomatas.LastIndexFound = indexString - 1;
             //Mensaje de error
-            messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", countLines);
+            messasgesErros += String.Format("Hace falta cierre de caracter '  -- Linea: {0}  \n", _countLines);
             return string.Empty;
          }
 
