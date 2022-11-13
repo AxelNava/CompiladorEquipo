@@ -1,23 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts.Internal;
-using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
+using System.Collections.Generic;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.Gramaticas;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
 {
-   public class GramaticaValores : AbstractAnalisisTable
+   public class GramaticaInstruccion : AbstractAnalisisTable
    {
-      public GramaticaValores()
+      public GramaticaInstruccion()
       {
-         tablaAnalisis = AnalisysTable_Valores_boolOpe.globalDictionaryValores;
-         
+         tablaAnalisis = AnalisysTable_Instrucciones.GlobalDictionaryInstrucciones;
          PilaComprobacion = new Stack<Tuple<int, string>>();
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
-      }
-      public string EjecutarAnalisis()
+      }      
+      public string Ejecutar_Analisis()
       {
          analisisFinished = false;
          while (PilaTokens.GlobalTokens.Count >= 1)
@@ -36,17 +34,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   }
                }
             }
-
-            if (analisisFinished) return "Valores";
+            if (analisisFinished) return "Instruccion";
          }
-
          return string.Empty;
       }
-
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-        
+         if (referenceState == 9 || referenceState == 11)
+         {
+            string tokenAux = new GramaticaValores().EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
+         }
          if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);
@@ -55,7 +55,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             HandleActions(actionEnum);
             return true;
          }
-
          return false;
       }
    }

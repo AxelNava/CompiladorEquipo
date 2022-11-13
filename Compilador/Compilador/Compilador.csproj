@@ -65,12 +65,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalizadorSemantico\ConversionNotacionInfija_PosFija.cs" />
+    <Compile Include="AnalizadorSemantico\EvaluadorNotacion_PosFija.cs" />
+    <Compile Include="AnalizadorSemantico\Test_ConversorNotacionPosFija\test_EvaluacionNotaionPosFija.cs" />
+    <Compile Include="AnalizadorSemantico\Test_ConversorNotacionPosFija\test_NotaciónPosFija.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Instrucciones.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Valores_boolOpe.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_ParametrosFuncion.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\Analysis_table_Valores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AbstractActionFunction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AbstractAnalisisTable.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\AccionFuncion_TablaAnalisis.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesBase\ReducedAction.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\ClasesGlobales\PilaTokens.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaEstructuraControl.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaInstruccion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_ArchivoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
@@ -78,17 +87,21 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_DoWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_For.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_IF.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Valores_boolOpe.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_While.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GrammarErrors.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Gramar_If_Test.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\GRAMMARIF.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\testCondicion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\testNetedGrammars.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_estructuraControl.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramatciaDeclaracion.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaArchivoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaDoWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaFor.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GramaticaWhile.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Tests\test_GrammaticaValores.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Tests\Test_InstruccionGramatica.cs" />
     <Compile Include="AnalizadorSintactico\tokensNameGlobal.cs" />
     <Compile Include="Automatas\AutomataComentarioOperador.cs" />
     <Compile Include="Automatas\AutomatasLexicos.cs" />

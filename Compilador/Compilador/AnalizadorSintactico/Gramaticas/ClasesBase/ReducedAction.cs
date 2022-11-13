@@ -16,6 +16,11 @@
         public string ReduceTokens( string [] tokensToAnalice ) {
             return ComparedTokens(tokensToAnalice) ? _tokenReduced : string.Empty;
         }
+
+        public string ReturnTokenReduced()
+        {
+            return _tokenReduced;
+        }
         private bool ComparedTokens( string [] tokensRecived ) {
             int count = 0;
             for ( int i = 0 ; i < _ruled.Length ; i++ ) {

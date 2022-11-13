@@ -127,14 +127,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-
-         if (referenceState == 2 || referenceState == 16)
-         {
-            string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
-            if (!string.IsNullOrEmpty(tokenAux))
-               PilaTokens.GlobalTokens.Push(tokenAux);
-         }
-
          if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
