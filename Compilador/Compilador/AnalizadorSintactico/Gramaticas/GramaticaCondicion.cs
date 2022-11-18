@@ -47,7 +47,7 @@ namespace Compilador.Gramaticas
       {
          //The first value is the state from Analysis Table, the second is the class with the 
          //token column, and the action-state reference
-         tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -717,6 +717,7 @@ namespace Compilador.Gramaticas
                   if (!CheckTokenInHandler())
                   {
                      PilaTokens.GlobalTokens.Pop();
+                     AddError();
                      return string.Empty;
                   }
                }
@@ -734,11 +735,11 @@ namespace Compilador.Gramaticas
       private bool CheckTokenInHandler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-         if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+         if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
-            actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             ActionsHandler(actionEnum);
             return true;
          }
@@ -759,7 +760,7 @@ namespace Compilador.Gramaticas
                analysisFinished = true;
                break;
             case AbstractActionFunction.ActionEnum.REDUCCION:
-               jumpStackToGlobalStack(referenceState);
+               JumpStackToGlobalStack(referenceState);
                break;
          }
       }

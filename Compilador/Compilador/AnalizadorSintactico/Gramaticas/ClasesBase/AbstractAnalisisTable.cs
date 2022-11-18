@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
 {
@@ -11,13 +12,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
    public class AbstractAnalisisTable
    {
       protected Stack<Tuple<int, string>> PilaComprobacion { get; set; }
-      protected bool analisisFinished = false;
+      protected bool AnalisisFinished = false;
+
       /// <summary>
       /// The Key int, is the number of the state of the analysis table, the Dictionary in there
       /// has the string key, which is the TOKEN column, the AbstractActionFunction  has the
       /// type of action that would be executed
       /// </summary>
-      protected Dictionary<int, Dictionary<string, AbstractActionFunction>> tablaAnalisis { get; set; }
+      protected Dictionary<int, Dictionary<string, AbstractActionFunction>> TablaAnalisis { get; set; }
 
       /// <summary>
       /// Pop a token from the global stack tokens, and push it to the analysis stack
@@ -27,7 +29,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          int nextState = 0;
          AccionFuncion_TablaAnalisis classReserve;
          classReserve =
-            tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as AccionFuncion_TablaAnalisis;
+            TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as AccionFuncion_TablaAnalisis;
          if (classReserve != null) nextState = classReserve._state;
          PilaComprobacion.Push(new Tuple<int, string>(nextState, PilaTokens.GlobalTokens.Pop()));
       }
@@ -36,9 +38,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
       /// Move the current stack, to the global tokens stack
       /// </summary>
       /// <param name="referenceState"></param>
-      protected void jumpStackToGlobalStack(int referenceState)
+      protected void JumpStackToGlobalStack(int referenceState)
       {
-         PilaTokens.GlobalTokens.Push(reductionHandler(referenceState));
+         PilaTokens.GlobalTokens.Push(ReductionHandler(referenceState));
       }
 
       /// <summary>
@@ -46,15 +48,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
       /// </summary>
       /// <param name="referenceState"></param>
       /// <returns>The Token rule, or the token producer</returns>
-      protected string reductionHandler(int referenceState)
+      protected string ReductionHandler(int referenceState)
       {
          ReducedAction classReserve;
          classReserve =
-            tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as ReducedAction;
+            TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()] as ReducedAction;
          if (classReserve._ruled[0] == string.Empty)
          {
             return classReserve.ReturnTokenReduced();
          }
+
          int sizeRule = classReserve._ruled.Length;
          string[] tokens = new string[sizeRule];
          for (int i = sizeRule - 1; i >= 0; i--)
@@ -64,6 +67,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
 
          return classReserve.ReduceTokens(tokens);
       }
+
       //Check what is the action to do, and do it
       protected void HandleActions(AbstractActionFunction.ActionEnum typeAction)
       {
@@ -73,19 +77,47 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
             case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
                PushPopStacks_Shit_Goto(referenceState);
                LexemaCount.CountLexemas++;
+               CheckTypesLexema();
                break;
             case AbstractActionFunction.ActionEnum.GOTO:
                PushPopStacks_Shit_Goto(referenceState);
                break;
             case AbstractActionFunction.ActionEnum.ACEPTACION:
-               if(PilaTokens.GlobalTokens.Count != 1 && PilaTokens.GlobalTokens.Peek() == "FinCadena")
+               if (PilaTokens.GlobalTokens.Count != 1 && PilaTokens.GlobalTokens.Peek() == "FinCadena")
                   PilaTokens.GlobalTokens.Pop();
-               analisisFinished = true;
+               AnalisisFinished = true;
                break;
             case AbstractActionFunction.ActionEnum.REDUCCION:
-               jumpStackToGlobalStack(referenceState);
+               JumpStackToGlobalStack(referenceState);
                break;
          }
+      }
+
+      private void CheckTypesLexema()
+      {
+         int valueOfShift = 0;
+         switch (PilaComprobacion.Peek().Item2)
+         {
+            case "TIPO":
+               string typeOftype = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
+               valueOfShift = Tabla_DesplazamientosValores.GetValueOfShift(typeOftype);
+               break;
+            case "Entero":
+            case "Cadena":
+            case "Decimal":
+            case "Caracter":
+            case "BOOL":
+               valueOfShift = Tabla_DesplazamientosValores.GetValueOfShift(PilaComprobacion.Peek().Item2);
+               break;
+         }
+      }
+
+      public void AddError()
+      {
+         int referenceState = PilaComprobacion.Peek().Item1;
+         Dictionary<string, AbstractActionFunction> dictionaryState = TablaAnalisis[referenceState];
+         int numLine = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1;
+         ErrorSintaxManager.AddMessageError(dictionaryState, numLine);
       }
    }
 }

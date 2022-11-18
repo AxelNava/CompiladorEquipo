@@ -32,7 +32,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       public GramaticaEstructuraControl()
       {
-         tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -249,7 +249,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       public string EjecutarAnalisis()
       {
-         analisisFinished = false;
+         AnalisisFinished = false;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())
@@ -261,22 +261,24 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   PilaTokens.GlobalTokens.Push("FinCadena");
                   if (!CheckTokenIn_Handler())
                   {
+                     AddError();
                      PilaTokens.GlobalTokens.Pop();
                      return string.Empty;
                   }
                }
             }
 
-            if (analisisFinished) return "<estructuracontrol>";
+            if (AnalisisFinished) return "<estructuracontrol>";
          }
 
          return PilaComprobacion.Count.ToString();
       }
 
       private bool CheckTokenIn_Handler()
-        {
-            int referenceState = PilaComprobacion.Peek().Item1;
-            checkcontrolestructure(referenceState);
+      {
+         int referenceState = PilaComprobacion.Peek().Item1;
+         checkcontrolestructure(referenceState);
+         
 
             if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
             {

@@ -1,6 +1,8 @@
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using System;
 using System.Collections.Generic;
+using Compilador.AnalizadorSintactico.Gramaticas;
+using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 
 namespace Compilador.Gramaticas
 {
@@ -10,16 +12,14 @@ namespace Compilador.Gramaticas
       {
          CUERPOINSTRUCCIONES,
          INSTRUCCION,
-         LLAMADAMETODO,
          ESTRUCTURACONTROL,
          RECURSIVIDAD
       }
 
       private static readonly string[] notTerminalSymbolsString =
       {
-         "CuerpoInstrucciones",
+         "cuerpoInstrucciones",
          "Instruccion",
-         "LLamadaMetodo",
          "EstructuraControl",
          "Recursividad"
       };
@@ -29,28 +29,25 @@ namespace Compilador.Gramaticas
          return notTerminalSymbolsString.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode()))
             .ToString();
       }
+
       public Gramatica_CuerpoInstrucciones()
       {
-         tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 1)
+                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 2)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 3)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.LLAMADAMETODO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 1)
                   }
                }
             },
@@ -58,24 +55,7 @@ namespace Compilador.Gramaticas
                1, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "Lambda",
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.LLAMADAMETODO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                     "FinCadena", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.ACEPTACION, 1)
                   }
                }
             },
@@ -83,24 +63,23 @@ namespace Compilador.Gramaticas
                2, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "Lambda",
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
+                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 2)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 3)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new[] { string.Empty })
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.LLAMADAMETODO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 5)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                     selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 4)
                   }
                }
             },
@@ -108,24 +87,23 @@ namespace Compilador.Gramaticas
                3, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "Lambda",
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
+                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 2)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 3)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new[] { string.Empty })
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.LLAMADAMETODO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 5)
                   },
                   {
-                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                     selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
+                        .GOTO, 6)
                   }
                }
             },
@@ -133,24 +111,11 @@ namespace Compilador.Gramaticas
                4, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "Lambda",
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.LLAMADAMETODO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
-                  },
-                  {
-                     selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new[]
+                     {
+                        selectorString(NotTerminalsForThisGrammar.INSTRUCCION),
+                        selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD)
+                     })
                   }
                }
             },
@@ -158,7 +123,10 @@ namespace Compilador.Gramaticas
                5, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new[] { "Lambda" })
+                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD), new[]
+                     {
+                        selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES)
+                     })
                   }
                }
             },
@@ -166,53 +134,68 @@ namespace Compilador.Gramaticas
                6, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena",
-                     new ReducedAction(selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD),
-                        new[] { selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES) })
-                  }
-               }
-            },
-            {
-               7, new Dictionary<string, AbstractActionFunction>()
-               {
-                  {
                      "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new[]
                      {
-                        selectorString
-                           (NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
-                        selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD)
-                     })
-                  }
-               }
-            },
-            {
-               8, new Dictionary<string, AbstractActionFunction>()
-               {
-                  {
-                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new[]
-                     {
-                        selectorString
-                           (NotTerminalsForThisGrammar.LLAMADAMETODO),
-                        selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD)
-                     })
-                  }
-               }
-            },
-            {
-               9, new Dictionary<string, AbstractActionFunction>()
-               {
-                  {
-                     "FinCadena", new ReducedAction(selectorString(NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES), new[]
-                     {
-                        selectorString
-                           (NotTerminalsForThisGrammar.INSTRUCCION),
+                        selectorString(NotTerminalsForThisGrammar.ESTRUCTURACONTROL),
                         selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD)
                      })
                   }
                }
             }
          };
+         PilaComprobacion = new Stack<Tuple<int, string>>();
+         PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
-      
+
+      public string Ejecutar_Analisis()
+      {
+         AnalisisFinished = false;
+         while (PilaTokens.GlobalTokens.Count >= 1)
+         {
+            if (!CheckTokenIn_Handler())
+            {
+               PilaTokens.GlobalTokens.Push("Lambda");
+               if (!CheckTokenIn_Handler())
+               {
+                  PilaTokens.GlobalTokens.Pop();
+                  PilaTokens.GlobalTokens.Push("FinCadena");
+                  if (!CheckTokenIn_Handler())
+                  {
+                     PilaTokens.GlobalTokens.Pop();
+                     AddError();
+                     return string.Empty;
+                  }
+               }
+            }
+
+            if (AnalisisFinished) return "cuerpoInstrucciones";
+         }
+
+         return string.Empty;
+      }
+
+      private bool CheckTokenIn_Handler()
+      {
+         int referenceState = PilaComprobacion.Peek().Item1;
+         if ((referenceState == 0 || referenceState == 2 || referenceState == 3) && PilaTokens.GlobalTokens.Peek() != selectorString
+                (NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES) &&
+             PilaTokens.GlobalTokens.Peek() != selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD))
+         {
+            string tokenAux = new GramaticaInstruccion().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
+         }
+
+         if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+         {
+            // PilaTokens.numLineToken.RemoveAt(0);
+            AbstractActionFunction.ActionEnum actionEnum;
+            actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            HandleActions(actionEnum);
+            return true;
+         }
+
+         return false;
+      }
    }
 }

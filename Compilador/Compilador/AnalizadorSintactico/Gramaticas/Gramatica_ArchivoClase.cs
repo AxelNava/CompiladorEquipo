@@ -34,7 +34,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
         public Gramatica_ArchivoClase()
         {
-            tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+            TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -200,7 +200,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
         public string EjecutarAnalisis()
         {
-            analisisFinished = false;
+            AnalisisFinished = false;
             while (PilaTokens.GlobalTokens.Count >= 1)
             {
                 if (!CheckTokenIn_Handler())
@@ -213,11 +213,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                         if (!CheckTokenIn_Handler())
                         {
                             PilaTokens.GlobalTokens.Pop();
+                            AddError();
                             return string.Empty;
                         }
                     }
                 }
-                if (analisisFinished) return "<archivoclase>";
+                if (AnalisisFinished) return "<archivoclase>";
             }
 
             return PilaComprobacion.Count.ToString();
@@ -237,10 +238,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                     PilaTokens.GlobalTokens.Push(tokenp);
                 }
             }
-            if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
             {
                 AbstractActionFunction.ActionEnum actionEnum;
-                actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+                actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
                 HandleActions(actionEnum);
                 return true;
             }
