@@ -226,7 +226,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
         private bool CheckTokenIn_Handler()
         {
             int referenceState = PilaComprobacion.Peek().Item1;
-            if (referenceState == 9)
+            if (referenceState == 9 )
             {
                 //llamar gramatica yahir
       
