@@ -8,7 +8,7 @@ namespace Compilador.Gramaticas
 {
    public class Gramatica_IF : AbstractAnalisisTable
    {
-      public enum notTerminalsForThis
+      private enum notTerminalsForThis
       {
          IF,
          CONDICION,
@@ -474,7 +474,7 @@ namespace Compilador.Gramaticas
       /// </summary>
       /// <param name="notTerminal">Position string</param>
       /// <returns>Token non-terminal</returns>
-      public string selectorString(notTerminalsForThis notTerminal)
+      private string selectorString(notTerminalsForThis notTerminal)
       {
          return notTerminalSymbols.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
       }

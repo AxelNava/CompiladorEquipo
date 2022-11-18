@@ -7,7 +7,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
 {
    public class AnalysisTable_ParametrosFuncion
    {
-      public enum nonTerminalTokens
+      private enum nonTerminalTokens
       {
          Valores,
          Parametros,
@@ -25,7 +25,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          "ParametrosMetodo"
       };
 
-      public static string selectorString(nonTerminalTokens nonTerminal)
+      private static string selectorString(nonTerminalTokens nonTerminal)
       {
          return nonTerminalsStrings.GetValue((int)Convert.ChangeType(nonTerminal, nonTerminal.GetTypeCode())).ToString();
       }

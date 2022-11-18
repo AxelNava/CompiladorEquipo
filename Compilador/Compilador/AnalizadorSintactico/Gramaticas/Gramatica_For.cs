@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
 {
-   internal class Gramatica_For : AbstractAnalisisTable
+   public class Gramatica_For : AbstractAnalisisTable
    {
       public enum notTerminalsForThis
       {

@@ -186,6 +186,11 @@ namespace Compilador
                      _lexemaCount++;
                      TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ",", "Coma");
                      break;
+                  case ':':
+                     tokenTableList.Add(new[] { letter.ToString(), "DosPuntos" });
+                     _lexemaCount++;
+                     TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ":", "DosPuntos");
+                     break;
                   case '\"':
                      token = Q18(i);
                      lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);

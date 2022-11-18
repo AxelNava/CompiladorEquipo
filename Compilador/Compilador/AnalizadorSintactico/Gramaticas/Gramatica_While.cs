@@ -8,7 +8,7 @@ namespace Compilador.Gramaticas
 {
    public class Gramatica_While : AbstractAnalisisTable
    {
-      public enum nonTerminalsTokens
+      private enum nonTerminalsTokens
       {
          Condicion,
          CuerpoInstruccion,
@@ -26,7 +26,7 @@ namespace Compilador.Gramaticas
          "<F>"
       };
 
-      public string selectorString(nonTerminalsTokens notTerminal)
+      private string selectorString(nonTerminalsTokens notTerminal)
       {
          return nonTerminalsTokenString.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
       }

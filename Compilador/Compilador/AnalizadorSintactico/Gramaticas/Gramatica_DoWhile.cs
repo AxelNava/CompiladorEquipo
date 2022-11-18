@@ -8,7 +8,7 @@ namespace Compilador.Gramaticas
 {
    public class Gramatica_DoWhile : AbstractAnalisisTable
    {
-      public enum nonTerminalsDoWhile
+      private enum nonTerminalsDoWhile
       {
          DW,
          CuerpoInstruccion,
@@ -24,7 +24,7 @@ namespace Compilador.Gramaticas
          "FinDo"
       };
 
-      public string selectorString(nonTerminalsDoWhile tokenEnum)
+      private string selectorString(nonTerminalsDoWhile tokenEnum)
       {
          return nonTerminalsTokenString.GetValue((int)Convert.ChangeType(tokenEnum, tokenEnum.GetTypeCode())).ToString();
       }

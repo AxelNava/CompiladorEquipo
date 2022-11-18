@@ -7,7 +7,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
 {
    public class AnalisysTable_Instrucciones
    {
-      public enum nonTerminalsInstrucciones
+      private enum nonTerminalsInstrucciones
       {
          Recursion,
          ComplementoDeclaracion,
@@ -27,7 +27,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          "ParametrosMetodo"
       };
 
-      public static string selectorString(nonTerminalsInstrucciones nonTerminal)
+      private static string selectorString(nonTerminalsInstrucciones nonTerminal)
       {
          return nonTerminalsString.GetValue((int)Convert.ChangeType(nonTerminal, nonTerminal.GetTypeCode())).ToString();
       }

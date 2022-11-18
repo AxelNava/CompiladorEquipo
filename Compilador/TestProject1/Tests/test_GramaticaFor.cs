@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Compilador.AnalizadorSintactico;
-using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Xunit;
 
