@@ -33,7 +33,7 @@ namespace Compilador.Gramaticas
 
       public Gramatica_While()
       {
-         tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -184,7 +184,7 @@ namespace Compilador.Gramaticas
 
       public string Ejecutar_Analisis()
       {
-         analisisFinished = false;
+         AnalisisFinished = false;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())
@@ -197,12 +197,13 @@ namespace Compilador.Gramaticas
                   if (!CheckTokenIn_Handler())
                   {
                      PilaTokens.GlobalTokens.Pop();
+                     AddError();
                      return string.Empty;
                   }
                }
             }
 
-            if (analisisFinished) return "<While>";
+            if (AnalisisFinished) return "<While>";
          }
 
          return string.Empty;
@@ -218,11 +219,11 @@ namespace Compilador.Gramaticas
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
 
-         if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+         if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
-            actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
             return true;
          }

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Permissions;
-using Compilador.AnalizadorSintactico;
 
 namespace Compilador.TablasGlobales
 {

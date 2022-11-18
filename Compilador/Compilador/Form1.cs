@@ -1,23 +1,19 @@
 ﻿using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
-using Compilador.Gramaticas;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Compilador.AnalizadorSintactico.Gramaticas;
-using Compilador.TablasGlobales;
 
 namespace Compilador
 {
    public partial class Form1 : Form
    {
-      int countLines;
+      private int _countLines;
 
       public Form1()
       {
-         countLines = 1;
+         _countLines = 1;
          TablaSimbolos tablesymbol = TablaSimbolos.GetInstance();
          InitializeComponent();
          //Fill the table
@@ -74,24 +70,24 @@ namespace Compilador
       {
          if (e.KeyCode == Keys.Enter)
          {
-            countLines++;
-            if (countLines == 10)
+            _countLines++;
+            if (_countLines == 10)
                countLinesBox.Size = new Size(60, 360);
-            if (countLines == 100)
+            if (_countLines == 100)
             {
                countLinesBox.Size = new Size(72, 360);
             }
 
-            countLinesBox.Text += "\n" + countLines;
+            countLinesBox.Text += "\n" + _countLines;
          }
       }
 
-      private void AlmacenarTokens_EnStack(List<string[]> lexema_tokens)
+      private void AlmacenarTokens_EnStack(List<string[]> lexemaTokens)
       {
          PilaTokens.GlobalTokens.Clear();
          PilaTokens.GlobalTokens.Push("FinCadena");
-         lexema_tokens.Reverse();
-         foreach (var token in lexema_tokens)
+         lexemaTokens.Reverse();
+         foreach (var token in lexemaTokens)
          {
             PilaTokens.GlobalTokens.Push(token[1]);
          }

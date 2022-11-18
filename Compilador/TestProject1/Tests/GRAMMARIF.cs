@@ -64,7 +64,7 @@ public class GramaticaBase : AbstractAnalisisTable
       int nextState = 0;
       AccionFuncion_TablaAnalisis classReserve;
       classReserve =
-         tablaAnalisis[referenceState][pilaprueba.Peek()] as AccionFuncion_TablaAnalisis;
+         TablaAnalisis[referenceState][pilaprueba.Peek()] as AccionFuncion_TablaAnalisis;
       if (classReserve != null) nextState = classReserve._state;
       PilaComprobacion.Push(new Tuple<int, string>(nextState, pilaprueba.Pop()));
    }
@@ -73,7 +73,7 @@ public class GramaticaBase : AbstractAnalisisTable
    {
       ReducedAction classReserve;
       classReserve =
-         tablaAnalisis[referenceStatem][pilaPrueba.Peek()] as ReducedAction;
+         TablaAnalisis[referenceStatem][pilaPrueba.Peek()] as ReducedAction;
       int sizeRule = classReserve._ruled.Length;
       string[] tokens = new string[sizeRule];
       for (int i = sizeRule - 1; i >= 0; i--)

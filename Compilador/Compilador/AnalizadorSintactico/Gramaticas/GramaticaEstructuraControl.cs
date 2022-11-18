@@ -30,7 +30,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       public GramaticaEstructuraControl()
       {
-         tablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
+         TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
          {
             {
                0, new Dictionary<string, AbstractActionFunction>()
@@ -100,7 +100,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       public string EjecutarAnalisis()
       {
-         analisisFinished = false;
+         AnalisisFinished = false;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())
@@ -112,13 +112,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   PilaTokens.GlobalTokens.Push("FinCadena");
                   if (!CheckTokenIn_Handler())
                   {
+                     AddError();
                      PilaTokens.GlobalTokens.Pop();
                      return string.Empty;
                   }
                }
             }
 
-            if (analisisFinished) return "<estructuracontrol>";
+            if (AnalisisFinished) return "<estructuracontrol>";
          }
 
          return PilaComprobacion.Count.ToString();
@@ -127,10 +128,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-         if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+         if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
-            actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+            actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
             return true;
          }
