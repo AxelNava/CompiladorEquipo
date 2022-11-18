@@ -1,6 +1,7 @@
 ﻿using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.Gramaticas;
+using Compilador.TablasGlobales;
 using System;
 using System.Collections.Generic;
 using static Compilador.Gramaticas.Gramatica_DoWhile;
@@ -9,6 +10,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 {
     public class Gramatica_ArchivoClase : AbstractAnalisisTable
     {
+        private string _tipoEncontrado;
+        private string _identificadorEncontrado;
+
+
         public enum notTerminalsForThis
         {
             ARCHIVOCLASE,
@@ -247,6 +252,46 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             }
 
             return false;
+        }
+        private void GetTypeOfLexema()
+        {
+            if (!TablaSimbolos.CheckTokenOfLexema(_identificadorEncontrado))
+            {
+                // GrammarErrors.MessageErrorsOfGrammarsM += String.Format($"El identificador {_identificadorEncontrado} no ha sido declarado" +
+                // $"- Linea {TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1}\n");
+                return;
+            }
+
+            _tipoEncontrado = TablaSimbolos.GetTokensValues()[TablaSimbolos.numRowInTable(_identificadorEncontrado)];
+        }
+        private void AnalizeIdentifierInSymbolTable(string identifierToAnalize)
+        {
+            if (TablaSimbolos.CheckLexema(identifierToAnalize))
+            {
+                int numRow = TablaSimbolos.numRowInTable(identifierToAnalize);
+                TablaSimbolos.GetTypesValues()[numRow] = identifierToAnalize;
+                TablaSimbolos.GetTokensValues()[numRow] = "TIPO";
+
+                return;
+            }
+            // GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"El identificador: {identifierToAnalize} no se encuentra declarado");
+        }
+        private void HandleTokenIdentType(int referenceState)
+        {
+            /*
+            if(referenceState == 2)
+            {
+                _tipoEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+
+
+            }
+            */
+            if(referenceState == 5)
+            {
+                _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+                AnalizeIdentifierInSymbolTable(_identificadorEncontrado);
+            }
+           
         }
     }
 }

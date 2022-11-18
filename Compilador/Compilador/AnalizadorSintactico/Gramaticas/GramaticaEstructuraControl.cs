@@ -280,10 +280,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          checkcontrolestructure(referenceState);
          
 
-            if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
             {
                 AbstractActionFunction.ActionEnum actionEnum;
-                actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
+                actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
                 HandleActions(actionEnum);
                 return true;
             }
@@ -323,7 +323,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                     PilaTokens.GlobalTokens.Push(tokeng);
                     return;
                 }
-                /*
+                
                 Gramatica_Switch gramatica_switch = new Gramatica_Switch();
                 tokeng = gramatica_switch.Ejecutar_Analisis();
                 if (!string.IsNullOrEmpty(tokeng))
@@ -331,7 +331,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                     PilaTokens.GlobalTokens.Push(tokeng);
                     
                 }
-                */
+                
                 
 
             }
