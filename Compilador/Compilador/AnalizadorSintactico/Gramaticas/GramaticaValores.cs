@@ -5,6 +5,7 @@ using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
 {
@@ -38,7 +39,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             }
             if (analisisFinished) return "Valores";
          }
-
          return string.Empty;
       }
 
@@ -48,7 +48,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
         
          if (tablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
+            IdentifierToValue();
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = tablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
@@ -56,6 +56,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          }
 
          return false;
+      }
+
+      private void IdentifierToValue()
+      {
+         if (PilaTokens.GlobalTokens.Peek() == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
+         {
+            if (TablaSimbolos.CheckLexema(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas + 1)))
+            {
+               int numrow = TablaSimbolos.numRowInTable(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas + 1));
+               
+            }
+         }
       }
    }
 }

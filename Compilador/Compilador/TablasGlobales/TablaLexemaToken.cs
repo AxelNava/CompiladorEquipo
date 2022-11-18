@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using Compilador.AnalizadorSintactico;
 
 namespace Compilador.TablasGlobales
@@ -32,6 +33,11 @@ namespace Compilador.TablasGlobales
       public static void AddLexemaTokenToTable(int numLexema, int numLine, string Lexema, string Token)
       {
          LexemaTokensTable.Add(numLexema, new Tuple<int, string, string>(numLexema, Lexema, Token));
+      }
+
+      public static string GetLexema(int numLexema)
+      {
+         return _lexemaTokensTable[numLexema].Item2;
       }
 
       public static void ClearTable()

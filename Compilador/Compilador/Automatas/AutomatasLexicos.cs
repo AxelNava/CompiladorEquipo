@@ -33,6 +33,7 @@ namespace Compilador
       /// <returns>A list of lexemas with token</returns>
       public List<string[]> ExecuteAnalizer()
       {
+         _lexemaCount = 0;
          TablaLexemaToken.ClearTable();
          tokenTableList.Clear();
          messasgesErros = String.Empty;

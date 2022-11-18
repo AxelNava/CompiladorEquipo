@@ -26,10 +26,10 @@ namespace Compilador
 
       //Number line diccionary
       private static Dictionary<int, string> numLineDiccioanry = new Dictionary<int, string>();
-      
+
       //Valor del lexema
       private static Dictionary<int, string> valorDictyonary = new Dictionary<int, string>();
-      
+
       //Dezplazamiento
       private static Dictionary<int, string> desplazamientoDictionary = new Dictionary<int, string>();
 
@@ -184,6 +184,23 @@ namespace Compilador
       }
 
       /// <summary>
+      /// Checa si el identificador tiene un tipo asignado en la tabla de símbolos
+      /// </summary>
+      /// <param name="lexemaName"></param>
+      /// <returns>False if there is no type to the identifier, true if the identifier has type</returns>
+      public static bool CheckTokenOfLexema(string lexemaName)
+      {
+         int numRow = numRowInTable(lexemaName);
+         var tokensValues = GetTokensValues();
+         if (!string.IsNullOrEmpty(tokensValues[numRow]))
+         {
+            return false;
+         }
+
+         return true;
+      }
+
+      /// <summary>
       /// Retorna el número de fila de la tabla de símbolos con el lexema
       /// </summary>
       /// <param name="lexema"></param>
@@ -210,6 +227,8 @@ namespace Compilador
          tokenDiciconary.Clear();
          tipeDiccionary.Clear();
          numLineDiccioanry.Clear();
+         valorDictyonary.Clear();
+         desplazamientoDictionary.Clear();
 
          lexemaDiccionary.Add(0, "int");
          lexemaDiccionary.Add(1, "char");
@@ -229,6 +248,7 @@ namespace Compilador
          lexemaDiccionary.Add(15, "false");
          lexemaDiccionary.Add(16, "case");
          lexemaDiccionary.Add(17, "default");
+         lexemaDiccionary.Add(18, "new");
 
          tokenDiciconary.Add(0, "TIPO");
          tokenDiciconary.Add(1, "TIPO");
@@ -248,6 +268,7 @@ namespace Compilador
          tokenDiciconary.Add(15, "BOOL");
          tokenDiciconary.Add(16, "CASE");
          tokenDiciconary.Add(17, "DEFAULT");
+         tokenDiciconary.Add(18, "NEW");
 
          tipeDiccionary.Add(0, "int");
          tipeDiccionary.Add(1, "char");
@@ -267,6 +288,7 @@ namespace Compilador
          tipeDiccionary.Add(15, "bool");
          tipeDiccionary.Add(16, "reserveWord");
          tipeDiccionary.Add(17, "reserveWord");
+         tipeDiccionary.Add(18, "reserveWord");
 
          numLineDiccioanry.Add(0, String.Empty);
          numLineDiccioanry.Add(1, String.Empty);
@@ -286,7 +308,8 @@ namespace Compilador
          numLineDiccioanry.Add(15, String.Empty);
          numLineDiccioanry.Add(16, String.Empty);
          numLineDiccioanry.Add(17, String.Empty);
-         
+         numLineDiccioanry.Add(18, String.Empty);
+
          valorDictyonary.Add(0, String.Empty);
          valorDictyonary.Add(1, String.Empty);
          valorDictyonary.Add(2, String.Empty);
@@ -305,7 +328,8 @@ namespace Compilador
          valorDictyonary.Add(15, String.Empty);
          valorDictyonary.Add(16, String.Empty);
          valorDictyonary.Add(17, String.Empty);
-         
+         valorDictyonary.Add(18, String.Empty);
+
          desplazamientoDictionary.Add(0, String.Empty);
          desplazamientoDictionary.Add(1, String.Empty);
          desplazamientoDictionary.Add(2, String.Empty);
@@ -320,10 +344,11 @@ namespace Compilador
          desplazamientoDictionary.Add(11, String.Empty);
          desplazamientoDictionary.Add(12, String.Empty);
          desplazamientoDictionary.Add(13, String.Empty);
-        desplazamientoDictionary.Add(14, String.Empty);
+         desplazamientoDictionary.Add(14, String.Empty);
          desplazamientoDictionary.Add(15, String.Empty);
          desplazamientoDictionary.Add(16, String.Empty);
          desplazamientoDictionary.Add(17, String.Empty);
+         desplazamientoDictionary.Add(18, String.Empty);
       }
    }
 }

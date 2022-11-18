@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.TablasGlobales;
 
 namespace Compilador
@@ -56,9 +57,10 @@ namespace Compilador
             {
                dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item]);
             }
-
             AlmacenarTokens_EnStack(map);
-
+            GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
+            pruebaValores.Ejecutar_Analisis();
+            
             textBoxErrores.Text = auLex.messasgesErros;
             textBoxErrores.ForeColor = Color.Red;
          }
@@ -86,6 +88,8 @@ namespace Compilador
 
       private void AlmacenarTokens_EnStack(List<string[]> lexema_tokens)
       {
+         PilaTokens.GlobalTokens.Clear();
+         PilaTokens.GlobalTokens.Push("FinCadena");
          lexema_tokens.Reverse();
          foreach (var token in lexema_tokens)
          {
