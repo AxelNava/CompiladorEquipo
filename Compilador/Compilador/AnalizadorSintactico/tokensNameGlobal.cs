@@ -76,6 +76,7 @@ namespace Compilador.AnalizadorSintactico
          "SWITCH",
          "CASE",
          "Coma"
+         
       };
       public static string selectorString(tokensGlobals notTerminal)
       {
