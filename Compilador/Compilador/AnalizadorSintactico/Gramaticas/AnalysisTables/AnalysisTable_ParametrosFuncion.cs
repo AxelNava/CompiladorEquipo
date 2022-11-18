@@ -37,7 +37,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
             0, new Dictionary<string, AbstractActionFunction>()
             {
                {
-                  selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4)
+                  selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                },
                {
                   "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.Parametros), new[] { string.Empty })
@@ -111,7 +111,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
             6, new Dictionary<string, AbstractActionFunction>()
             {
                {
-                  selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4)
+                  selectorString(nonTerminalTokens.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                },
                {
                   selectorString(nonTerminalTokens.PARAMETRO), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 7)

@@ -23,7 +23,7 @@ namespace Compilador.AnalizadorSemantico
 
             HandleOperations(stringCharacter);
          }
-
+         
          return resultNums.Pop();
       }
 
@@ -32,6 +32,7 @@ namespace Compilador.AnalizadorSemantico
          float numberY = resultNums.Pop();
          float numberX = resultNums.Pop();
          float resultOperation;
+         
          switch (stringCharacter)
          {
             case "+":

@@ -65,7 +65,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      selectorString(nonTerminalsForThisGrammar.Valores), new AccionFuncion_TablaAnalisis
-                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 1)
+                        (AbstractActionFunction.ActionEnum.GOTO, 1)
                   },
                   {
                      selectorString(nonTerminalsForThisGrammar.VS), new AccionFuncion_TablaAnalisis

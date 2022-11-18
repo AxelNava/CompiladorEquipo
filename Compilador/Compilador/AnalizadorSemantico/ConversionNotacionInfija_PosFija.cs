@@ -1,37 +1,44 @@
 using System.Collections.Generic;
+using Compilador.AnalizadorSintactico;
+using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.TablasGlobales;
+
 namespace Compilador.AnalizadorSemantico
 {
    public class ConversionNotacionInfija_PosFija
    {
+      #region datos privados para convertir
+
       /// <summary>
       /// Secuencia de numeros y operaciones
       /// </summary>
       private string[] stringSplited;
+
       /// <summary>
       /// Contenedor de los operadores
       /// </summary>
       private Dictionary<string, byte> nivelProcedenciaOperador;
+
       /// <summary>
       /// Cola que almacena la salida de la conversión de InFijo a PosFijo
       /// </summary>
       private Queue<string> outQueue = new Queue<string>();
+
       /// <summary>
       /// Pila que almacena los operadores encontrados
       /// </summary>
       private Stack<string> operatorsStack = new Stack<string>();
-      public ConversionNotacionInfija_PosFija()
-      {
-         nivelProcedenciaOperador = new Dictionary<string, byte>();
-         nivelProcedenciaOperador.Add("+", 1);
-         nivelProcedenciaOperador.Add("-", 1);
-         nivelProcedenciaOperador.Add("*", 2);
-         nivelProcedenciaOperador.Add("x", 2);
-         nivelProcedenciaOperador.Add("/", 2);
-         nivelProcedenciaOperador.Add("(", 0);
-         nivelProcedenciaOperador.Add(")", 0);
-      }
 
-      public Queue<string> ExecuteAnalysis(string[] entrada)
+      /// <summary>
+      /// Ejecuta el analisis para convertir la notación infija a notacion posFija
+      /// </summary>
+      /// <param name="entrada">Arreglo de valores</param>
+      /// <returns>Retorna la cola de salida para ser evaluada</returns>
+
+      private string typeOfIdentifier = string.Empty;
+      #endregion
+
+      public Queue<string> ExecuteAnalysis(string[] entrada, string typeIdent)
       {
          stringSplited = entrada;
          Conversor();
@@ -48,16 +55,26 @@ namespace Compilador.AnalizadorSemantico
                continue;
             }
 
+            HandleIdentifier(stringSplited[i]);
             HandlerCharactersOperator(i);
          }
-
          if (operatorsStack.Count > 0)
             outQueue.Enqueue(operatorsStack.Pop());
       }
-/// <summary>
-/// Maneja las entradas de "(" y cuando la pila no tiene nada, y las reglas de conversion
-/// </summary>
-/// <param name="i"></param>
+
+      private bool HandleIdentifier(string identifier)
+      {
+         // if ()
+         // {
+         //    
+         // }
+         return false;
+      }
+
+      /// <summary>
+      /// Maneja las entradas de "(" y cuando la pila no tiene nada, y las reglas de conversion
+      /// </summary>
+      /// <param name="i"></param>
       private void HandlerCharactersOperator(int i)
       {
          if (stringSplited[i] == "(")
@@ -74,10 +91,11 @@ namespace Compilador.AnalizadorSemantico
 
          OperationWithStackAndQueue(i);
       }
-/// <summary>
-/// Se encarga de ejecutar las reglas de conversión
-/// </summary>
-/// <param name="i">Posición del lexema a analizar</param>
+
+      /// <summary>
+      /// Se encarga de ejecutar las reglas de conversión
+      /// </summary>
+      /// <param name="i">Posición del lexema a analizar</param>
       private void OperationWithStackAndQueue(int i)
       {
          if (nivelProcedenciaOperador[stringSplited[i]] == nivelProcedenciaOperador[operatorsStack.Peek()])
@@ -109,5 +127,7 @@ namespace Compilador.AnalizadorSemantico
                operatorsStack.Push(stringSplited[i]);
          }
       }
+
+      
    }
 }
