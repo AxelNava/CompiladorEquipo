@@ -76,7 +76,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          {
             case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
                PushPopStacks_Shit_Goto(referenceState);
-               LexemaCount.CountLexemas++;
+               if(PilaComprobacion.Peek().Item2 != "Lambda")
+                  LexemaCount.CountLexemas++;
                CheckTypesLexema();
                break;
             case AbstractActionFunction.ActionEnum.GOTO:
@@ -92,7 +93,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                break;
          }
       }
-
       private void CheckTypesLexema()
       {
          int valueOfShift = 0;
@@ -111,7 +111,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                break;
          }
       }
-
       public void AddError()
       {
          int referenceState = PilaComprobacion.Peek().Item1;

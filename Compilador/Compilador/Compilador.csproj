@@ -89,6 +89,8 @@
   <ItemGroup>
     <Compile Include="AnalizadorSemantico\ConversionNotacionInfija_PosFija.cs" />
     <Compile Include="AnalizadorSemantico\EvaluadorNotacion_PosFija.cs" />
+    <Compile Include="AnalizadorSemantico\Mensajes_ErroresSemanticos.cs" />
+    <Compile Include="AnalizadorSemantico\TablaRelacionTipoToken.cs" />
     <Compile Include="AnalizadorSintactico\ErrorSintaxManager.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Instrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Valores_boolOpe.cs" />
@@ -123,6 +125,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaCondicion.cs" />
+    <Compile Include="IntentoCodigoIntermedio\ConteoDezplazamiento.cs" />
+    <Compile Include="IntentoCodigoIntermedio\tablaInstrucciones.cs" />
     <Compile Include="Mensajes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

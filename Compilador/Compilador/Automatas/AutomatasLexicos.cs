@@ -185,12 +185,12 @@ namespace Compilador
                      tokenTableList.Add(new[] { letter.ToString(), "Coma" });
                      _lexemaCount++;
                      TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ",", "Coma");
-                     break;
+                     continue;;
                   case ':':
                      tokenTableList.Add(new[] { letter.ToString(), "DosPuntos" });
                      _lexemaCount++;
                      TablaLexemaToken.AddLexemaTokenToTable(_lexemaCount, _countLines, ":", "DosPuntos");
-                     break;
+                     continue;
                   case '\"':
                      token = Q18(i);
                      lexema = subcadena(i, VariablesGlobalesAutomatas.LastIndexFound);

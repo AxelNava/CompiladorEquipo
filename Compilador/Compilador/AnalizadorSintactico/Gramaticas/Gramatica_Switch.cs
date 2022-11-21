@@ -12,6 +12,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 {
    public class Gramatica_Switch : AbstractAnalisisTable
    {
+      private int _inicioConteo;
+      private int _finConteo;
+      private string _typeToCompare;
+      private string _temporalType;
+
       public Gramatica_Switch()
       {
          TablaAnalisis = AnalysisTable_Switch.GlobalDictionarySwitch;
@@ -51,9 +56,26 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          int referenceState = PilaComprobacion.Peek().Item1;
          if (referenceState == 3)
          {
-            string tokenAux = new GramaticaValores().EjecutarAnalisis();
+            _inicioConteo = LexemaCount.CountLexemas + 1;
+            GramaticaValores gramatica = new GramaticaValores();
+            string tokenAux = gramatica.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
+            {
+               _finConteo = LexemaCount.CountLexemas + 1;
                PilaTokens.GlobalTokens.Push(tokenAux);
+               ConversionNotacionInfija_PosFija conversor = new ConversionNotacionInfija_PosFija();
+               conversor.EjecutarAnalisis(_inicioConteo, _finConteo);
+               _typeToCompare = conversor.typeGlobalOfOperation;
+            }
+         }
+
+         if (referenceState == 11)
+         {
+            if (!CheckTypes())
+            {
+               Mensajes_ErroresSemanticos.AddErrorOperatro(_typeToCompare, _temporalType,
+                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+            }
          }
 
          if (referenceState == 17 || referenceState == 18)
@@ -66,10 +88,20 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
+            return true;
+         }
+
+         return false;
+      }
+
+      private bool CheckTypes()
+      {
+         _temporalType = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3];
+         if (_temporalType == _typeToCompare)
+         {
             return true;
          }
 

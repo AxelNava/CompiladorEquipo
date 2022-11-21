@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts.Internal;
+using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
@@ -11,13 +12,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 {
    public class GramaticaValores : AbstractAnalisisTable
    {
+      private string _tipoTotalValores;
+      private string _valueIdentifier;
+      private string _tipoTemporal;
+
       public GramaticaValores()
       {
          TablaAnalisis = AnalisysTable_Valores_boolOpe.globalDictionaryValores;
-         
          PilaComprobacion = new Stack<Tuple<int, string>>();
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
+
+      public string TipoTotalValores => _tipoTotalValores;
+
       public string EjecutarAnalisis()
       {
          AnalisisFinished = false;
@@ -38,15 +45,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   }
                }
             }
-            if (AnalisisFinished) return "Valores";
+
+            if (AnalisisFinished)
+            {
+               return "Valores";
+            }
          }
+
          return string.Empty;
       }
 
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-        
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             IdentifierToValue();
@@ -55,7 +66,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             HandleActions(actionEnum);
             return true;
          }
-
          return false;
       }
 
@@ -63,11 +73,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       {
          if (PilaTokens.GlobalTokens.Peek() == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
          {
-            if (TablaSimbolos.CheckLexema(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas + 1)))
+            if (TablaSimbolos.CheckTypeOfLexema(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas + 1)))
             {
                int numrow = TablaSimbolos.numRowInTable(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas + 1));
-               
+               _tipoTemporal = TablaSimbolos.GetTypesValues()[numrow];
+               return;
             }
+
+            Mensajes_ErroresSemanticos.AddErrorInstanciation(PilaTokens.GlobalTokens.Peek(),
+               TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas + 1].Item1);
          }
       }
    }
