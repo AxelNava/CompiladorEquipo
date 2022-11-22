@@ -99,6 +99,10 @@ namespace Compilador.Gramaticas
                5, new Dictionary<string, AbstractActionFunction>()
                {
                   {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
+                     (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                  },
+                  {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 7)
                   }
@@ -279,6 +283,10 @@ namespace Compilador.Gramaticas
                20, new Dictionary<string, AbstractActionFunction>()
                {
                   {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
+                        (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                  },
+                  {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 21)
                   }
@@ -356,6 +364,10 @@ namespace Compilador.Gramaticas
             {
                26, new Dictionary<string, AbstractActionFunction>()
                {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
+                        (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                  },
                   {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 27)
@@ -516,7 +528,6 @@ namespace Compilador.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
-
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);

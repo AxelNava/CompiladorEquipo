@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Compilador.AnalizadorSintactico.Gramaticas;
+using Compilador.Gramaticas;
 
 namespace Compilador
 {
@@ -45,18 +46,14 @@ namespace Compilador
                dataGridTableToken.Rows.Add(todo[0], todo[1]);
             }
 
-            var lexemas = TablaSimbolos.GetLexemasValues();
-            var tokens = TablaSimbolos.GetTokensValues();
-            var types = TablaSimbolos.GetTypesValues();
-            var numLines = TablaSimbolos.GetNumLine();
-            foreach (var item in TablaSimbolos.GetLexemasValues().Keys)
-            {
-               dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item]);
-            }
+            fillTableVisual();
             AlmacenarTokens_EnStack(map);
             GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
-            pruebaValores.Ejecutar_Analisis();
-            
+            // Gramatica_Switch pruebaValores = new Gramatica_Switch();
+            // Gramatica_IF pruebaValores = new Gramatica_IF();
+            MessageBox.Show(pruebaValores.Ejecutar_Analisis());
+            fillTableVisual();
+
             textBoxErrores.Text = auLex.messasgesErros;
             textBoxErrores.ForeColor = Color.Red;
          }
@@ -91,6 +88,21 @@ namespace Compilador
          {
             PilaTokens.GlobalTokens.Push(token[1]);
          }
+      }
+
+      private void fillTableVisual()
+      {
+         var lexemas = TablaSimbolos.GetLexemasValues();
+         var tokens = TablaSimbolos.GetTokensValues();
+         var types = TablaSimbolos.GetTypesValues();
+         var numLines = TablaSimbolos.GetNumLine();
+         var values = TablaSimbolos.GetValues();
+         var desplazamientos = TablaSimbolos.GetDesplazamientos();
+         foreach (var item in TablaSimbolos.GetLexemasValues().Keys)
+         {
+            dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item], values[item],desplazamientos[item]);
+         }
+         
       }
    }
 }

@@ -30,7 +30,7 @@ namespace Compilador.TablasGlobales
       /// <param name="Token">Token encontrado</param>
       public static void AddLexemaTokenToTable(int numLexema, int numLine, string Lexema, string Token)
       {
-         LexemaTokensTable.Add(numLexema, new Tuple<int, string, string>(numLexema, Lexema, Token));
+         LexemaTokensTable.Add(numLexema, new Tuple<int, string, string>(numLine, Lexema, Token));
       }
 
       public static string GetLexema(int numLexema)

@@ -1,8 +1,11 @@
 ﻿using System;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using System.Collections.Generic;
+using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico;
+using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.TablasGlobales;
 
 namespace Compilador.Gramaticas
 {
@@ -23,17 +26,22 @@ namespace Compilador.Gramaticas
    {
       ReducedAction OperadorAND_LogicToken = new ReducedAction("OperadorLog", new string[] { "AND" });
       ReducedAction OperadorOR_LogicToken = new ReducedAction("OperadorLog", new string[] { "OR" });
-      ReducedAction Comp_compareToken = new ReducedAction("comp", new string[] { "Valor", "Comparador", "ValorC" });
+      ReducedAction Comp_compareToken = new ReducedAction("comp", new string[] { "Valores", "Comparador", "ValorC" });
       ReducedAction CompI_compareToken = new ReducedAction("CompI", new string[] { "Comparador", "ValorC" });
       ReducedAction Valor_enteroToken = new ReducedAction("ValorC", new string[] { "Entero" });
       ReducedAction Valor_decimalToken = new ReducedAction("ValorC", new string[] { "Decimal" });
       ReducedAction Valor_cadenaToken = new ReducedAction("ValorC", new string[] { "Cadena" });
       ReducedAction Valor_charToken = new ReducedAction("ValorC", new string[] { "Caracter" });
+      private string _tokenBeforeComparison;
+      private string _tokenAfterComparison;
+      private string _tokenAfterNegation;
+      private string _tokenAlone;
 
       private string[] nonTerminalsTokensString =
+
       {
          "VeriM",
-         "Valor",
+         "Valores",
          "comp",
          "CompI",
          "ValorBool",
@@ -505,6 +513,9 @@ namespace Compilador.Gramaticas
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER), OperadorAND_LogicToken
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),OperadorAND_LogicToken
                   }
                }
             },
@@ -528,6 +539,9 @@ namespace Compilador.Gramaticas
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER), OperadorOR_LogicToken
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),OperadorOR_LogicToken
                   }
                }
             },
@@ -649,19 +663,29 @@ namespace Compilador.Gramaticas
                            []
                            {
                               tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), selectorString(nonTerminalTokens
-                              .veriM), selectorString(nonTerminalTokens.COMPI)
+                                 .veriM),
+                              selectorString(nonTerminalTokens.COMPI)
                            })
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OR), new ReducedAction(selectorString(nonTerminalTokens.VALORBOOL),
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OR), new ReducedAction(
+                        selectorString(nonTerminalTokens.VALORBOOL),
                         new
-                           [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), selectorString(nonTerminalTokens
-                           .veriM), selectorString(nonTerminalTokens.COMPI) })
+                           []
+                           {
+                              tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), selectorString(nonTerminalTokens
+                                 .veriM),
+                              selectorString(nonTerminalTokens.COMPI)
+                           })
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.VALORBOOL), new
-                        [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), selectorString(nonTerminalTokens
-                           .veriM), selectorString(nonTerminalTokens.COMPI) })
+                        []
+                        {
+                           tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), selectorString(nonTerminalTokens
+                              .veriM),
+                           selectorString(nonTerminalTokens.COMPI)
+                        })
                   }
                }
             },
@@ -692,8 +716,9 @@ namespace Compilador.Gramaticas
                38, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalTokens.CONDICION), new []{selectorString(nonTerminalTokens.VALORBOOL)
-                     , selectorString(nonTerminalTokens.R)})
+                     "FinCadena",
+                     new ReducedAction(selectorString(nonTerminalTokens.CONDICION),
+                        new[] { selectorString(nonTerminalTokens.VALORBOOL), selectorString(nonTerminalTokens.R) })
                   }
                }
             }
@@ -702,7 +727,7 @@ namespace Compilador.Gramaticas
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
 
-      private bool analysisFinished = false;
+
       public string EjecutarAnalisis()
       {
          while (PilaTokens.GlobalTokens.Count >= 1)
@@ -722,8 +747,10 @@ namespace Compilador.Gramaticas
                   }
                }
             }
-            if (analysisFinished) return "condicion";
+
+            if (AnalisisFinished) return "condicion";
          }
+
          return string.Empty;
       }
 
@@ -735,34 +762,119 @@ namespace Compilador.Gramaticas
       private bool CheckTokenInHandler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
+         if (!CheckTokenBefore(referenceState))
+         {
+            if (CheckTokenAfter(referenceState))
+            {
+               if (_tokenBeforeComparison != _tokenAfterComparison)
+               {
+                  Mensajes_ErroresSemanticos.AddErrorOperatro(_tokenBeforeComparison, _tokenAfterComparison, TablaLexemaToken
+                     .LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+               }
+            }
+         }
+
+         if (referenceState == 4)
+         {
+            if (!CheckTokenWithNegation())
+            {
+               Mensajes_ErroresSemanticos.AddErrorOperatro("bool", _tokenAfterNegation,
+                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+            }
+         }
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
-            ActionsHandler(actionEnum);
+            HandleActions(actionEnum);
             return true;
          }
+
          return false;
       }
 
-      private void ActionsHandler(AbstractActionFunction.ActionEnum typeAction)
+      private bool CheckTokenBefore(int referenceState)
       {
-         int referenceState = PilaComprobacion.Peek().Item1;
-         switch (typeAction)
+         if (referenceState == 0 || referenceState == 24)
          {
-            case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
-            case AbstractActionFunction.ActionEnum.GOTO:
-               PushPopStacks_Shit_Goto(referenceState);
-               break;
-            case AbstractActionFunction.ActionEnum.ACEPTACION:
-               PilaTokens.GlobalTokens.Pop();
-               analysisFinished = true;
-               break;
-            case AbstractActionFunction.ActionEnum.REDUCCION:
-               JumpStackToGlobalStack(referenceState);
-               break;
+            int inicioConteo = LexemaCount.CountLexemas + 1;
+            GramaticaValores valores = new GramaticaValores();
+            string tokenTemp = valores.EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokenTemp))
+            {
+               int final = LexemaCount.CountLexemas + 1;
+               PilaTokens.GlobalTokens.Push(tokenTemp);
+               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+               conversion.EjecutarAnalisis(inicioConteo, final);
+               if (!string.IsNullOrEmpty(conversion.typeGlobalOfOperation))
+               {
+                  if (conversion.typeGlobalOfOperation == "bool")
+                  {
+                     PilaTokens.GlobalTokens.Pop();
+                     PilaTokens.GlobalTokens.Push(selectorString(nonTerminalTokens.VALORBOOL));
+                  }
+                  _tokenBeforeComparison = conversion.typeGlobalOfOperation;
+                  // return false;
+               }
+
+               return true;
+            }
          }
+
+         return false;
+      }
+
+      private bool CheckTokenAfter(int referenceState)
+      {
+         if (referenceState == 11 || referenceState == 19)
+         {
+            int inicioConteo = LexemaCount.CountLexemas + 1;
+            GramaticaValores valores = new GramaticaValores();
+            string tokenTemp = valores.EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokenTemp))
+            {
+               PilaTokens.GlobalTokens.Push("ValorC");
+               int final = LexemaCount.CountLexemas + 1;
+               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+               conversion.EjecutarAnalisis(inicioConteo, final);
+               if (conversion.typeGlobalOfOperation != string.Empty)
+               {
+                  if (conversion.typeGlobalOfOperation == "bool")
+                  {
+                     PilaTokens.GlobalTokens.Pop();
+                     PilaTokens.GlobalTokens.Push(selectorString(nonTerminalTokens.VALORBOOL));
+                  }
+
+                  _tokenAfterComparison = conversion.typeGlobalOfOperation;
+               }
+               return true;
+            }
+         }
+
+         return false;
+      }
+
+      private bool CheckTokenWithNegation()
+      {
+         int inicioConteo = LexemaCount.CountLexemas + 1;
+         GramaticaValores valores = new GramaticaValores();
+         string tokenTemp = valores.EjecutarAnalisis();
+         if (!string.IsNullOrEmpty(tokenTemp))
+         {
+            PilaTokens.GlobalTokens.Push(selectorString(nonTerminalTokens.VALORBOOL));
+            //Inicio de verificacion semantica
+            int final = LexemaCount.CountLexemas + 1;
+            ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+            conversion.EjecutarAnalisis(inicioConteo, final);
+            if (conversion.typeGlobalOfOperation != string.Empty)
+            {
+               _tokenAfterNegation = conversion.typeGlobalOfOperation;
+               return (_tokenAfterNegation == "bool");
+            }
+         }
+
+         return false;
       }
    }
 }

@@ -216,6 +216,41 @@ namespace Compilador
          return 0;
       }
 
+      /// <summary>
+      /// Checa si el identificador tiene un tipo asignado en la tabla de símbolos
+      /// </summary>
+      /// <param name="lexemaName">Nombre del lexema a verificar</param>
+      /// <returns>False if there is no type to the identifier, true if the identifier has type</returns>
+      public static bool CheckTypeOfLexema(string lexemaName)
+      {
+         int numRow = numRowInTable(lexemaName);
+         var typesValues = GetTypesValues();
+         if (string.IsNullOrEmpty(typesValues[numRow]))
+         {
+            return false;
+         }
+
+         return true;
+      }
+
+      public static string GetTypeOfLexema(string lexemaName)
+      {
+         int numRow = numRowInTable(lexemaName);
+         var typesValues = GetTypesValues();
+         return typesValues[numRow];
+      }
+      /// <summary>
+      /// Agrega el valor al lexema correspondiente
+      /// </summary>
+      /// <param name="lexemaName">Nombre del lexema (identificador)</param>
+      /// <param name="valueToAssing">Valor que tendrá el lexema</param>
+      public static void AddValueToIdentifier(string lexemaName, string valueToAssing)
+      {
+         int numRow = numRowInTable(lexemaName);
+         var valuesColumn = GetValues();
+         valuesColumn[numRow] = valueToAssing;
+      }
+
       public static void ClearSymbolTable()
       {
          FillSymbolTable();
@@ -250,6 +285,8 @@ namespace Compilador
          lexemaDiccionary.Add(17, "default");
          lexemaDiccionary.Add(18, "new");
          lexemaDiccionary.Add(19, "break");
+         lexemaDiccionary.Add(20, "float");
+         lexemaDiccionary.Add(21, "bool");
 
          tokenDiciconary.Add(0, "TIPO");
          tokenDiciconary.Add(1, "TIPO");
@@ -271,6 +308,8 @@ namespace Compilador
          tokenDiciconary.Add(17, "DEFAULT");
          tokenDiciconary.Add(18, "NEW");
          tokenDiciconary.Add(19, "BREAK");
+         tokenDiciconary.Add(20, "TIPO");
+         tokenDiciconary.Add(21, "TIPO");
 
          tipeDiccionary.Add(0, "int");
          tipeDiccionary.Add(1, "char");
@@ -285,13 +324,15 @@ namespace Compilador
          tipeDiccionary.Add(10, "reserveWord");
          tipeDiccionary.Add(11, "reserveWord");
          tipeDiccionary.Add(12, "reserveWord");
-         tipeDiccionary.Add(13, "bool");
+         tipeDiccionary.Add(13, "reserveWord");
          tipeDiccionary.Add(14, "reserveWord");
-         tipeDiccionary.Add(15, "bool");
+         tipeDiccionary.Add(15, "reserveWord");
          tipeDiccionary.Add(16, "reserveWord");
          tipeDiccionary.Add(17, "reserveWord");
          tipeDiccionary.Add(18, "reserveWord");
          tipeDiccionary.Add(19, "reserveWord");
+         tipeDiccionary.Add(20, "float");
+         tipeDiccionary.Add(21, "bool");
 
          numLineDiccioanry.Add(0, String.Empty);
          numLineDiccioanry.Add(1, String.Empty);
@@ -313,6 +354,8 @@ namespace Compilador
          numLineDiccioanry.Add(17, String.Empty);
          numLineDiccioanry.Add(18, String.Empty);
          numLineDiccioanry.Add(19, String.Empty);
+         numLineDiccioanry.Add(20, String.Empty);
+         numLineDiccioanry.Add(21, String.Empty);
 
          valorDictyonary.Add(0, String.Empty);
          valorDictyonary.Add(1, String.Empty);
@@ -334,6 +377,8 @@ namespace Compilador
          valorDictyonary.Add(17, String.Empty);
          valorDictyonary.Add(18, String.Empty);
          valorDictyonary.Add(19, String.Empty);
+         valorDictyonary.Add(20, String.Empty);
+         valorDictyonary.Add(21, String.Empty);
 
          desplazamientoDictionary.Add(0, String.Empty);
          desplazamientoDictionary.Add(1, String.Empty);
@@ -355,6 +400,8 @@ namespace Compilador
          desplazamientoDictionary.Add(17, String.Empty);
          desplazamientoDictionary.Add(18, String.Empty);
          desplazamientoDictionary.Add(19, String.Empty);
+         desplazamientoDictionary.Add(20, String.Empty);
+         desplazamientoDictionary.Add(21, String.Empty);
       }
    }
 }
