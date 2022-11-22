@@ -38,11 +38,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                0, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
@@ -70,11 +70,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                2, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
@@ -98,23 +98,23 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                3, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR),
+                     selectorString(notTerminalsForThis.FOR),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO),
+                     selectorString(notTerminalsForThis.DO),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH),
+                     selectorString(notTerminalsForThis.SWITCH),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
                   },
                   {"<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
@@ -126,23 +126,23 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                4, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR),
+                     selectorString(notTerminalsForThis.FOR),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO),
+                     selectorString(notTerminalsForThis.DO),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH),
+                     selectorString(notTerminalsForThis.SWITCH),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
                   },
                   {"<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
@@ -154,23 +154,23 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                5, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR),
+                     selectorString(notTerminalsForThis.FOR),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO),
+                     selectorString(notTerminalsForThis.DO),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH),
+                     selectorString(notTerminalsForThis.SWITCH),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
                   },
                   {"<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
@@ -182,23 +182,23 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                6, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
+                     selectorString(notTerminalsForThis.IF),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
+                     selectorString(notTerminalsForThis.WHILE),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR),
+                     selectorString(notTerminalsForThis.FOR),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO),
+                     selectorString(notTerminalsForThis.DO),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH),
+                     selectorString(notTerminalsForThis.SWITCH),
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
                   },
                   {"<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
@@ -336,5 +336,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
             }
         }
+        private string selectorString(notTerminalsForThis token)
+        {
+            return notTerminalSymbols.GetValue((int)Convert.ChangeType(token, token.GetTypeCode())).ToString();
+        }
+
     }
 }

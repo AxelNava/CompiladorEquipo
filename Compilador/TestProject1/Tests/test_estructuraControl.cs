@@ -6,21 +6,33 @@ using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Xunit;
 namespace Compilador.AnalizadorSintactico.Gramaticas.Tests
 {
-   public class test_estructuraControl
-   {
+    public class test_estructuraControl
+    {
+        [Theory]
+        [MemberData(nameof(QDataTestStack))]
+        public static void Test_EstructuraControl(string espected, Stack<string> estain)
+        {
+            GramaticaEstructuraControl gc = new GramaticaEstructuraControl();
+            PilaTokens.GlobalTokens = estain;
+            Assert.Equal(espected, gc.EjecutarAnalisis());
+        }
       public static IEnumerable<object[]> QDataTestStack()
-      {
+      {/*
+         "<estructuracontrol>",
+         "if",
+         "while",
+         "for",
+         "do",
+         "switch",
+         "recursivo"
+            */
          string totalStack =
             string.Format(
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CORCHETEABRE)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CORCHETECIERRA)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CORCHETEABRE)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CORCHETECIERRA)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion)} " +
-               "Valores " +
-               $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
+               $"if " +
+               $"while " +
+               $"for " +
+               $"do " +
+               $"switch " +
                $"FinCadena");
          string[] tokensSeparate = totalStack.Split(' ');
          Stack<string> pilaEntrada = new Stack<string>();
@@ -28,7 +40,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.Tests
          {
             pilaEntrada.Push(tokensSeparate[i]);
          }
-         yield return new object[] { "Declaracion", pilaEntrada };
+         yield return new object[] { "<estructuracontrol>", pilaEntrada };
       }
    }
 }
