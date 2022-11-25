@@ -1,47 +1,54 @@
 using System;
+using System.Collections.Generic;
 
 namespace Compilador.IntentoCodigoIntermedio
 {
    public class tablaInstrucciones
    {
+        public static Dictionary<InstruccionesCodigoIntermedio, Tuple<string, string>> Tabla_Instrucciones = new Dictionary<InstruccionesCodigoIntermedio, Tuple<string, string>>()
+        {
+            
+        };
       public enum InstruccionesCodigoIntermedio
       {
-         InstruccionIf,
+         
          InstruccionMayor,
          InstruccionMenor,
          InstruccionIgual,
-         InstruccionSwitch,
-         InstruccionWhile,
-         InstruccionCase,
-         InstruccionDefault,
-         InstruccionFor,
+         InstruccionMayorIgual,
+         InstruccionMenorIgual,
+         InstruccionDiferente,
+         InstruccionNegacion,
+         InstruccionAsignacion,
+         InstruccionSum,
+         InstruccionRes,
+         InstruccionMulti,
+         InstruccionDiv,
          InstruccionDeclaracion,
-         InstruccionInicializacion,
-         InstruccionBreak,
          InstruccionLLamar,
          InstruccionReturn,
-         InstruccionOr,
-         InstruccionAnd
+        
       }
 
       private static string[] instruccionesString =
       {
-         "If",
-         "Mayor",
-         "Menor",
-         "Igual",
-         "Switch",
-         "While",
-         "Case",
-         "Default",
-         "For",
+         
+         "SI_MAYOR",
+         "SI_MENOR",
+         "SI_IGUAL",
+         "SI_MAYORIGUAL",
+         "SI_MENORIGUAL",
+         "SI_DIFERENTE",
+         "SI_NEGACION",
+         "ASIGNACION",
+         "SUM",
+         "RES",
+         "MULTI",
+         "DIV",
          "Declaracion",
-         "Inicializacion",
-         "Break",
          "Llamar",
          "Return",
-         "Or",
-         "And"
+         
       };
 
       public static string SelectInstruction(InstruccionesCodigoIntermedio Instruccion)
