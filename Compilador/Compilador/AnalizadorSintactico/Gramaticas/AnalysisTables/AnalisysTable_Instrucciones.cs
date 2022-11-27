@@ -236,7 +236,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   {
                      "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Recursion), new []
                      {
-                        selectorString(nonTerminalsInstrucciones.Valores)
+                        selectorString(nonTerminalsInstrucciones.Instruccion)
                      })
                   } 
                }

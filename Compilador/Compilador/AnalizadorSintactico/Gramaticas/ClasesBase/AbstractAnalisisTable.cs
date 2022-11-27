@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.TablasGlobales;
 
@@ -76,9 +77,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          {
             case AbstractActionFunction.ActionEnum.DESPLAZAMIENTO:
                PushPopStacks_Shit_Goto(referenceState);
-               if(PilaComprobacion.Peek().Item2 != "Lambda")
+               if (PilaComprobacion.Peek().Item2 != "Lambda")
                   LexemaCount.CountLexemas++;
-               CheckTypesLexema();
                break;
             case AbstractActionFunction.ActionEnum.GOTO:
                PushPopStacks_Shit_Goto(referenceState);
@@ -93,24 +93,41 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                break;
          }
       }
-      private void CheckTypesLexema()
+      private static void CheckMaxMinValueOfFloat()
       {
-         int valueOfShift = 0;
-         switch (PilaComprobacion.Peek().Item2)
+         if (!float.TryParse(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2, out _))
          {
-            case "TIPO":
-               string typeOftype = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
-               valueOfShift = Tabla_DesplazamientosValores.GetValueOfShift(typeOftype);
-               break;
-            case "Entero":
-            case "Cadena":
-            case "Decimal":
-            case "Caracter":
-            case "BOOL":
-               valueOfShift = Tabla_DesplazamientosValores.GetValueOfShift(PilaComprobacion.Peek().Item2);
-               break;
+            Mensajes_ErroresSemanticos.AddErrorOverflowMaxMinValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2,
+               TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
+               TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
          }
       }
+
+      private static void CheckStringLenght()
+      {
+         if (TablaLexemaToken.LexemaTokensTable.ContainsKey(LexemaCount.CountLexemas))
+         {
+            if (TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2.Length > 256)
+            {
+               Mensajes_ErroresSemanticos.AddErrorOverflowMaxValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
+                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+            }
+         }
+      }
+
+      private static void CheckMaxMinValueOfInteger()
+      {
+         if (TablaLexemaToken.LexemaTokensTable.ContainsKey(LexemaCount.CountLexemas))
+         {
+            if (!Int32.TryParse(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2, out _))
+            {
+               Mensajes_ErroresSemanticos.AddErrorOverflowMaxMinValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2,
+                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
+                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+            }
+         }
+      }
+
       public void AddError()
       {
          int referenceState = PilaComprobacion.Peek().Item1;

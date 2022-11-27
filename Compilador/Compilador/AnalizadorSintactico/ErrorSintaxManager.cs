@@ -18,8 +18,14 @@ namespace Compilador.AnalizadorSintactico
          FilaEstado = filaEstado;
          foreach (var key in FilaEstado.Keys)
          {
-            ErrorMessage.AppendFormat($"Se esperaba un \"{key}\"\n -- Línea {numLinea}");
+            if(FilaEstado[key].Action == AbstractActionFunction.ActionEnum.DESPLAZAMIENTO)
+               ErrorMessage.AppendFormat($"Se esperaba un \"{key}\"\n -- Línea {numLinea}");
          }
+      }
+
+      public static void ClearMessage()
+      {
+         ErrorMessage.Clear();
       }
    }
 }

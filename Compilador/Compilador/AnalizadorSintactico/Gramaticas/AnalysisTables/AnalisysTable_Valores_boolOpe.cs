@@ -15,7 +15,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          RM,
          Para,
          R,
-         PR
+         PR,
+         ParametrosS
       }
 
       private static readonly string[] nonTerminalsTokenString =
@@ -24,9 +25,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
          "Valores",
          "InstruccionesIdentificador",
          "RM",
-         "Params",
+         "Param",
          "R",
-         "PR"
+         "PR",
+         "Parametros"
       };
 
       public static Dictionary<int, Dictionary<string, AbstractActionFunction>> globalDictionaryValores =
@@ -1768,6 +1770,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         selectorString(nonTerminalsForThisGrammar.R)
                      })
+                  }
+               }
+            },
+            {
+               86, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
+                     (nonTerminalsForThisGrammar.ParametrosS), new []{selectorString(nonTerminalsForThisGrammar.Para)})
                   }
                }
             }

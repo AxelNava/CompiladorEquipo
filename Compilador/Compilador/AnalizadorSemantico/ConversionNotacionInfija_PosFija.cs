@@ -1,6 +1,6 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
-using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSemantico
@@ -32,13 +32,8 @@ namespace Compilador.AnalizadorSemantico
       /// </summary>
       private Stack<string> operatorsStack = new Stack<string>();
 
-      /// <summary>
-      /// Ejecuta el analisis para convertir la notación infija a notacion posFija
-      /// </summary>
-      /// <param name="entrada">Arreglo de valores</param>
-      /// <returns>Retorna la cola de salida para ser evaluada</returns>
-      private string typeOfIdentifier = string.Empty;
-
+      private bool ThereAreAString = false;
+      private bool ThereAreUnitaryToken = false;
       public string typeGlobalOfOperation = string.Empty;
       public Queue<string> ColaSalida;
 
@@ -73,9 +68,16 @@ namespace Compilador.AnalizadorSemantico
       {
          inicioLexema = inicio;
          finLexema = final;
+         // if (typeIdent == "string")
+         // {
+         //    ColaSalida = outQueue;
+         //    return;
+         // }
+
          Conversor(typeIdent);
          ColaSalida = outQueue;
       }
+
 
       public void EjecutarAnalisis(int inicio, int final)
       {
@@ -85,9 +87,16 @@ namespace Compilador.AnalizadorSemantico
          ColaSalida = outQueue;
       }
 
+      #region Convertion wihtout string operation
+
       private void Conversor()
       {
          typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3];
+         if (HandleUnitaryTokens(inicioLexema))
+         {
+            ThereAreUnitaryToken = true;
+         }
+
          for (int i = inicioLexema; i < finLexema; i++)
          {
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
@@ -111,6 +120,16 @@ namespace Compilador.AnalizadorSemantico
 
             if (HandlerCharactersOperator(i))
             {
+               if (ThereAreUnitaryToken)
+               {
+                  var rowLexemaToken = TablaLexemaToken.LexemaTokensTable[i];
+                  Mensajes_ErroresSemanticos.AddErrorOperatro(typeGlobalOfOperation, TablaRelacionTipoToken.TablaTokenTipo[rowLexemaToken.Item3],
+                     rowLexemaToken.Item1);
+                  typeGlobalOfOperation = string.Empty;
+                  outQueue.Clear();
+                  return;
+               }
+
                continue;
             }
 
@@ -134,6 +153,11 @@ namespace Compilador.AnalizadorSemantico
       private void Conversor(string typeIdent)
       {
          typeGlobalOfOperation = typeIdent;
+         if (HandleUnitaryTokens(inicioLexema))
+         {
+            ThereAreUnitaryToken = true;
+         }
+
          for (int i = inicioLexema; i < finLexema; i++)
          {
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
@@ -160,6 +184,11 @@ namespace Compilador.AnalizadorSemantico
                continue;
             }
 
+            if (HandleStringToken(i))
+            {
+               typeGlobalOfOperation = "string";
+            }
+
             if (!CheckTypeOfLexema(i))
             {
                var rowLexemaToken = TablaLexemaToken.LexemaTokensTable[i];
@@ -175,24 +204,33 @@ namespace Compilador.AnalizadorSemantico
             outQueue.Enqueue(operatorsStack.Pop());
       }
 
+      #endregion
+
       private bool CheckTypeOfLexema(int posicionTabla)
       {
+         //Checka si el token, no es del tipo unitario, es decir, solo si es boleano o caracter
          if (HandleUnitaryTokens(posicionTabla))
          {
             typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
             return true;
          }
 
-         string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
-         if (typeReference == typeGlobalOfOperation)
+         //En caso de que no sea unitario, checa si es del mismo tipo
+         if (TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3))
          {
-            return true;
+            string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
+            if (typeReference == typeGlobalOfOperation)
+            {
+               return true;
+            }
          }
 
+         //Si no son del mismo tipo, entonces, checa si es un identificador
          if (TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3 == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
          {
             if (!HandleIdentifier(TablaLexemaToken.LexemaTokensTable[posicionTabla].Item2))
                return false;
+            return true;
          }
 
          return false;
@@ -201,10 +239,13 @@ namespace Compilador.AnalizadorSemantico
 
       private bool HandleUnitaryTokens(int posicionTabla)
       {
-         string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
-         if (typeReference == "bool" || typeReference == "char")
+         if (TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3))
          {
-            return true;
+            string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
+            if (typeReference == "bool" || typeReference == "char")
+            {
+               return true;
+            }
          }
 
          return false;
@@ -240,7 +281,47 @@ namespace Compilador.AnalizadorSemantico
       {
          if (TablaSimbolos.CheckTypeOfLexema(identifier))
          {
-            if (TablaRelacionTipoToken.TablaTipoToken[TablaSimbolos.GetTypeOfLexema(identifier)] == typeGlobalOfOperation)
+            int numRow = TablaSimbolos.numRowInTable(identifier);
+            if (TablaSimbolos.GetValues()[numRow] != string.Empty)
+            {
+               if (HandleIntFloatOfIdentifier(numRow))
+               {
+                  string valueOfIdentifier = TablaSimbolos.GetValues()[numRow];
+                  if (int.TryParse(valueOfIdentifier, out _))
+                  {
+                     outQueue.Enqueue(valueOfIdentifier);
+                     return true;
+                  }
+
+                  if (float.TryParse(valueOfIdentifier, out _))
+                  {
+                     outQueue.Enqueue(valueOfIdentifier);
+                     return true;
+                  }
+                  
+               }
+
+               return true;
+            }
+
+            if (TablaRelacionTipoToken.TablaTipoToken.ContainsValue(TablaSimbolos.GetTypeOfLexema(identifier)))
+            {
+               if(typeGlobalOfOperation == TablaSimbolos.GetTypesValues()[numRow])
+                  return true;
+               return false;
+            }
+         }
+
+         return false;
+      }
+
+      private bool HandleStringToken(int posicionTabla)
+      {
+         if (TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3))
+         {
+            string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
+
+            if (typeReference == "string")
             {
                return true;
             }
@@ -311,6 +392,16 @@ namespace Compilador.AnalizadorSemantico
 
             if (TablaLexemaToken.LexemaTokensTable[i].Item2 != ")")
                operatorsStack.Push(TablaLexemaToken.LexemaTokensTable[i].Item2);
+            return true;
+         }
+
+         return false;
+      }
+
+      private bool HandleIntFloatOfIdentifier(int numRowOfTable)
+      {
+         if (TablaSimbolos.GetTypesValues()[numRowOfTable] == "int" || TablaSimbolos.GetTypesValues()[numRowOfTable] == "float")
+         {
             return true;
          }
 

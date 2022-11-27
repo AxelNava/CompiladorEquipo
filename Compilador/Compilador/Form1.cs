@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
+using Compilador.AnalizadorSemantico;
+using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.Gramaticas;
+using Compilador.TablasGlobales;
 
 namespace Compilador
 {
@@ -33,6 +37,7 @@ namespace Compilador
       private void button1_Click(object sender, EventArgs e)
       {
          TablaSimbolos.ClearSymbolTable();
+         ClearAllStructuresData();
          AutomatasLexicos auLex = new AutomatasLexicos(EntradaCompiladorTextBox.Text);
          dataGridLexema.Rows.Clear();
          dataGridTableToken.Rows.Clear();
@@ -45,13 +50,17 @@ namespace Compilador
                dataGridLexema.Rows.Add(todo[0]);
                dataGridTableToken.Rows.Add(todo[0], todo[1]);
             }
-
             fillTableVisual();
             AlmacenarTokens_EnStack(map);
+
+            #region Analis sintactico_semantico_codigoIntermedio
             GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
             // Gramatica_Switch pruebaValores = new Gramatica_Switch();
             // Gramatica_IF pruebaValores = new Gramatica_IF();
             MessageBox.Show(pruebaValores.Ejecutar_Analisis());
+
+            #endregion
+
             fillTableVisual();
 
             textBoxErrores.Text = auLex.messasgesErros;
@@ -61,6 +70,15 @@ namespace Compilador
          {
             MessageBox.Show("Ha habido un error:\n" + ex.Message);
          }
+      }
+
+      private static void ClearAllStructuresData()
+      {
+         ErrorSintaxManager.ClearMessage();
+         Mensajes_ErroresSemanticos.Reset_ErrorMes();
+         ContadorDesplazamiento.ConteoDesplazamiento = 0;
+         LexemaCount.CountLexemas = 0;
+         TablaLexemaToken.ClearTable();
       }
 
       private void EnterPressedEvent(object sender, KeyEventArgs e)

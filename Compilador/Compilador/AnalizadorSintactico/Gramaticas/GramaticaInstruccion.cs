@@ -55,7 +55,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
             if (AnalisisFinished)
             {
-               AssingValueToIdentifier(_identificadorEncontrado);
                return "Instruccion";
             }
          }
@@ -108,6 +107,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             //Agregar métodos para errores
          }
 
+         if (referenceState == 22 || referenceState == 23)
+         {
+            AssingValueToIdentifier(_identificadorEncontrado);
+         }
+
          if (referenceState == 3 && PilaTokens.GlobalTokens.Peek() != "ComplementoIdenti")
          {
             _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
@@ -144,6 +148,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             int numRow = TablaSimbolos.numRowInTable(identifierToAnalize);
             TablaSimbolos.GetTypesValues()[numRow] = _tipoEncontrado;
+            AssignShiftToIdentifier(identifierToAnalize);
+            ContadorDesplazamiento.AddShiftType(_tipoEncontrado);
             return;
          }
 
@@ -165,24 +171,55 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
             EvaluadorNotacion_PosFija evaluacion = new EvaluadorNotacion_PosFija();
             conversion.ExecuteAnalysis(_inicioConteoValor, finalCounteoValores, _tipoEncontrado);
-            float resultadoEvaluacion = 0; 
+            float resultadoEvaluacion = 0;
             // TablaSimbolos.GetValues()[numRow] = 
             if (CheckType(conversion.typeGlobalOfOperation))
             {
                if (conversion.ColaSalida.Count != 0)
                {
                   resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
+                  MessageBox.Show(resultadoEvaluacion.ToString());
+                  TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
                }
             }
-            MessageBox.Show(resultadoEvaluacion.ToString());
-            TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
-            // TablaSimbolos.GetValues()[numRow] = string.Join(" ", _valorEncontrado);
+            else
+            {
+               if (conversion.typeGlobalOfOperation != string.Empty)
+               {
+                  TablaSimbolos.GetValues()[numRow] = CheckBoolChar(conversion.typeGlobalOfOperation)
+                     ? conversion.typeGlobalOfOperation
+                     : string.Join(" ", _valorEncontrado);
+               }
+            }
+         }
+      }
+
+      /// <summary>
+      /// Asigna el desplazamiento a su respectivo identificador
+      /// </summary>
+      /// <param name="identifier">Identificador a agregar el desplazamiento</param>
+      private void AssignShiftToIdentifier(string identifier)
+      {
+         if (TablaSimbolos.CheckLexema(identifier))
+         {
+            int numRow = TablaSimbolos.numRowInTable(identifier);
+            if (numRow != 0)
+            {
+               TablaSimbolos.GetDesplazamientos()[numRow] = ContadorDesplazamiento.ConteoDesplazamiento.ToString();
+            }
          }
       }
 
       private bool CheckType(string type)
       {
          if (type == "int" || type == "float")
+            return true;
+         return false;
+      }
+
+      private bool CheckBoolChar(string type)
+      {
+         if (type == "char" || type == "bool")
             return true;
          return false;
       }

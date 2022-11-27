@@ -58,18 +58,24 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            IdentifierToValue();
+            CheckWheterIsMethod(referenceState);
+            IdentifierToValue(referenceState);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
             return true;
          }
+
          return false;
       }
 
-      private void IdentifierToValue()
+      /// <summary>
+      /// Verifica que el identificador tenga un tipo
+      /// </summary>
+      private void IdentifierToValue(int referenceState)
       {
          if (PilaTokens.GlobalTokens.Peek() == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
          {
@@ -80,8 +86,36 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                return;
             }
 
+            if (CheckIdentifier(referenceState))
+            {
+               return;
+            }
             Mensajes_ErroresSemanticos.AddErrorInstanciation(PilaTokens.GlobalTokens.Peek(),
                TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas + 1].Item1);
+         }
+      }
+
+      private bool CheckIdentifier(int referenceState)
+      {
+         if (referenceState == 4 || referenceState == 11 || referenceState == 41)
+         {
+            _valueIdentifier = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+            return true;
+         }
+
+         return false;
+      }
+
+      private void CheckWheterIsMethod(int referenceState)
+      {
+         if (referenceState == 18 || referenceState == 29 || referenceState == 60)
+         {
+            int numRow = TablaSimbolos.numRowInTable(_valueIdentifier);
+            if (numRow != 0)
+            {
+               TablaSimbolos.GetValues()[numRow] = 1.ToString();
+               TablaSimbolos.GetTypesValues()[numRow] = "Metodo";
+            }
          }
       }
    }
