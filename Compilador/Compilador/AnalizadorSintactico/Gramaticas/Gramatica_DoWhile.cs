@@ -204,6 +204,15 @@ namespace Compilador.Gramaticas
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
 
+         if (referenceState == 3)
+         {
+            string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenAux);
+            }
+         }
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             // PilaTokens.numLineToken.RemoveAt(0);

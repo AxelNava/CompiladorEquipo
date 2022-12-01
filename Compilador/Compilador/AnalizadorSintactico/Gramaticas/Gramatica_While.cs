@@ -225,9 +225,16 @@ namespace Compilador.Gramaticas
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
 
+         if (referenceState == 6)
+         {
+            string tokenaux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenaux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenaux);
+            }
+         }
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);

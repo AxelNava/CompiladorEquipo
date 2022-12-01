@@ -530,6 +530,7 @@ namespace Compilador.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
+         
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -539,6 +540,16 @@ namespace Compilador.Gramaticas
          }
 
          return false;
+      }
+
+      private void HandleCuerpoInstrucciones(int referenceState)
+      {
+         if ((referenceState != 5 && referenceState != 20 && referenceState != 26) || PilaTokens.GlobalTokens.Peek() == "cuerpoInstrucciones") return;
+         string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+         if (string.IsNullOrEmpty(tokenAux))
+         {
+            PilaTokens.GlobalTokens.Push(tokenAux);
+         }
       }
    }
 }

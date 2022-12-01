@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
+using Compilador.Gramaticas;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
@@ -52,6 +53,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
+         if (referenceState == 14 && PilaTokens.GlobalTokens.Peek() != "cuerpoInstrucciones" && PilaTokens.GlobalTokens.Peek() != "CuerpoMetodo")
+         {
+            string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenAux);
+            }
+         }
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             HandleTokenIdentType(referenceState);

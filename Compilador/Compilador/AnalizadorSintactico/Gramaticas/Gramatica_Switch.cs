@@ -2,7 +2,6 @@ using System;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using System.Collections.Generic;
-using System.Threading;
 using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.Gramaticas;
@@ -80,12 +79,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             }
          }
 
-         if (referenceState == 17 || referenceState == 18)
+         if ((referenceState == 17 || referenceState == 18) && PilaTokens.GlobalTokens.Peek() != "cuerpoInstrucciones")
          {
-            //Cambiar por cuerpoInstrucciones
-            // string tokenAux = new GramaticaValores().EjecutarAnalisis();
-            // if (!string.IsNullOrEmpty(tokenAux))
-            //    PilaTokens.GlobalTokens.Push(tokenAux);
+            // Cambiar por cuerpoInstrucciones
+             string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+             if (!string.IsNullOrEmpty(tokenAux))
+                PilaTokens.GlobalTokens.Push(tokenAux);
          }
 
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))

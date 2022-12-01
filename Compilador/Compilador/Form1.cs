@@ -55,12 +55,13 @@ namespace Compilador
 
             #region Analis sintactico_semantico_codigoIntermedio
 
-            Gramatica_CuerpoInstrucciones pruebaValores = new Gramatica_CuerpoInstrucciones();
+            // Gramatica_CuerpoInstrucciones pruebaValores = new Gramatica_CuerpoInstrucciones();
             // Gramatica_ArchivoClase pruebaValores = new Gramatica_ArchivoClase();
             // GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
             // Gramatica_Switch pruebaValores = new Gramatica_Switch();
+            Gramatica_ArchivoClase pruebaValores = new Gramatica_ArchivoClase();
             // Gramatica_IF pruebaValores = new Gramatica_IF();
-            MessageBox.Show(pruebaValores.Ejecutar_Analisis());
+            MessageBox.Show(pruebaValores.EjecutarAnalisis());
 
             #endregion
 

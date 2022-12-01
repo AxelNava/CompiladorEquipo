@@ -244,6 +244,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   {
                      selectorString(nonTerminalTokensSwtich.cuerpoInstrucciones), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
                         .GOTO, 19)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BREAAAK), new ReducedAction(selectorString
+                     (nonTerminalTokensSwtich.cuerpoInstrucciones), new []{string.Empty})
                   }
                }
             },
@@ -253,6 +257,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   {
                      selectorString(nonTerminalTokensSwtich.cuerpoInstrucciones), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum
                         .GOTO, 20)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BREAAAK), new ReducedAction(selectorString
+                        (nonTerminalTokensSwtich.cuerpoInstrucciones), new []{string.Empty})
                   }
                }
             },

@@ -361,6 +361,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             }
          }
 
+         if (referenceState == 20 && PilaTokens.GlobalTokens.Peek() != "cuerpoInstrucciones" && PilaTokens.GlobalTokens.Peek() != tokensNameGlobal
+                .selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA))
+         {
+            string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenAux);
+            }
+         }
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -385,12 +395,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                CheckTheTypeOfIdentifier();
                break;
             case 16:
+               if (PilaTokens.GlobalTokens.Peek() == "<INCREMENTO>")
+                  break;
                identificadorEncontrado = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
                if (!CheckIdentifiertype())
                {
                   Mensajes_ErroresSemanticos.AddErrorInstanciation(identificadorEncontrado, TablaLexemaToken.LexemaTokensTable[LexemaCount
-                  .CountLexemas].Item1);
+                     .CountLexemas].Item1);
                }
+
                break;
          }
       }
