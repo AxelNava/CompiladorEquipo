@@ -54,7 +54,10 @@ namespace Compilador
             AlmacenarTokens_EnStack(map);
 
             #region Analis sintactico_semantico_codigoIntermedio
-            GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
+
+            Gramatica_CuerpoInstrucciones pruebaValores = new Gramatica_CuerpoInstrucciones();
+            // Gramatica_ArchivoClase pruebaValores = new Gramatica_ArchivoClase();
+            // GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
             // Gramatica_Switch pruebaValores = new Gramatica_Switch();
             // Gramatica_IF pruebaValores = new Gramatica_IF();
             MessageBox.Show(pruebaValores.Ejecutar_Analisis());
@@ -110,6 +113,7 @@ namespace Compilador
 
       private void fillTableVisual()
       {
+         dataGridTableSymbols.Rows.Clear();
          var lexemas = TablaSimbolos.GetLexemasValues();
          var tokens = TablaSimbolos.GetTokensValues();
          var types = TablaSimbolos.GetTypesValues();

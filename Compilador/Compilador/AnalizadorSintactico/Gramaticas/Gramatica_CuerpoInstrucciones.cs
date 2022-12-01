@@ -20,7 +20,7 @@ namespace Compilador.Gramaticas
       {
          "cuerpoInstrucciones",
          "Instruccion",
-         "EstructuraControl",
+         "<estructuracontrol>",
          "Recursividad"
       };
 
@@ -162,7 +162,7 @@ namespace Compilador.Gramaticas
                   if (!CheckTokenIn_Handler())
                   {
                      PilaTokens.GlobalTokens.Pop();
-                     AddError();
+                     // AddError();
                      return string.Empty;
                   }
                }
@@ -177,18 +177,9 @@ namespace Compilador.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-         if ((referenceState == 0 || referenceState == 2 || referenceState == 3) && PilaTokens.GlobalTokens.Peek() != selectorString
-                (NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES) &&
-             PilaTokens.GlobalTokens.Peek() != selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD))
-         {
-            string tokenAux = new GramaticaInstruccion().Ejecutar_Analisis();
-            if (!string.IsNullOrEmpty(tokenAux))
-               PilaTokens.GlobalTokens.Push(tokenAux);
-         }
-
+         HandleInstrucctionAndStructure(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
@@ -196,6 +187,24 @@ namespace Compilador.Gramaticas
          }
 
          return false;
+      }
+
+      private void HandleInstrucctionAndStructure(int referenceState)
+      {
+         if ((referenceState == 0 || referenceState == 2 || referenceState == 3) && PilaTokens.GlobalTokens.Peek() != selectorString
+                (NotTerminalsForThisGrammar.CUERPOINSTRUCCIONES) &&
+             PilaTokens.GlobalTokens.Peek() != selectorString(NotTerminalsForThisGrammar.RECURSIVIDAD))
+         {
+            string tokenAux = new GramaticaInstruccion().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenAux);
+               return;
+            }
+            tokenAux = new GramaticaEstructuraControl().EjecutarAnalisis();
+            if(!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
+         }
       }
    }
 }

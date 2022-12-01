@@ -55,6 +55,19 @@ namespace Compilador.Gramaticas.Tests
             $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
             "FinCadena"
          );
+
+         string totalStack3 = string.Format(
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE)} " +
+            $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA)} " +
+            "FinCadena"
+            );
+         string[] tokensSeparate3 = totalStack3.Split(' ');
+         
          string[] tokensSeparate2 = totalStack2.Split(' ');
          Stack<string> pilaEntrada = new Stack<string>();
          for (int i = tokensSeparate.Length - 1; i >= 0; i--)
@@ -67,9 +80,15 @@ namespace Compilador.Gramaticas.Tests
          {
             pilaEntrada2.Push(tokensSeparate2[i]);
          }
+         Stack<string> pilaEntrada3 = new Stack<string>();
+         for (var i = tokensSeparate3.Length - 1; i >= 0; i--)
+         {
+            pilaEntrada3.Push(tokensSeparate3[i]);
+         }
 
          yield return new object[] { "Valores", pilaEntrada };
          yield return new object[] { "Valores", pilaEntrada2 };
+         yield return new object[] { "Valores", pilaEntrada3 };
       }
    }
 }

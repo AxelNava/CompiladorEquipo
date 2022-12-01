@@ -98,6 +98,10 @@ namespace Compilador.Gramaticas
                {
                   {
                      selectorString(nonTerminalsTokens.CuerpoInstruccion), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 7)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
+                        (nonTerminalsTokens.CuerpoInstruccion), new[] { string.Empty })
                   }
                }
             },
@@ -185,6 +189,8 @@ namespace Compilador.Gramaticas
       public string Ejecutar_Analisis()
       {
          AnalisisFinished = false;
+         if (!TablaAnalisis[0].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            return string.Empty;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())

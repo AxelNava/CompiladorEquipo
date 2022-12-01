@@ -287,6 +287,7 @@ namespace Compilador
          lexemaDiccionary.Add(19, "break");
          lexemaDiccionary.Add(20, "float");
          lexemaDiccionary.Add(21, "bool");
+         lexemaDiccionary.Add(22, "return");
 
          tokenDiciconary.Add(0, "TIPO");
          tokenDiciconary.Add(1, "TIPO");
@@ -310,6 +311,7 @@ namespace Compilador
          tokenDiciconary.Add(19, "BREAK");
          tokenDiciconary.Add(20, "TIPO");
          tokenDiciconary.Add(21, "TIPO");
+         tokenDiciconary.Add(22, "RETURN");
 
          tipeDiccionary.Add(0, "int");
          tipeDiccionary.Add(1, "char");
@@ -333,6 +335,7 @@ namespace Compilador
          tipeDiccionary.Add(19, "reserveWord");
          tipeDiccionary.Add(20, "float");
          tipeDiccionary.Add(21, "bool");
+         tipeDiccionary.Add(22, "reserveWord");
 
          numLineDiccioanry.Add(0, String.Empty);
          numLineDiccioanry.Add(1, String.Empty);
@@ -356,6 +359,7 @@ namespace Compilador
          numLineDiccioanry.Add(19, String.Empty);
          numLineDiccioanry.Add(20, String.Empty);
          numLineDiccioanry.Add(21, String.Empty);
+         numLineDiccioanry.Add(22, String.Empty);
 
          valorDictyonary.Add(0, String.Empty);
          valorDictyonary.Add(1, String.Empty);
@@ -379,6 +383,7 @@ namespace Compilador
          valorDictyonary.Add(19, String.Empty);
          valorDictyonary.Add(20, String.Empty);
          valorDictyonary.Add(21, String.Empty);
+         valorDictyonary.Add(22, String.Empty);
 
          desplazamientoDictionary.Add(0, String.Empty);
          desplazamientoDictionary.Add(1, String.Empty);
@@ -402,6 +407,7 @@ namespace Compilador
          desplazamientoDictionary.Add(19, String.Empty);
          desplazamientoDictionary.Add(20, String.Empty);
          desplazamientoDictionary.Add(21, String.Empty);
+         desplazamientoDictionary.Add(22, String.Empty);
       }
    }
 }

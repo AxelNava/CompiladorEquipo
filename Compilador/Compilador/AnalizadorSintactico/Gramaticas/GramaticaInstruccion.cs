@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
-using Compilador.Gramaticas;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
@@ -35,6 +34,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       public string Ejecutar_Analisis()
       {
          AnalisisFinished = false;
+         if (!TablaAnalisis[0].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            return string.Empty;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())
@@ -172,7 +173,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             EvaluadorNotacion_PosFija evaluacion = new EvaluadorNotacion_PosFija();
             conversion.ExecuteAnalysis(_inicioConteoValor, finalCounteoValores, _tipoEncontrado);
             float resultadoEvaluacion = 0;
-            // TablaSimbolos.GetValues()[numRow] = 
             if (CheckType(conversion.typeGlobalOfOperation))
             {
                if (conversion.ColaSalida.Count != 0)
@@ -186,9 +186,24 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             {
                if (conversion.typeGlobalOfOperation != string.Empty)
                {
-                  TablaSimbolos.GetValues()[numRow] = CheckBoolChar(conversion.typeGlobalOfOperation)
-                     ? conversion.typeGlobalOfOperation
-                     : string.Join(" ", _valorEncontrado);
+                  if (_valorEncontrado.Length > 1)
+                  {
+                     if (!CheckBoolChar(conversion.typeGlobalOfOperation))
+                     {
+                        TablaSimbolos.GetValues()[numRow] = string.Join(" ", _valorEncontrado);
+                     }
+                     else
+                     {
+                        Mensajes_ErroresSemanticos.AddErrorWithBoolOrChar(conversion.typeGlobalOfOperation,
+                           TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas-1].Item1);
+                     }
+                  }
+                  else
+                  {
+                     TablaSimbolos.GetValues()[numRow] =
+                        (_valorEncontrado.Length == 1) ? TablaLexemaToken.GetLexema(LexemaCount.CountLexemas-1) : string
+                        .Empty;
+                  }
                }
             }
          }

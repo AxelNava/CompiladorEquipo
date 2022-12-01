@@ -94,6 +94,7 @@
     <Compile Include="AnalizadorSemantico\Mensajes_ErroresSemanticos.cs" />
     <Compile Include="AnalizadorSemantico\TablaRelacionTipoToken.cs" />
     <Compile Include="AnalizadorSintactico\ErrorSintaxManager.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_CuerpoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Instrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Valores_boolOpe.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_ParametrosFuncion.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaParametrosMetodo.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaValores.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_ArchivoClase.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_CuerpoInstrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Declaracion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_DoWhile.cs" />

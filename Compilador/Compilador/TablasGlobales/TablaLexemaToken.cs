@@ -7,6 +7,9 @@ namespace Compilador.TablasGlobales
    {
       /// <summary>
       /// Contiene la relación de lexema-Token con su número de línea
+      /// La tupla es, 1 - Numero de línea
+      /// 2 - lexema
+      /// 3 - token
       /// </summary>
       private static Dictionary<int, Tuple<int, string, string>> _lexemaTokensTable = new Dictionary<int, Tuple<int, string, string>>();
 

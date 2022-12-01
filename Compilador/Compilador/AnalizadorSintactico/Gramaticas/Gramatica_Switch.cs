@@ -27,6 +27,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       public string Ejecutar_Analisis()
       {
          AnalisisFinished = false;
+         if (!TablaAnalisis[0].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            return string.Empty;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())

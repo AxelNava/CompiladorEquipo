@@ -373,7 +373,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalsForThisGrammar.ParametrosS), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -404,7 +404,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 39)
+                     selectorString(nonTerminalsForThisGrammar.ParametrosS), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 39)
+                  },
+                  {
+                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 86)
                   }
                }
             },
@@ -594,7 +597,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalsForThisGrammar.ParametrosS), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -625,7 +628,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 52)
+                     selectorString(nonTerminalsForThisGrammar.ParametrosS), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 52)
+                  },
+                  {
+                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 86)
                   }
                }
             },
@@ -1211,7 +1217,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.Para), new[] { string.Empty })
+                        (nonTerminalsForThisGrammar.ParametrosS), new[] { string.Empty })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
@@ -1242,7 +1248,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.GOTO, 40)
                   },
                   {
-                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 74)
+                     selectorString(nonTerminalsForThisGrammar.ParametrosS), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 74)
+                  },
+                  {
+                     selectorString(nonTerminalsForThisGrammar.Para), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 86)
                   }
                }
             },
@@ -1659,7 +1668,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
@@ -1668,7 +1677,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
@@ -1677,7 +1686,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }

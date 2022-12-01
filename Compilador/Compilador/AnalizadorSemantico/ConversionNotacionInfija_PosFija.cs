@@ -91,7 +91,10 @@ namespace Compilador.AnalizadorSemantico
 
       private void Conversor()
       {
-         typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3];
+         if(TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3))
+            typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3];
+         if (TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3 == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
+            typeGlobalOfOperation = TablaSimbolos.GetTypeOfLexema(TablaLexemaToken.GetLexema(inicioLexema));
          if (HandleUnitaryTokens(inicioLexema))
          {
             ThereAreUnitaryToken = true;

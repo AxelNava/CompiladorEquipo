@@ -15,17 +15,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          WHILE,
          FOR,
          DO,
-         SWITCH
+         SWITCH,
+         RECURSIVO
       }
 
       private static readonly string[] notTerminalSymbols =
       {
          "<estructuracontrol>",
-         "if",
-         "while",
-         "for",
-         "do",
-         "switch"
+         "<IF>",
+         "<While>",
+         "<for>",
+         "DoWhile",
+         "<Switch>",
+         "recursivo"
       };
 
       public GramaticaEstructuraControl()
@@ -36,61 +38,208 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                0, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2)
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3)
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 4)
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 5)
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 6)
-                  }
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 1) }
                }
             },
             {
                1, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "FinCadena", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.ACEPTACION, 6) },
+                  { "FinCadena", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.ACEPTACION, 1) }
                }
             },
             {
                2, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "<IF>", new ReducedAction("EC", new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF) }) },
+                  {
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
+                  { "recursivo", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 7) },
+                  { "FinCadena", new ReducedAction("recursivo", new[] { string.Empty }) }
                }
             },
             {
                3, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "<WHILE>", new ReducedAction("EC", new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.WHILE) }) },
+                  {
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
+                  { "recursivo", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 9) },
+                  { "FinCadena", new ReducedAction("recursivo", new[] { string.Empty }) }
                }
             },
             {
                4, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "<FOR>", new ReducedAction("EC", new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.FOR) }) },
+                  {
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
+                  { "recursivo", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 10) },
+                  { "FinCadena", new ReducedAction("recursivo", new[] { string.Empty }) }
                }
             },
             {
                5, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "<DO>", new ReducedAction("EC", new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DO) }) },
+                  {
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
+                  { "recursivo", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 11) },
+                  { "FinCadena", new ReducedAction("recursivo", new[] { string.Empty }) }
                }
             },
             {
                6, new Dictionary<string, AbstractActionFunction>()
                {
-                  { "<SWITCH>", new ReducedAction("EC", new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.SWITCH) }) },
+                  {
+                     selectorString(notTerminalsForThis.IF),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 2)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.WHILE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.FOR),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 4)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.DO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 5)
+                  },
+                  {
+                     selectorString(notTerminalsForThis.SWITCH),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 6)
+                  },
+                  { "<estructuracontrol>", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8) },
+                  { "recursivo", new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 12) },
+                  { "FinCadena", new ReducedAction("recursivo", new[] { string.Empty }) }
+               }
+            },
+            {
+               7, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("<estructuracontrol>", new[] { "<IF>", "recursivo" }) }
+               }
+            },
+            {
+               8, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("recursivo", new[] { "<estructuracontrol>" }) }
+               }
+            },
+            {
+               9, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("<estructuracontrol>", new[] { "<While>", "recursivo" }) }
+               }
+            },
+            {
+               10, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("<estructuracontrol>", new[] { "<for>", "recursivo" }) }
+               }
+            },
+            {
+               11, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("<estructuracontrol>", new[] { "DoWhile", "recursivo" }) }
+               }
+            },
+            {
+               12, new Dictionary<string, AbstractActionFunction>()
+               {
+                  { "FinCadena", new ReducedAction("<estructuracontrol>", new[] { "<Switch>", "recursivo" }) }
                }
             },
          };
@@ -112,7 +261,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   PilaTokens.GlobalTokens.Push("FinCadena");
                   if (!CheckTokenIn_Handler())
                   {
-                     AddError();
+                     // AddError();
                      PilaTokens.GlobalTokens.Pop();
                      return string.Empty;
                   }
@@ -128,6 +277,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
+         checkcontrolestructure(referenceState);
+
+
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -137,6 +289,59 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          }
 
          return false;
+      }
+
+      private static void checkcontrolestructure(int referenceState)
+      {
+         if ((referenceState == 0 || referenceState == 1 || referenceState == 2 || referenceState == 3 || referenceState == 4 || referenceState
+                == 5 || referenceState == 6) &&
+             PilaTokens.GlobalTokens.Peek() != "recursivo" && PilaTokens.GlobalTokens.Peek() != "<estructuracontrol>" &&
+             PilaTokens.GlobalTokens.Peek() != "FinCadea")
+         {
+            Gramatica_IF gramatica_if = new Gramatica_IF();
+            string tokeng = gramatica_if.EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokeng))
+            {
+               PilaTokens.GlobalTokens.Push(tokeng);
+               return;
+            }
+
+            Gramatica_For gramatica_for = new Gramatica_For();
+            tokeng = gramatica_for.EjecutarAnalisis();
+            if (!string.IsNullOrEmpty(tokeng))
+            {
+               PilaTokens.GlobalTokens.Push(tokeng);
+               return;
+            }
+
+            Gramatica_While gramatica_while = new Gramatica_While();
+            tokeng = gramatica_while.Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokeng))
+            {
+               PilaTokens.GlobalTokens.Push(tokeng);
+               return;
+            }
+
+            Gramatica_DoWhile gramatica_dowhile = new Gramatica_DoWhile();
+            tokeng = gramatica_dowhile.Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokeng))
+            {
+               PilaTokens.GlobalTokens.Push(tokeng);
+               return;
+            }
+
+            Gramatica_Switch gramatica_switch = new Gramatica_Switch();
+            tokeng = gramatica_switch.Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokeng))
+            {
+               PilaTokens.GlobalTokens.Push(tokeng);
+            }
+         }
+      }
+
+      private string selectorString(notTerminalsForThis token)
+      {
+         return notTerminalSymbols.GetValue((int)Convert.ChangeType(token, token.GetTypeCode())).ToString();
       }
    }
 }

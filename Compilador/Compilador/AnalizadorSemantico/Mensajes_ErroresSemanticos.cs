@@ -17,17 +17,17 @@ namespace Compilador.AnalizadorSemantico
 
       public static void AddErrorTypes(string tipoEsperado, string tipoRecivido, int numLinea)
       {
-         MensajeError.AppendFormat($"No se puede asignar un tipo {tipoRecivido} a un tipo {tipoEsperado} -- Línea {numLinea}");
+         MensajeError.AppendFormat($"No se puede asignar un tipo {tipoRecivido} a un tipo {tipoEsperado} -- Línea {numLinea}\n");
       }
 
       public static void AddErrorInstanciation(string identifier, int numLinea)
       {
-         MensajeError.AppendFormat($"El identificador {identifier}, no ha sido declarado  -- Línea {numLinea}");
+         MensajeError.AppendFormat($"El identificador {identifier}, no ha sido declarado  -- Línea {numLinea}\n");
       }
 
       public static void AddErrorOperatro(string tipoEsperado, string tipoRecibido, int numLinea)
       {
-         MensajeError.AppendFormat($"No se puede operar un tipo {tipoEsperado} con un {tipoRecibido}-- Línea {numLinea}");
+         MensajeError.AppendFormat($"No se puede operar un tipo {tipoEsperado} con un {tipoRecibido}-- Línea {numLinea}\n");
       }
 
       public static void AddErrorOverflowMaxValue(string tipo, int numLinea)
@@ -37,17 +37,22 @@ namespace Compilador.AnalizadorSemantico
 
       public static void AddErrorOverflowMinValue(string tipo, int numLinea)
       {
-         MensajeError.AppendFormat($"Se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}");
+         MensajeError.AppendFormat($"Se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}\n");
       }
 
       public static void AddErrorOverflowMaxMinValue(string lexema, string tipo, int numLinea)
       {
-         MensajeError.AppendFormat($"El lexema ${lexema} se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}");
+         MensajeError.AppendFormat($"El lexema ${lexema} se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}\n");
       }
 
       public static void AddErrorOperatorWithString(string operatorLexema, int numLine)
       {
-         MensajeError.AppendFormat($"No se puede aplicar un operador ${operatorLexema} a un string -- Línea {numLine}");
+         MensajeError.AppendFormat($"No se puede aplicar un operador ${operatorLexema} a un string -- Línea {numLine}\n");
+      }
+
+      public static void AddErrorWithBoolOrChar(string type, int numLine)
+      {
+         MensajeError.AppendFormat($"No se puede aplicar un operador a un {type} -- Línea: {numLine}\n");
       }
    }
 }

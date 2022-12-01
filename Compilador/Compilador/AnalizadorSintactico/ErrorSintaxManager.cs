@@ -19,8 +19,13 @@ namespace Compilador.AnalizadorSintactico
          foreach (var key in FilaEstado.Keys)
          {
             if(FilaEstado[key].Action == AbstractActionFunction.ActionEnum.DESPLAZAMIENTO)
-               ErrorMessage.AppendFormat($"Se esperaba un \"{key}\"\n -- Línea {numLinea}");
+               ErrorMessage.AppendFormat($"Se esperaba un \"{key}\" -- Línea {numLinea} \n");
          }
+      }
+
+      public static void AddDeclarationError(string identifier, int numLine)
+      {
+         ErrorMessage.AppendFormat($"El identificador {identifier} ya ha sido declarado  -- Línea {numLine} \n");
       }
 
       public static void ClearMessage()

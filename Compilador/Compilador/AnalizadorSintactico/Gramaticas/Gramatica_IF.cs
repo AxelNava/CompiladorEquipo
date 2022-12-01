@@ -493,6 +493,8 @@ namespace Compilador.Gramaticas
       public string EjecutarAnalisis()
       {
          AnalisisFinished = false;
+         if (!TablaAnalisis[0].ContainsKey(PilaTokens.GlobalTokens.Peek()))
+            return string.Empty;
          while (PilaTokens.GlobalTokens.Count >= 1)
          {
             if (!CheckTokenIn_Handler())
@@ -530,7 +532,6 @@ namespace Compilador.Gramaticas
          }
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);

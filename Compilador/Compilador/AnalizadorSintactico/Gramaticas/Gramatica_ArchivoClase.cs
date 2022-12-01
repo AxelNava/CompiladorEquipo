@@ -229,10 +229,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             int referenceState = PilaComprobacion.Peek().Item1;
             if (referenceState == 9)
             {
-                //llamar gramatica yahir
-      
-                Gramatica_While hola = new Gramatica_While();
-                string tokenp = hola.Ejecutar_Analisis();
+               Gramatica_CuerpoClase gramaticaCuerpoClase = new Gramatica_CuerpoClase();
+                string tokenp = gramaticaCuerpoClase.Ejecutar_Analisis();
                 if(! string.IsNullOrEmpty(tokenp) )
                 {
                     PilaTokens.GlobalTokens.Push(tokenp);

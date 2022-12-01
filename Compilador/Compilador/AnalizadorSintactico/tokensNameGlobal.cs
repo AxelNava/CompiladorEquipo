@@ -42,7 +42,8 @@ namespace Compilador.AnalizadorSintactico
          DEFAUUULT,
          NEW,
          DOSPUNTOS,
-         BREAAAK
+         BREAAAK,
+         Retuuuurrnnn
       }
 
       private static readonly string[] tokens =
@@ -83,7 +84,8 @@ namespace Compilador.AnalizadorSintactico
          "DEFAULT",
          "NEW",
          "DosPuntos",
-         "BREAK"
+         "BREAK",
+         "RETURN"
       };
       public static string selectorString(tokensGlobals notTerminal)
       {
