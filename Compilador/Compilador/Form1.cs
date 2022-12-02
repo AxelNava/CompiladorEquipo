@@ -55,19 +55,15 @@ namespace Compilador
 
             #region Analis sintactico_semantico_codigoIntermedio
 
-            // Gramatica_CuerpoInstrucciones pruebaValores = new Gramatica_CuerpoInstrucciones();
-            // Gramatica_ArchivoClase pruebaValores = new Gramatica_ArchivoClase();
-            // GramaticaInstruccion pruebaValores = new GramaticaInstruccion();
-            // Gramatica_Switch pruebaValores = new Gramatica_Switch();
             Gramatica_ArchivoClase pruebaValores = new Gramatica_ArchivoClase();
-            // Gramatica_IF pruebaValores = new Gramatica_IF();
+            // Gramatica_CuerpoClase pruebaValores = new Gramatica_CuerpoClase();
             MessageBox.Show(pruebaValores.EjecutarAnalisis());
 
             #endregion
 
             fillTableVisual();
 
-            textBoxErrores.Text = auLex.messasgesErros;
+            textBoxErrores.Text = ConstructuError(auLex.messasgesErros);
             textBoxErrores.ForeColor = Color.Red;
          }
          catch (Exception ex)
@@ -76,7 +72,7 @@ namespace Compilador
          }
       }
 
-      private static void ClearAllStructuresData()
+      private void ClearAllStructuresData()
       {
          ErrorSintaxManager.ClearMessage();
          Mensajes_ErroresSemanticos.Reset_ErrorMes();
@@ -126,6 +122,21 @@ namespace Compilador
             dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item], values[item],desplazamientos[item]);
          }
          
+      }
+
+      private string ConstructuError()
+      {
+         StringBuilder errores = new StringBuilder();
+         
+         return string.Empty;
+      }
+      private string ConstructuError(string errorLexico)
+      {
+         StringBuilder errores = new StringBuilder();
+         errores.AppendFormat($"{errorLexico}\n");
+         errores.AppendFormat($"{ErrorSintaxManager.GetMessageError()}\n");
+         errores.AppendFormat($"{Mensajes_ErroresSemanticos.MensajeError}\n");
+         return errores.ToString();
       }
    }
 }

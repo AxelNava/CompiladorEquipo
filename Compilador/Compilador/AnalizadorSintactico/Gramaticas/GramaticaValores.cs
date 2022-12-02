@@ -15,12 +15,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private string _tipoTotalValores;
       private string _valueIdentifier;
       private string _tipoTemporal;
+      public Stack<Tuple<int, int>> _pilaContadores;
+      private ColaContadoraMetodos _contadoraMetodos;
 
       public GramaticaValores()
       {
          TablaAnalisis = AnalisysTable_Valores_boolOpe.globalDictionaryValores;
          PilaComprobacion = new Stack<Tuple<int, string>>();
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
+         _pilaContadores = new Stack<Tuple<int, int>>();
+         _contadoraMetodos = new ColaContadoraMetodos();
       }
 
       public string TipoTotalValores => _tipoTotalValores;
@@ -48,6 +52,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
             if (AnalisisFinished)
             {
+               _pilaContadores = _contadoraMetodos.PilaResultante;
                return "Valores";
             }
          }
@@ -58,10 +63,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-
+         
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             CheckWheterIsMethod(referenceState);
+            CheckEndOfMethod(referenceState);
             IdentifierToValue(referenceState);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
@@ -86,18 +92,20 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                return;
             }
 
-            if (CheckIdentifier(referenceState))
-            {
-               return;
-            }
             Mensajes_ErroresSemanticos.AddErrorInstanciation(PilaTokens.GlobalTokens.Peek(),
                TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas + 1].Item1);
+         }
+
+         if (CheckIdentifier(referenceState))
+         {
+            return;
          }
       }
 
       private bool CheckIdentifier(int referenceState)
       {
-         if (referenceState == 4 || referenceState == 11 || referenceState == 41)
+         if ((referenceState == 4 || referenceState == 11 || referenceState == 41) && PilaTokens.GlobalTokens.Peek()!="InstruccionesIdentificador" && PilaTokens
+         .GlobalTokens.Peek()!="RM")
          {
             _valueIdentifier = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
             return true;
@@ -108,14 +116,28 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       private void CheckWheterIsMethod(int referenceState)
       {
-         if (referenceState == 18 || referenceState == 29 || referenceState == 60)
+         if ((referenceState == 18 || referenceState == 29 || referenceState == 61) && PilaTokens.GlobalTokens.Peek() != "VS" && PilaTokens
+                .GlobalTokens.Peek() != "Param" && PilaTokens.GlobalTokens.Peek() != "Parametros")
          {
             int numRow = TablaSimbolos.numRowInTable(_valueIdentifier);
+            _contadoraMetodos.AgregarInicioDeCola(LexemaCount.CountLexemas);
             if (numRow != 0)
             {
                TablaSimbolos.GetValues()[numRow] = 1.ToString();
-               TablaSimbolos.GetTypesValues()[numRow] = "Metodo";
+               if (!TablaSimbolos.CheckTypeOfLexema(_valueIdentifier))
+               {
+                  TablaSimbolos.GetTypesValues()[numRow] = "Metodo";
+               }
             }
+         }
+      }
+
+      //Agrega el final del conteo de un método
+      private void CheckEndOfMethod(int referenceState)
+      {
+         if (referenceState == 39 || referenceState == 53 || referenceState == 75)
+         {
+            _contadoraMetodos.AgregarContador(LexemaCount.CountLexemas + 1);
          }
       }
    }

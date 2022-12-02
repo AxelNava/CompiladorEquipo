@@ -79,6 +79,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                PushPopStacks_Shit_Goto(referenceState);
                if (PilaComprobacion.Peek().Item2 != "Lambda")
                   LexemaCount.CountLexemas++;
+               AnalizadorDeLimites.AnaliceIdentifier_Token();
                break;
             case AbstractActionFunction.ActionEnum.GOTO:
                PushPopStacks_Shit_Goto(referenceState);
@@ -91,40 +92,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
             case AbstractActionFunction.ActionEnum.REDUCCION:
                JumpStackToGlobalStack(referenceState);
                break;
-         }
-      }
-      private static void CheckMaxMinValueOfFloat()
-      {
-         if (!float.TryParse(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2, out _))
-         {
-            Mensajes_ErroresSemanticos.AddErrorOverflowMaxMinValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2,
-               TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
-               TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
-         }
-      }
-
-      private static void CheckStringLenght()
-      {
-         if (TablaLexemaToken.LexemaTokensTable.ContainsKey(LexemaCount.CountLexemas))
-         {
-            if (TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2.Length > 256)
-            {
-               Mensajes_ErroresSemanticos.AddErrorOverflowMaxValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
-                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
-            }
-         }
-      }
-
-      private static void CheckMaxMinValueOfInteger()
-      {
-         if (TablaLexemaToken.LexemaTokensTable.ContainsKey(LexemaCount.CountLexemas))
-         {
-            if (!Int32.TryParse(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2, out _))
-            {
-               Mensajes_ErroresSemanticos.AddErrorOverflowMaxMinValue(TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2,
-                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3,
-                  TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
-            }
          }
       }
 

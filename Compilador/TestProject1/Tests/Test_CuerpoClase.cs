@@ -8,7 +8,7 @@ namespace TestProject1.Tests;
 public class Test_CuerpoClase
 {
    [Theory]
-   [MemberData(nameof(QDataTestStack))]
+   [MemberData(nameof(QDataTestStack2))]
    public static void CuerpoClaseSHourReturnToken_cuerpoClase(string expected, Stack<string> stackIn)
    {
       PilaTokens.GlobalTokens = stackIn;
@@ -63,7 +63,24 @@ public class Test_CuerpoClase
             pilaEntrada2.Push(tokensSeparate2[i]);
          }
 
-         yield return new object[] { "CuerpoClase", pilaEntrada2 };
-         yield return new object[] { "CuerpoClase", pilaEntrada };
+         yield return new object[] { "bodyclass", pilaEntrada2 };
+         yield return new object[] { "bodyclass", pilaEntrada };
       }
+
+   public static IEnumerable<object[]> QDataTestStack2()
+   {
+      string tokens = string.Format($"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion)} " +
+                                    $"valores " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
+                                    $"FinCadena");
+      string[] tokensSeparate = tokens.Split(' '); 
+      Stack<string> pilaEntrada = new Stack<string>();
+      for (int i = tokensSeparate.Length - 1; i >= 0; i--)
+      {
+         pilaEntrada.Push(tokensSeparate[i]);
+      }
+      yield return new object[] { "bodyclass", pilaEntrada };
+   }
 }

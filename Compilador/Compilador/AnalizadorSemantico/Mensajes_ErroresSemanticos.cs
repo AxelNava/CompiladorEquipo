@@ -25,6 +25,10 @@ namespace Compilador.AnalizadorSemantico
          MensajeError.AppendFormat($"El identificador {identifier}, no ha sido declarado  -- Línea {numLinea}\n");
       }
 
+      public static void AddErrorDobleDeclaracion(string identifier, int numLIne)
+      {
+         MensajeError.AppendFormat($"El identificador {identifier}, ya ha sido declarado  -- Línea {numLIne}\n");
+      }
       public static void AddErrorOperatro(string tipoEsperado, string tipoRecibido, int numLinea)
       {
          MensajeError.AppendFormat($"No se puede operar un tipo {tipoEsperado} con un {tipoRecibido}-- Línea {numLinea}\n");

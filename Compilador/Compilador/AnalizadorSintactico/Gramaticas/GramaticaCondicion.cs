@@ -334,7 +334,7 @@ namespace Compilador.Gramaticas
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OR), Comp_compareToken
                   },
                   {
-                     "Lambda", Comp_compareToken
+                     "FinCadena", Comp_compareToken
                   }
                }
             },
@@ -515,7 +515,7 @@ namespace Compilador.Gramaticas
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER), OperadorAND_LogicToken
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),OperadorAND_LogicToken
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL), OperadorAND_LogicToken
                   }
                }
             },
@@ -541,7 +541,7 @@ namespace Compilador.Gramaticas
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.CARACTER), OperadorOR_LogicToken
                   },
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL),OperadorOR_LogicToken
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.BOOL), OperadorOR_LogicToken
                   }
                }
             },
@@ -773,7 +773,6 @@ namespace Compilador.Gramaticas
                }
             }
          }
-
          if (referenceState == 4)
          {
             if (!CheckTokenWithNegation())
@@ -796,7 +795,8 @@ namespace Compilador.Gramaticas
 
       private bool CheckTokenBefore(int referenceState)
       {
-         if (referenceState == 0 || referenceState == 24)
+         if ((referenceState == 0 || referenceState == 24) && PilaTokens.GlobalTokens.Peek() != selectorString(nonTerminalTokens.COMP) && 
+         PilaTokens.GlobalTokens.Peek()!= selectorString(nonTerminalTokens.CONDICION))
          {
             int inicioConteo = LexemaCount.CountLexemas + 1;
             GramaticaValores valores = new GramaticaValores();
@@ -805,7 +805,7 @@ namespace Compilador.Gramaticas
             {
                int final = LexemaCount.CountLexemas + 1;
                PilaTokens.GlobalTokens.Push(tokenTemp);
-               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(valores._pilaContadores);
                conversion.EjecutarAnalisis(inicioConteo, final);
                if (!string.IsNullOrEmpty(conversion.typeGlobalOfOperation))
                {
@@ -814,6 +814,7 @@ namespace Compilador.Gramaticas
                      PilaTokens.GlobalTokens.Pop();
                      PilaTokens.GlobalTokens.Push(selectorString(nonTerminalTokens.VALORBOOL));
                   }
+
                   _tokenBeforeComparison = conversion.typeGlobalOfOperation;
                   // return false;
                }
@@ -827,7 +828,7 @@ namespace Compilador.Gramaticas
 
       private bool CheckTokenAfter(int referenceState)
       {
-         if (referenceState == 11 || referenceState == 19)
+         if ((referenceState == 11 || referenceState == 19) && PilaTokens.GlobalTokens.Peek()!=selectorString(nonTerminalTokens.VALORC))
          {
             int inicioConteo = LexemaCount.CountLexemas + 1;
             GramaticaValores valores = new GramaticaValores();
@@ -836,7 +837,7 @@ namespace Compilador.Gramaticas
             {
                PilaTokens.GlobalTokens.Push("ValorC");
                int final = LexemaCount.CountLexemas + 1;
-               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+               ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(valores._pilaContadores);
                conversion.EjecutarAnalisis(inicioConteo, final);
                if (conversion.typeGlobalOfOperation != string.Empty)
                {
@@ -848,6 +849,7 @@ namespace Compilador.Gramaticas
 
                   _tokenAfterComparison = conversion.typeGlobalOfOperation;
                }
+
                return true;
             }
          }
@@ -865,7 +867,7 @@ namespace Compilador.Gramaticas
             PilaTokens.GlobalTokens.Push(selectorString(nonTerminalTokens.VALORBOOL));
             //Inicio de verificacion semantica
             int final = LexemaCount.CountLexemas + 1;
-            ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+            ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(valores._pilaContadores);
             conversion.EjecutarAnalisis(inicioConteo, final);
             if (conversion.typeGlobalOfOperation != string.Empty)
             {

@@ -301,7 +301,7 @@ namespace Compilador
          tokenDiciconary.Add(9, "CLASS");
          tokenDiciconary.Add(10, "OR");
          tokenDiciconary.Add(11, "AND");
-         tokenDiciconary.Add(12, "VOID");
+         tokenDiciconary.Add(12, "TIPO");
          tokenDiciconary.Add(13, "BOOL");
          tokenDiciconary.Add(14, "SWITCH");
          tokenDiciconary.Add(15, "BOOL");
