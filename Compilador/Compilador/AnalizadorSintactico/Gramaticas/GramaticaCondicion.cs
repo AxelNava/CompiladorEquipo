@@ -5,6 +5,7 @@ using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.Gramaticas
@@ -117,7 +118,7 @@ namespace Compilador.Gramaticas
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
                   },
                   {
-                     selectorString(nonTerminalTokens.veriM), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3)
+                     selectorString(nonTerminalTokens.veriM), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 3)
                   }
                }
             },
@@ -133,7 +134,7 @@ namespace Compilador.Gramaticas
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 19)
                   },
                   {
-                     selectorString(nonTerminalTokens.COMPI), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 36)
+                     selectorString(nonTerminalTokens.COMPI), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 36)
                   }
                }
             },
@@ -362,7 +363,7 @@ namespace Compilador.Gramaticas
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 15)
                   },
                   {
-                     selectorString(nonTerminalTokens.VALORC), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 20)
+                     selectorString(nonTerminalTokens.VALORC), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 20)
                   }
                }
             },
@@ -727,7 +728,10 @@ namespace Compilador.Gramaticas
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
 
-
+      private string lexemaComparador;
+      private string lexemaBefore;
+      private string lexemaAfter;
+      private bool _yaSeAgrego;
       public string EjecutarAnalisis()
       {
          while (PilaTokens.GlobalTokens.Count >= 1)
@@ -771,8 +775,10 @@ namespace Compilador.Gramaticas
                   Mensajes_ErroresSemanticos.AddErrorOperatro(_tokenBeforeComparison, _tokenAfterComparison, TablaLexemaToken
                      .LexemaTokensTable[LexemaCount.CountLexemas].Item1);
                }
+               AgregarInstruccionDeComparacion(lexemaBefore, lexemaAfter);
             }
          }
+
          if (referenceState == 4)
          {
             if (!CheckTokenWithNegation())
@@ -793,16 +799,55 @@ namespace Compilador.Gramaticas
          return false;
       }
 
+      private void CheckStateOfComparador()
+      {
+         lexemaComparador = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
+      }
+
+      /// <summary>
+      /// Construye la instrucción correspondiente
+      /// </summary>
+      /// <param name="lexemaB">Lexema antes del comparador (el primero que se encuentra a la izquierda)</param>
+      /// <param name="lexemaF">Lexema después del comparador</param>
+      private void AgregarInstruccionDeComparacion(string lexemaB, string lexemaF)
+      {
+         if (_yaSeAgrego) return;
+         switch (lexemaComparador)
+         {
+            case "<":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMenor);
+               break;
+            case ">":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMayor);
+               break;
+            case "==":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIgual);
+               break;
+            case ">=":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMayorIgual);
+               break;
+            case "<=":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMenorIgual);
+               break;
+            case "!=":
+               tablaInstrucciones.AgregarInstruccion(lexemaB, lexemaF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDiferente);
+               break;
+         }
+
+         _yaSeAgrego = true;
+      }
+
       private bool CheckTokenBefore(int referenceState)
       {
-         if ((referenceState == 0 || referenceState == 24) && PilaTokens.GlobalTokens.Peek() != selectorString(nonTerminalTokens.COMP) && 
-         PilaTokens.GlobalTokens.Peek()!= selectorString(nonTerminalTokens.CONDICION))
+         if ((referenceState == 0 || referenceState == 24) && PilaTokens.GlobalTokens.Peek() != selectorString(nonTerminalTokens.COMP) &&
+             PilaTokens.GlobalTokens.Peek() != selectorString(nonTerminalTokens.CONDICION))
          {
             int inicioConteo = LexemaCount.CountLexemas + 1;
             GramaticaValores valores = new GramaticaValores();
             string tokenTemp = valores.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenTemp))
             {
+               lexemaBefore = TablaLexemaToken.GetLexema(inicioConteo);
                int final = LexemaCount.CountLexemas + 1;
                PilaTokens.GlobalTokens.Push(tokenTemp);
                ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(valores._pilaContadores);
@@ -828,14 +873,16 @@ namespace Compilador.Gramaticas
 
       private bool CheckTokenAfter(int referenceState)
       {
-         if ((referenceState == 11 || referenceState == 19) && PilaTokens.GlobalTokens.Peek()!=selectorString(nonTerminalTokens.VALORC))
+         if ((referenceState == 11 || referenceState == 19) && PilaTokens.GlobalTokens.Peek() != selectorString(nonTerminalTokens.VALORC))
          {
+            CheckStateOfComparador();
             int inicioConteo = LexemaCount.CountLexemas + 1;
             GramaticaValores valores = new GramaticaValores();
             string tokenTemp = valores.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenTemp))
             {
                PilaTokens.GlobalTokens.Push("ValorC");
+               lexemaAfter = TablaLexemaToken.GetLexema(inicioConteo);
                int final = LexemaCount.CountLexemas + 1;
                ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(valores._pilaContadores);
                conversion.EjecutarAnalisis(inicioConteo, final);
@@ -872,6 +919,8 @@ namespace Compilador.Gramaticas
             if (conversion.typeGlobalOfOperation != string.Empty)
             {
                _tokenAfterNegation = conversion.typeGlobalOfOperation;
+               tablaInstrucciones.AgregarInstruccion(TablaLexemaToken.GetLexema(inicioConteo),
+                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionNegacion);
                return (_tokenAfterNegation == "bool");
             }
          }

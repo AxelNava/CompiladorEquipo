@@ -50,7 +50,7 @@ namespace Compilador.Gramaticas
                   },
                   {
                      selectorString(notTerminalsForThis.IF),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 36)
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 36)
                   }
                }
             },
@@ -239,7 +239,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      selectorString(notTerminalsForThis.CONDICION),
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 16)
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 16)
                   }
                }
             },

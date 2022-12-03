@@ -69,6 +69,7 @@ namespace Compilador
          catch (Exception ex)
          {
             MessageBox.Show("Ha habido un error:\n" + ex.Message);
+            MessageBox.Show("Ha habido un error:\n" + ex.StackTrace);
          }
       }
 

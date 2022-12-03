@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSemantico
@@ -195,6 +196,7 @@ namespace Compilador.AnalizadorSemantico
          {
             ThereAreUnitaryToken = true;
          }
+
 
          for (int i = inicioLexema; i < finLexema; i++)
          {

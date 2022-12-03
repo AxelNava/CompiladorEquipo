@@ -4,6 +4,7 @@ using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.Gramaticas;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
@@ -12,9 +13,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
    {
       private string identificadorEncontrado;
       private string tipoEncontrado;
+      private string ClaseEncontrada;
       private Stack<Tuple<int, int>> pilaContadores;
 
-      public Gramatica_CuerpoClase()
+      public Gramatica_CuerpoClase(string NombreClase)
       {
          TablaAnalisis = AnalisysTable_CuerpoClase.GlobalDictionary_CuerpoValores;
          PilaComprobacion = new Stack<Tuple<int, string>>();
@@ -153,8 +155,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
          {
             if (conversion.ColaSalida.Count != 0)
             {
+               evaluacion.lexemaIdentifier = identificadorEncontrado;
                resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
-               
+               CheckMinMaxValues(resultadoEvaluacion.ToString(), tipoEncontrado);
                TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
             }
          }
@@ -166,7 +169,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                {
                   if (!CheckBoolChar(conversion.typeGlobalOfOperation))
                   {
-                     TablaSimbolos.GetValues()[numRow] = string.Join(" ", _valorEncontrado);
+                     string valorCompleto = string.Join(" ", _valorEncontrado);
+                     AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
+                     string desplazamiento =
+                        TablaSimbolos.GetDesplazamientos()[numRow];
+                     tablaInstrucciones.AgregarInstruccion(desplazamiento, $"{valorCompleto}V",
+                        tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                     TablaSimbolos.GetValues()[numRow] = valorCompleto;
                   }
                   else
                   {
@@ -181,6 +190,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                         ? TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1)
                         : string
                            .Empty;
+                  tablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
+                     $"{TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1)}",
+                     tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                }
             }
          }
@@ -198,6 +210,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
          if (conversionTypeGlobalOfOperation == "int" || conversionTypeGlobalOfOperation == "float")
             return true;
          return false;
+      }
+
+      private void CheckMinMaxValues(string value, string type)
+      {
+         switch (type)
+         {
+            case "int":
+               AnalizadorDeLimites.AnaliceMinManInteger(value);
+               break;
+            case "float":
+               AnalizadorDeLimites.AnalizeMinMaxFloat(value);
+               break;
+         }
       }
    }
 }

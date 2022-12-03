@@ -4,6 +4,7 @@ using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.Gramaticas;
 using System.Collections.Generic;
 using Compilador.AnalizadorSemantico;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
@@ -352,12 +353,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (referenceState == 10)
          {
             int inicioConteo = LexemaCount.CountLexemas + 1;
-            string tokenAux2 = new GramaticaValores().EjecutarAnalisis();
+            var grammar = new GramaticaValores();
+            string tokenAux2 = grammar.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux2))
             {
                PilaTokens.GlobalTokens.Push(tokenAux2);
                int finalConteo = LexemaCount.CountLexemas + 1;
-               HandleValueOfLexema(inicioConteo, finalConteo);
+               HandleValueOfLexema(inicioConteo, finalConteo, grammar._pilaContadores);
             }
          }
 
@@ -430,12 +432,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          ErrorSintaxManager.AddDeclarationError(identificadorEncontrado, TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
       }
 
-      private void HandleValueOfLexema(int incio, int final)
+      private void HandleValueOfLexema(int incio, int final, Stack<Tuple<int, int>> pilaContadores)
       {
          if (TablaSimbolos.CheckTypeOfLexema(identificadorEncontrado))
          {
             int numRow = TablaSimbolos.numRowInTable(identificadorEncontrado);
-            ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija();
+            ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(pilaContadores);
             EvaluadorNotacion_PosFija evaluacion = new EvaluadorNotacion_PosFija();
             conversion.ExecuteAnalysis(incio, final, tipoEncontrado);
             float resultadoEvaluacion = 0;
@@ -443,9 +445,10 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             {
                if (conversion.ColaSalida.Count != 0)
                {
+                  evaluacion.lexemaIdentifier = identificadorEncontrado;
                   resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
-                  // MessageBox.Show(resultadoEvaluacion.ToString());
                   TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
+                  
                   return;
                }
             }

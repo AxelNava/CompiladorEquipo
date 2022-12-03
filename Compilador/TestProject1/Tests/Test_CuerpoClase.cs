@@ -12,7 +12,7 @@ public class Test_CuerpoClase
    public static void CuerpoClaseSHourReturnToken_cuerpoClase(string expected, Stack<string> stackIn)
    {
       PilaTokens.GlobalTokens = stackIn;
-      var GramticaCuerpoClas = new Gramatica_CuerpoClase();
+      var GramticaCuerpoClas = new Gramatica_CuerpoClase("");
       Assert.Equal(expected, GramticaCuerpoClas.Ejecutar_Analisis());
    }
    public static IEnumerable<object[]> QDataTestStack()

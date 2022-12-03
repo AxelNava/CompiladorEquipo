@@ -9,7 +9,12 @@ namespace Compilador.AnalizadorSemantico
    {
       public static void AnaliceIdentifier_Token()
       {
-         string token_Lexema = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3;
+         // string token_Lexema = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3;
+         string token_Lexema = "";
+         if (TablaLexemaToken.LexemaTokensTable.ContainsKey(LexemaCount.CountLexemas))
+         {
+            token_Lexema = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item3;
+         }
          switch (token_Lexema)
          {
             case "Entero":

@@ -25,7 +25,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
       /// <summary>
       /// Pop a token from the global stack tokens, and push it to the analysis stack
       /// </summary>
-      protected void PushPopStacks_Shit_Goto(int referenceState)
+      private void PushPopStacks_Shit_Goto(int referenceState)
       {
          int nextState = 0;
          AccionFuncion_TablaAnalisis classReserve;
@@ -39,7 +39,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
       /// Move the current stack, to the global tokens stack
       /// </summary>
       /// <param name="referenceState"></param>
-      protected void JumpStackToGlobalStack(int referenceState)
+      private void JumpStackToGlobalStack(int referenceState)
       {
          PilaTokens.GlobalTokens.Push(ReductionHandler(referenceState));
       }
@@ -49,7 +49,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
       /// </summary>
       /// <param name="referenceState"></param>
       /// <returns>The Token rule, or the token producer</returns>
-      protected string ReductionHandler(int referenceState)
+      private string ReductionHandler(int referenceState)
       {
          ReducedAction classReserve;
          classReserve =
@@ -95,7 +95,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
          }
       }
 
-      public void AddError()
+      protected void AddError()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
          Dictionary<string, AbstractActionFunction> dictionaryState = TablaAnalisis[referenceState];

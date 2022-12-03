@@ -6,6 +6,7 @@ using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
@@ -69,6 +70,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             CheckWheterIsMethod(referenceState);
             CheckEndOfMethod(referenceState);
             IdentifierToValue(referenceState);
+            CheckIncrementOrDecrementState(referenceState);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
@@ -128,6 +130,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                {
                   TablaSimbolos.GetTypesValues()[numRow] = "Metodo";
                }
+               tablaInstrucciones.AgregarInstruccion(_valueIdentifier, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar);
             }
          }
       }
@@ -138,6 +141,25 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (referenceState == 39 || referenceState == 53 || referenceState == 75)
          {
             _contadoraMetodos.AgregarContador(LexemaCount.CountLexemas + 1);
+         }
+      }
+/// <summary>
+/// Chca si es un estado perteneciente a un incremento o decremento, luego de eso ejecuta el incremento en código intermedio
+/// </summary>
+/// <param name="referenceState"></param>
+      private void CheckIncrementOrDecrementState(int referenceState)
+      {
+         if (referenceState == 19 || referenceState == 30 || referenceState == 62)
+         {
+            string identificador = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1);
+            tablaInstrucciones.AgregarInstruccion(identificador, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIncremento);
+            return;
+         }
+
+         if (referenceState != 20 && referenceState != 31 && referenceState != 63) return;
+         {
+            string identificador = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1);
+            tablaInstrucciones.AgregarInstruccion(identificador, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDecremento);
          }
       }
    }
