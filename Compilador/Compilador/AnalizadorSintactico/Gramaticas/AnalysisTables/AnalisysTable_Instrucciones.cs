@@ -157,7 +157,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      "ParametrosMetodo",
-                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 15)
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 15)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction("ParametrosMetodo", new
+                        [] { string.Empty })
                   }
                }
             },
@@ -165,7 +169,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                9, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     selectorString(nonTerminalsInstrucciones.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO,18)
+                     selectorString(nonTerminalsInstrucciones.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 18)
                   }
                }
             },
@@ -181,7 +185,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 3)
                   },
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Recursion), new []{string.Empty})
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Recursion), new[] { string.Empty })
                   },
                   {
                      selectorString(nonTerminalsInstrucciones.Instruccion),
@@ -196,7 +200,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                11, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     selectorString(nonTerminalsInstrucciones.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO,20)
+                     selectorString(nonTerminalsInstrucciones.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 20)
                   }
                }
             },
@@ -205,15 +209,18 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                     (nonTerminalsInstrucciones.ComplementoDeclaracion), new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)})
+                           (nonTerminalsInstrucciones.ComplementoDeclaracion),
+                        new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)})
+                           (nonTerminalsInstrucciones.ComplementoDeclaracion),
+                        new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new []{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)})
+                           (nonTerminalsInstrucciones.ComplementoDeclaracion),
+                        new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
                   }
                }
             },
@@ -234,11 +241,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                14, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Recursion), new []
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Recursion), new[]
                      {
                         selectorString(nonTerminalsInstrucciones.Instruccion)
                      })
-                  } 
+                  }
                }
             },
             {
@@ -246,7 +253,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                     (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.INCREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -254,7 +261,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.INCREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -262,7 +269,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.INCREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -275,7 +282,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -283,7 +290,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -291,7 +298,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.DECREMENTO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
@@ -304,7 +311,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new AccionFuncion_TablaAnalisis
-                     (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 21)
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 21)
                   }
                }
             },
@@ -313,7 +320,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA), new AccionFuncion_TablaAnalisis
-                     (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 22)
                   }
                }
             },
@@ -321,7 +328,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                19, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Instruccion),new []
+                     "FinCadena", new ReducedAction(selectorString(nonTerminalsInstrucciones.Instruccion), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
@@ -336,7 +343,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA), new AccionFuncion_TablaAnalisis
-                     (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 23)
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 23)
                   }
                }
             },
@@ -354,7 +361,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -363,7 +370,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -372,7 +379,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -386,7 +393,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new []
+                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -395,7 +402,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new []
+                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -404,7 +411,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new []
+                        (nonTerminalsInstrucciones.ComplementoDeclaracion), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
                         selectorString(nonTerminalsInstrucciones.Valores),
@@ -419,7 +426,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
                         selectorString(nonTerminalsInstrucciones.ParametroMetodo),
@@ -429,7 +436,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
                         selectorString(nonTerminalsInstrucciones.ParametroMetodo),
@@ -439,7 +446,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   },
                   {
                      "FinCadena", new ReducedAction(selectorString
-                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
                         selectorString(nonTerminalsInstrucciones.ParametroMetodo),

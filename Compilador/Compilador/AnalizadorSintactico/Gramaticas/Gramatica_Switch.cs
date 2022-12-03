@@ -64,7 +64,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             {
                _finConteo = LexemaCount.CountLexemas + 1;
                PilaTokens.GlobalTokens.Push(tokenAux);
-               ConversionNotacionInfija_PosFija conversor = new ConversionNotacionInfija_PosFija();
+               ConversionNotacionInfija_PosFija conversor = new ConversionNotacionInfija_PosFija(gramatica._pilaContadores);
                conversor.EjecutarAnalisis(_inicioConteo, _finConteo);
                _typeToCompare = conversor.typeGlobalOfOperation;
             }

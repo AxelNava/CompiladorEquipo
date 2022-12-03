@@ -8,6 +8,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 {
    public class GramaticaParametrosMetodo : AbstractAnalisisTable
    {
+      
       public GramaticaParametrosMetodo()
       {
          TablaAnalisis = AnalysisTable_ParametrosFuncion.GlobalDictionaryParametros;
@@ -42,13 +43,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          int referenceState = PilaComprobacion.Peek().Item1;
          if (referenceState == 0 || referenceState == 6)
          {
-            string tokenAux = new GramaticaValores().EjecutarAnalisis();
+            var grammar = new GramaticaValores();
+            string tokenAux = grammar.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
+            {
                PilaTokens.GlobalTokens.Push(tokenAux);
+            }
          }
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);

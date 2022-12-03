@@ -1123,7 +1123,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
@@ -1132,7 +1132,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }
@@ -1475,19 +1475,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   },
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.OPERADOR), new ReducedAction(selectorString
-                        (nonTerminalsForThisGrammar.PR), new[]
+                        (nonTerminalsForThisGrammar.InstruccionesIDentificador), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
-                        selectorString(nonTerminalsForThisGrammar.Para),
+                        selectorString(nonTerminalsForThisGrammar.ParametrosS),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                      })
                   }

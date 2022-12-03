@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSemantico
@@ -39,6 +41,32 @@ namespace Compilador.AnalizadorSemantico
 
       #endregion
 
+      private Stack<Tuple<int, int>> pilaContadoraMetodos;
+      public ConversionNotacionInfija_PosFija(Stack<Tuple<int, int>> pilaContadora)
+      {
+         nivelProcedenciaOperador = new Dictionary<string, byte>()
+         {
+            {
+               "+", 1
+            },
+            {
+               "-", 1
+            },
+            {
+               "*", 2
+            },
+            {
+               "/", 2
+            },
+            {
+               "(", 0
+            },
+            {
+               ")", 0
+            }
+         };
+         pilaContadoraMetodos = pilaContadora;
+      }
       public ConversionNotacionInfija_PosFija()
       {
          nivelProcedenciaOperador = new Dictionary<string, byte>()
@@ -102,6 +130,14 @@ namespace Compilador.AnalizadorSemantico
 
          for (int i = inicioLexema; i < finLexema; i++)
          {
+            if (pilaContadoraMetodos.Count > 0)
+            {
+               if (i >= pilaContadoraMetodos.Peek().Item1 && i <= pilaContadoraMetodos.Peek().Item2)
+               {
+                  i = pilaContadoraMetodos.Pop().Item2;
+                  continue;
+               }
+            }
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
             if (int.TryParse(lexemaIn, out _))
             {
@@ -161,8 +197,17 @@ namespace Compilador.AnalizadorSemantico
             ThereAreUnitaryToken = true;
          }
 
+
          for (int i = inicioLexema; i < finLexema; i++)
          {
+            if (pilaContadoraMetodos.Count > 0)
+            {
+               if (i >= pilaContadoraMetodos.Peek().Item1 && i <= pilaContadoraMetodos.Peek().Item2)
+               {
+                  i = pilaContadoraMetodos.Pop().Item2;
+                  continue;
+               }
+            }
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
             if (int.TryParse(lexemaIn, out _))
             {
@@ -195,7 +240,7 @@ namespace Compilador.AnalizadorSemantico
             if (!CheckTypeOfLexema(i))
             {
                var rowLexemaToken = TablaLexemaToken.LexemaTokensTable[i];
-               Mensajes_ErroresSemanticos.AddErrorOperatro(typeGlobalOfOperation, TablaRelacionTipoToken.TablaTokenTipo[rowLexemaToken.Item3],
+               Mensajes_ErroresSemanticos.AddErrorTypes(typeGlobalOfOperation, TablaRelacionTipoToken.TablaTokenTipo[rowLexemaToken.Item3],
                   rowLexemaToken.Item1);
                typeGlobalOfOperation = string.Empty;
                outQueue.Clear();
@@ -214,8 +259,10 @@ namespace Compilador.AnalizadorSemantico
          //Checka si el token, no es del tipo unitario, es decir, solo si es boleano o caracter
          if (HandleUnitaryTokens(posicionTabla))
          {
-            typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
-            return true;
+            if (typeGlobalOfOperation == TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3])
+               return true;
+            // typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
+            return false;
          }
 
          //En caso de que no sea unitario, checa si es del mismo tipo
@@ -307,7 +354,7 @@ namespace Compilador.AnalizadorSemantico
                return true;
             }
 
-            if (TablaRelacionTipoToken.TablaTipoToken.ContainsValue(TablaSimbolos.GetTypeOfLexema(identifier)))
+            if (TablaRelacionTipoToken.TablaTokenTipo.ContainsValue(TablaSimbolos.GetTypeOfLexema(identifier)))
             {
                if(typeGlobalOfOperation == TablaSimbolos.GetTypesValues()[numRow])
                   return true;
@@ -339,6 +386,8 @@ namespace Compilador.AnalizadorSemantico
       /// <param name="i"></param>
       private bool HandlerCharactersOperator(int i)
       {
+         if (TablaLexemaToken.LexemaTokensTable[i].Item3 == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
+            return false;
          if (TablaLexemaToken.LexemaTokensTable[i].Item2 == "(")
          {
             operatorsStack.Push(TablaLexemaToken.LexemaTokensTable[i].Item2);

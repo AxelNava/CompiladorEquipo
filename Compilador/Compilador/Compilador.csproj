@@ -87,6 +87,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalizadorSemantico\AnalizadorDeLimites.cs" />
+    <Compile Include="AnalizadorSemantico\ColaContadoraMetodos.cs" />
     <Compile Include="AnalizadorSemantico\ContadorDesplazamiento.cs" />
     <Compile Include="AnalizadorSemantico\ContadorMetodos.cs" />
     <Compile Include="AnalizadorSemantico\ConversionNotacionInfija_PosFija.cs" />

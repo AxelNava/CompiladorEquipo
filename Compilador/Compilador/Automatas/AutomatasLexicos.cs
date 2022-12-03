@@ -246,6 +246,8 @@ namespace Compilador
                      continue;
                   case '\r':
                      continue;
+                  case '\t':
+                     continue;
                   case ' ':
                      continue;
                   default:
@@ -299,7 +301,7 @@ namespace Compilador
             if (VariablesGlobalesAutomatas.CharCodeText[i].Equals('\n'))
             {
                _countLines++;
-               VariablesGlobalesAutomatas.LastIndexFound = indexString;
+               VariablesGlobalesAutomatas.LastIndexFound = i;
                return "ComentarioLinea";
             }
          }

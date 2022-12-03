@@ -240,7 +240,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          int referenceState = PilaComprobacion.Peek().Item1;
          if (referenceState == 9)
          {
-            Gramatica_CuerpoClase gramaticaCuerpoClase = new Gramatica_CuerpoClase();
+            Gramatica_CuerpoClase gramaticaCuerpoClase = new Gramatica_CuerpoClase("");
             string tokenp = gramaticaCuerpoClase.Ejecutar_Analisis();
             if (!string.IsNullOrEmpty(tokenp))
             {
@@ -248,6 +248,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             }
          }
 
+         HandleTokenIdentType(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -263,8 +264,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       {
          if (!TablaSimbolos.CheckTokenOfLexema(_identificadorEncontrado))
          {
-            // GrammarErrors.MessageErrorsOfGrammarsM += String.Format($"El identificador {_identificadorEncontrado} no ha sido declarado" +
-            // $"- Linea {TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1}\n");
             return;
          }
 
@@ -273,7 +272,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
       private void AnalizeIdentifierInSymbolTable(string identifierToAnalize)
       {
-         if (TablaSimbolos.CheckLexema(identifierToAnalize))
+         if (!TablaSimbolos.CheckTypeOfLexema(identifierToAnalize))
          {
             int numRow = TablaSimbolos.numRowInTable(identifierToAnalize);
             TablaSimbolos.GetTypesValues()[numRow] = identifierToAnalize;
@@ -283,21 +282,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          }
 
          ErrorSintaxManager.AddDeclarationError(identifierToAnalize, TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
-         // ErrorSintaxManager.MessageErrorsOfGrammarsM += string.Format($"El identificador: {identifierToAnalize} no se encuentra declarado");
       }
 
       private void HandleTokenIdentType(int referenceState)
       {
-         if (referenceState == 2)
-         {
-            _tipoEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
-         }
-
          if (referenceState == 5)
          {
-            _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
-            AnalizeIdentifierInSymbolTable(_identificadorEncontrado);
+            _tipoEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+            return;
          }
+
+         if (referenceState != 7) return;
+         _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+         AnalizeIdentifierInSymbolTable(_identificadorEncontrado);
       }
    }
 }
