@@ -100,8 +100,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                tablaInstrucciones.AgregarLlamadaMetodo(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar);
             }
          }
-            
       }
+
       private void ManejadorValores()
       {
          _inicioConteoValor = LexemaCount.CountLexemas + 1;
@@ -141,6 +141,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          }
 
          #region instrucciones codigo intermedio
+
          if (referenceState == 6)
          {
             int numRow = TablaSimbolos.numRowInTable(_identificadorEncontrado);
@@ -150,6 +151,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIncremento);
             }
          }
+
          if (referenceState == 7)
          {
             int numRow = TablaSimbolos.numRowInTable(_identificadorEncontrado);
@@ -159,17 +161,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDecremento);
             }
          }
-         
 
          #endregion
-         
+
          if (referenceState == 3 && PilaTokens.GlobalTokens.Peek() != "ComplementoIdenti")
          {
             _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
             if (!TablaSimbolos.CheckLexema(_identificadorEncontrado))
             {
-               // GrammarErrors.MessageErrorsOfGrammarsM += String.Format($"El identificador {_identificadorEncontrado} no ha sido declarado" +
-               // $"- Linea {TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1}\n");
                return;
             }
 
@@ -234,7 +233,13 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                {
                   evaluacion.lexemaIdentifier = identifier;
                   resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
-                  CheckMinMaxValues(resultadoEvaluacion.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
+                  int resultadoEntero = (int)Math.Floor(resultadoEvaluacion);
+                  if (conversion.typeGlobalOfOperation == "int")
+                     CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
+                  else
+                  {
+                     CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
+                  }
                   TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
                   tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
                      string.Format($"{resultadoEvaluacion.ToString()}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);

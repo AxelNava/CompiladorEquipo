@@ -14,10 +14,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
       private string identificadorEncontrado;
       private string tipoEncontrado;
       private string ClaseEncontrada;
+      private string tipoMetodo;
       private Stack<Tuple<int, int>> pilaContadores;
 
       public Gramatica_CuerpoClase(string NombreClase)
       {
+         ClaseEncontrada = NombreClase;
          TablaAnalisis = AnalisysTable_CuerpoClase.GlobalDictionary_CuerpoValores;
          PilaComprobacion = new Stack<Tuple<int, string>>();
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
@@ -46,6 +48,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
 
             if (AnalisisFinished)
             {
+               if (TablaSimbolos.CheckLexema(ClaseEncontrada))
+               {
+                  int numRow = TablaSimbolos.numRowInTable(ClaseEncontrada);
+                  TablaSimbolos.GetDesplazamientos()[numRow] = ContadorDesplazamiento.ConteoDesplazamiento.ToString();
+               }
+
                return "bodyclass";
             }
          }
@@ -92,8 +100,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
             return;
          }
 
+         if (referenceState == 5 && PilaTokens.GlobalTokens.Peek() != "")
+         {
+            tipoMetodo = tipoEncontrado;
+         }
+
          if ((referenceState != 3 && referenceState != 15) ||
              (PilaTokens.GlobalTokens.Peek() == "ComplementoIdentificador" || PilaTokens.GlobalTokens.Peek() == "RecursionMeotod")) return;
+
          identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
          if (!HandleIdentifiers(identificadorEncontrado))
          {
@@ -109,7 +123,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
             TablaSimbolos.GetTypesValues()[numRow] = tipoEncontrado;
             AssignShiftToIdentifier(numRow);
             ContadorDesplazamiento.AddShiftType(tipoEncontrado);
-
+            string desplazamiento = TablaSimbolos.GetDesplazamiento(identifier);
+            tablaInstrucciones.AgregarInstruccion(desplazamiento, "00000", tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
             return true;
          }
 
@@ -123,7 +138,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
 
       private void HandleValueOfIdentifier(int referenceState)
       {
-         if (referenceState == 7 || referenceState == 24)
+         if (referenceState == 7)
          {
             int conteoInicial = LexemaCount.CountLexemas + 1;
             var grammar = new GramaticaValores();
@@ -134,7 +149,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                pilaContadores = grammar._pilaContadores;
                int conteoFinal = LexemaCount.CountLexemas + 1;
                HandleValue(conteoInicial, conteoFinal);
+               return;
             }
+         }
+
+         if (referenceState == 24)
+         {
          }
       }
 

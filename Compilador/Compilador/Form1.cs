@@ -8,6 +8,7 @@ using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.Gramaticas;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador
@@ -65,6 +66,12 @@ namespace Compilador
 
             textBoxErrores.Text = ConstructuError(auLex.messasgesErros);
             textBoxErrores.ForeColor = Color.Red;
+            if (!string.IsNullOrEmpty(textBoxErrores.Text))
+            {
+               string codigoIntermedio = tablaInstrucciones.ConstruirCodigoIntermedio();
+               MessageBox.Show(codigoIntermedio);
+               // Convertidor_string_a_txt.Convertidor(codigoIntermedio);
+            }
          }
          catch (Exception ex)
          {
@@ -80,6 +87,8 @@ namespace Compilador
          ContadorDesplazamiento.ConteoDesplazamiento = 0;
          LexemaCount.CountLexemas = 0;
          TablaLexemaToken.ClearTable();
+         tablaInstrucciones.ReiniciarInstrucciones();
+         tablaInstrucciones.LimpiarTablaInstrucciones();
       }
 
       private void EnterPressedEvent(object sender, KeyEventArgs e)
@@ -120,17 +129,10 @@ namespace Compilador
          var desplazamientos = TablaSimbolos.GetDesplazamientos();
          foreach (var item in TablaSimbolos.GetLexemasValues().Keys)
          {
-            dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item], values[item],desplazamientos[item]);
+            dataGridTableSymbols.Rows.Add(lexemas[item], tokens[item], types[item], numLines[item], values[item], desplazamientos[item]);
          }
-         
       }
 
-      private string ConstructuError()
-      {
-         StringBuilder errores = new StringBuilder();
-         
-         return string.Empty;
-      }
       private string ConstructuError(string errorLexico)
       {
          StringBuilder errores = new StringBuilder();

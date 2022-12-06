@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
+using Compilador.AnalizadorSintactico.Gramaticas;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.IntentoCodigoIntermedio;
 
 namespace Compilador.Gramaticas
 {
@@ -37,6 +39,7 @@ namespace Compilador.Gramaticas
          "finElse",
          "bodyElse"
       };
+
       public Gramatica_IF()
       {
          TablaAnalisis = new Dictionary<int, Dictionary<string, AbstractActionFunction>>()
@@ -100,7 +103,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
-                     (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                        (notTerminalsForThis.CUERPOINSTRUCCIONES), new[] { string.Empty })
                   },
                   {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
@@ -163,7 +166,7 @@ namespace Compilador.Gramaticas
                   {
                      "FinCadena",
                      new ReducedAction(selectorString(notTerminalsForThis.IF),
-                        new []
+                        new[]
                         {
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
                            tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
@@ -269,7 +272,7 @@ namespace Compilador.Gramaticas
                19, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.IFA), new []
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.IFA), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.IF),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
@@ -284,7 +287,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
-                        (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                        (notTerminalsForThis.CUERPOINSTRUCCIONES), new[] { string.Empty })
                   },
                   {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
@@ -318,7 +321,7 @@ namespace Compilador.Gramaticas
                23, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIFA), new []
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYIFA), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
                         selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
@@ -353,7 +356,7 @@ namespace Compilador.Gramaticas
                25, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new []
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.ELSE),
                         selectorString(notTerminalsForThis.BODYELSE)
@@ -366,7 +369,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(selectorString
-                        (notTerminalsForThis.CUERPOINSTRUCCIONES),new []{string.Empty})
+                        (notTerminalsForThis.CUERPOINSTRUCCIONES), new[] { string.Empty })
                   },
                   {
                      selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
@@ -401,7 +404,7 @@ namespace Compilador.Gramaticas
                29, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new []
+                     "FinCadena", new ReducedAction(selectorString(notTerminalsForThis.BODYELSE), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVEABRE),
                         selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES),
@@ -417,7 +420,7 @@ namespace Compilador.Gramaticas
                   {
                      "FinCadena",
                      new ReducedAction(selectorString(notTerminalsForThis.FINELSE),
-                        new [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
+                        new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
                   }
                }
             },
@@ -426,7 +429,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(notTerminalsForThis.FINELSE), new [] { "Lambda" })
+                     new ReducedAction(selectorString(notTerminalsForThis.FINELSE), new[] { "Lambda" })
                   }
                }
             },
@@ -436,7 +439,7 @@ namespace Compilador.Gramaticas
                   {
                      "FinCadena",
                      new ReducedAction(selectorString(notTerminalsForThis.FINBODY),
-                        new [] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
+                        new[] { tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA) })
                   }
                }
             },
@@ -445,7 +448,7 @@ namespace Compilador.Gramaticas
                {
                   {
                      "FinCadena",
-                     new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new [] { "Lambda" })
+                     new ReducedAction(selectorString(notTerminalsForThis.FINBODY), new[] { "Lambda" })
                   }
                }
             },
@@ -490,6 +493,8 @@ namespace Compilador.Gramaticas
       {
          return notTerminalSymbols.GetValue((int)Convert.ChangeType(notTerminal, notTerminal.GetTypeCode())).ToString();
       }
+
+      private int contadorSaltosIf_finales = 0;
       public string EjecutarAnalisis()
       {
          AnalisisFinished = false;
@@ -513,24 +518,34 @@ namespace Compilador.Gramaticas
                }
             }
 
-            if (AnalisisFinished) return "<IF>";
-            // GrammarErrors.MessageErrorsOfGrammarsM += string.Format($"Hay un error en la línea: {PilaTokens.numLineToken[0].Item1}\n");
+            if (AnalisisFinished)
+            {
+               while (contadorSaltosIf_finales>=0)
+               {
+                  tablaInstrucciones.ModificarInstruccionSaltoTerminal();
+                  contadorSaltosIf_finales--;
+               }
+               return "<IF>";
+            }
          }
 
          return PilaComprobacion.Count.ToString();
       }
-      
+
       private bool CheckTokenIn_Handler()
       {
          int referenceState = PilaComprobacion.Peek().Item1;
-         
+
          if (referenceState == 2 || referenceState == 16)
          {
             string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
                PilaTokens.GlobalTokens.Push(tokenAux);
          }
-         
+
+         HandleCuerpoInstrucciones(referenceState);
+         HandleInstruccion(referenceState);
+         HandleJumps(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -546,10 +561,52 @@ namespace Compilador.Gramaticas
       {
          if ((referenceState != 5 && referenceState != 20 && referenceState != 26) || PilaTokens.GlobalTokens.Peek() == "cuerpoInstrucciones") return;
          string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
-         if (string.IsNullOrEmpty(tokenAux))
+         if (!string.IsNullOrEmpty(tokenAux))
          {
             PilaTokens.GlobalTokens.Push(tokenAux);
          }
+      }
+
+      private void HandleInstruccion(int referenceState)
+      {
+         if ((referenceState == 4 || referenceState == 12 ||
+              referenceState == 24) && PilaTokens.GlobalTokens.Peek() != selectorString(notTerminalsForThis.INSTRUCCION))
+         {
+            string tokenAux;
+            var grammar = new GramaticaInstruccion();
+            tokenAux = grammar.Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+            {
+               PilaTokens.GlobalTokens.Push(tokenAux);
+            }
+         }
+      }
+
+      private void HandleJumps(int referenceState)
+      {
+         switch (referenceState)
+         {
+            case 7:
+            case 21:
+            case 27:
+               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               contadorSaltosIf_finales++;
+               break;
+            case 6:
+            case 15:
+               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               contadorSaltosIf_finales++;
+               break;
+            case 24:
+               if (PilaTokens.GlobalTokens.Peek() == selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES) || PilaTokens.GlobalTokens.Peek() ==
+                   selectorString(notTerminalsForThis.BODYELSE))
+                  break;
+               tablaInstrucciones.ModificarInstruccionSaltoCondicion();
+               contadorSaltosIf_finales--;
+               break;
+         }
+
+         var tabla = tablaInstrucciones.tablaINstrucciones;
       }
    }
 }

@@ -99,6 +99,7 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_CuerpoClase.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Instrucciones.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalisysTable_Valores_boolOpe.cs" />
+    <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_Condicion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_ParametrosFuncion.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\AnalysisTable_Switch.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\AnalysisTables\Analysis_table_Valores.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_Switch.cs" />
     <Compile Include="AnalizadorSintactico\Gramaticas\Gramatica_While.cs" />
     <Compile Include="AnalizadorSintactico\tokensNameGlobal.cs" />
-    <Compile Include="Automatas\AutomataComentarioOperador.cs" />
     <Compile Include="Automatas\AutomatasLexicos.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

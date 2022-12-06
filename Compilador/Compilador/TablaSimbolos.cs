@@ -251,6 +251,12 @@ namespace Compilador
          valuesColumn[numRow] = valueToAssing;
       }
 
+      public static string GetDesplazamiento(string lexemaIdentificador)
+      {
+         var des = desplazamientoDictionary;
+         int numRow = numRowInTable(lexemaIdentificador);
+         return des[numRow];
+      }
       public static void ClearSymbolTable()
       {
          FillSymbolTable();

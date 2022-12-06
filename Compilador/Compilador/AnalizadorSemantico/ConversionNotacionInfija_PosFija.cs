@@ -15,11 +15,6 @@ namespace Compilador.AnalizadorSemantico
       private int finLexema;
 
       /// <summary>
-      /// Secuencia de numeros y operaciones
-      /// </summary>
-      private string[] stringSplited;
-
-      /// <summary>
       /// Contenedor de los operadores
       /// </summary>
       private Dictionary<string, byte> nivelProcedenciaOperador;
@@ -34,7 +29,7 @@ namespace Compilador.AnalizadorSemantico
       /// </summary>
       private Stack<string> operatorsStack = new Stack<string>();
 
-      private bool ThereAreAString = false;
+      
       private bool ThereAreUnitaryToken = false;
       public string typeGlobalOfOperation = string.Empty;
       public Queue<string> ColaSalida;
@@ -232,10 +227,10 @@ namespace Compilador.AnalizadorSemantico
                continue;
             }
 
-            if (HandleStringToken(i))
-            {
-               typeGlobalOfOperation = "string";
-            }
+            // if (HandleStringToken(i))
+            // {
+            //    typeGlobalOfOperation = "string";
+            // }
 
             if (!CheckTypeOfLexema(i))
             {

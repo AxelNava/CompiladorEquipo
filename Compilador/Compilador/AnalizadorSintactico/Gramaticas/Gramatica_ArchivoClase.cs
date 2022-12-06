@@ -4,6 +4,7 @@ using Compilador.Gramaticas;
 using Compilador.TablasGlobales;
 using System;
 using System.Collections.Generic;
+using Compilador.IntentoCodigoIntermedio;
 using static Compilador.Gramaticas.Gramatica_DoWhile;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
@@ -229,7 +230,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                }
             }
 
-            if (AnalisisFinished) return "<archivoclase>";
+            if (AnalisisFinished)
+            {
+               tablaInstrucciones.AgregarFinPrograma();
+               return "<archivoclase>";
+            }
          }
 
          return PilaComprobacion.Count.ToString();

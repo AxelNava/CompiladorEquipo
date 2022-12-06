@@ -13,7 +13,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 {
    public class GramaticaValores : AbstractAnalisisTable
    {
-      private string _tipoTotalValores;
+      
       private string _valueIdentifier;
       private string _tipoTemporal;
       public Stack<Tuple<int, int>> _pilaContadores;
@@ -27,9 +27,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          _pilaContadores = new Stack<Tuple<int, int>>();
          _contadoraMetodos = new ColaContadoraMetodos();
       }
-
-      public string TipoTotalValores => _tipoTotalValores;
-
       public string EjecutarAnalisis()
       {
          AnalisisFinished = false;

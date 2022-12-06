@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.IntentoCodigoIntermedio;
 
 namespace Compilador.Gramaticas
 {
@@ -20,7 +21,7 @@ namespace Compilador.Gramaticas
       private static readonly string[] nonTerminalsTokenString =
       {
          "condicion",
-         "CuerpoInstrucciones",
+         "cuerpoInstrucciones",
          "<while>",
          "<BodyWhile>",
          "<F>"
@@ -186,6 +187,7 @@ namespace Compilador.Gramaticas
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
       }
 
+      private int NumeroInstruccionesRegresar;
       public string Ejecutar_Analisis()
       {
          AnalisisFinished = false;
@@ -222,7 +224,10 @@ namespace Compilador.Gramaticas
          {
             string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
+            {
                PilaTokens.GlobalTokens.Push(tokenAux);
+               NumeroInstruccionesRegresar = tablaInstrucciones.GetNumInstruccion;
+            }
          }
 
          if (referenceState == 6)
@@ -233,6 +238,8 @@ namespace Compilador.Gramaticas
                PilaTokens.GlobalTokens.Push(tokenaux);
             }
          }
+
+         HandleJumps(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -242,6 +249,14 @@ namespace Compilador.Gramaticas
          }
 
          return false;
+      }
+
+      private void HandleJumps(int referenceState)
+      {
+         if (referenceState == 7)
+         {
+            tablaInstrucciones.AgregarSaltoInverso(NumeroInstruccionesRegresar, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+         }
       }
    }
 }

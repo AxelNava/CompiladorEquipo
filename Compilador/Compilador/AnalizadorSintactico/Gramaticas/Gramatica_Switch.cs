@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.Gramaticas;
+using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
 
 namespace Compilador.AnalizadorSintactico.Gramaticas
@@ -15,12 +16,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       private int _finConteo;
       private string _typeToCompare;
       private string _temporalType;
+      private int contadorCases;
+      private string lexemaSwitch;
+      private string lexemaCase;
 
       public Gramatica_Switch()
       {
          TablaAnalisis = AnalysisTable_Switch.GlobalDictionarySwitch;
          PilaComprobacion = new Stack<Tuple<int, string>>();
          PilaComprobacion.Push(new Tuple<int, string>(0, "0"));
+         contadorCases = 0;
       }
 
       public string Ejecutar_Analisis()
@@ -46,7 +51,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                }
             }
 
-            if (AnalisisFinished) return "<Switch>";
+            if (AnalisisFinished)
+            {
+               while (contadorCases>0)
+               {
+                  tablaInstrucciones.ModificarInstruccionSaltoTerminal();
+                  contadorCases--;
+               }
+               return "<Switch>";
+            }
          }
 
          return string.Empty;
@@ -59,6 +72,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             _inicioConteo = LexemaCount.CountLexemas + 1;
             GramaticaValores gramatica = new GramaticaValores();
+            lexemaSwitch = TablaLexemaToken.GetLexema(_inicioConteo);
             string tokenAux = gramatica.EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
             {
@@ -82,11 +96,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if ((referenceState == 17 || referenceState == 18) && PilaTokens.GlobalTokens.Peek() != "cuerpoInstrucciones")
          {
             // Cambiar por cuerpoInstrucciones
-             string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
-             if (!string.IsNullOrEmpty(tokenAux))
-                PilaTokens.GlobalTokens.Push(tokenAux);
+            string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
+            if (!string.IsNullOrEmpty(tokenAux))
+               PilaTokens.GlobalTokens.Push(tokenAux);
          }
 
+         HandleJumpt(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
             AbstractActionFunction.ActionEnum actionEnum;
@@ -107,6 +122,62 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          }
 
          return false;
+      }
+
+      private void HandleJumpt(int referenceState)
+      {
+         switch (referenceState)
+         {
+            case 8:
+               if (PilaTokens.GlobalTokens.Peek() != "ValoresCase")
+               {
+                  lexemaCase = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas+1);
+                  contadorCases++;
+                  HandleIdentifiersAndJumpsConditions(lexemaSwitch, lexemaCase);
+               }
+
+               break;
+            case 9:
+               for (int i = contadorCases; i > 0; i--)
+               {
+                  tablaInstrucciones.ModificarInstruccionSaltoCondicion();
+               }
+
+               break;
+            case 22:
+               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               break;
+         }
+      }
+
+      private void HandleIdentifiersAndJumpsConditions(string lexemaBefore, string lexemaafter)
+      {
+         string auxB = "";
+         string auxF = "";
+         if (TablaSimbolos.CheckLexema(lexemaBefore))
+         {
+            if (TablaSimbolos.CheckTypeOfLexema(lexemaBefore))
+            {
+               auxB = TablaSimbolos.GetDesplazamiento(lexemaBefore);
+            }
+         }
+         else
+         {
+            auxB = $"{lexemaBefore}V";
+         }
+
+         if (TablaSimbolos.CheckLexema(lexemaafter))
+         {
+            if (TablaSimbolos.CheckTypeOfLexema(lexemaafter))
+            {
+               auxF = TablaSimbolos.GetDesplazamiento(lexemaafter);
+            }
+         }
+         else
+         {
+            auxF = $"{lexemaafter}V";
+         }
+         tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIgual);
       }
    }
 }

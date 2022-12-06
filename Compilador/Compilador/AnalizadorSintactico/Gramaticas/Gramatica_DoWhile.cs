@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Compilador.AnalizadorSintactico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
+using Compilador.IntentoCodigoIntermedio;
 
 namespace Compilador.Gramaticas
 {
@@ -19,7 +20,7 @@ namespace Compilador.Gramaticas
       private static readonly string[] nonTerminalsTokenString =
       {
          "DW",
-         "CuerpoInstrucciones",
+         "cuerpoInstrucciones",
          "condicion",
          "FinDo"
       };
@@ -165,6 +166,8 @@ namespace Compilador.Gramaticas
          };
       }
 
+      private int NumeroInstruccion;
+
       public string Ejecutar_Analisis()
       {
          AnalisisFinished = false;
@@ -201,11 +204,15 @@ namespace Compilador.Gramaticas
          {
             string tokenAux = new GramaticaCondicion().EjecutarAnalisis();
             if (!string.IsNullOrEmpty(tokenAux))
+            {
                PilaTokens.GlobalTokens.Push(tokenAux);
+            }
          }
 
-         if (referenceState == 3)
+         if (referenceState == 3 && (PilaTokens.GlobalTokens.Peek() != tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA) &&
+             PilaTokens.GlobalTokens.Peek() != "Lambda"))
          {
+            NumeroInstruccion = tablaInstrucciones.GetNumInstruccion+2;
             string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
             if (!string.IsNullOrEmpty(tokenAux))
             {
@@ -213,9 +220,9 @@ namespace Compilador.Gramaticas
             }
          }
 
+         HandleJumps(referenceState);
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
          {
-            // PilaTokens.numLineToken.RemoveAt(0);
             AbstractActionFunction.ActionEnum actionEnum;
             actionEnum = TablaAnalisis[referenceState][PilaTokens.GlobalTokens.Peek()].Action;
             HandleActions(actionEnum);
@@ -223,6 +230,14 @@ namespace Compilador.Gramaticas
          }
 
          return false;
+      }
+
+      private void HandleJumps(int referenceState)
+      {
+         if (referenceState == 8)
+         {
+            tablaInstrucciones.AgregarSaltoInverso(NumeroInstruccion, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+         }
       }
    }
 }

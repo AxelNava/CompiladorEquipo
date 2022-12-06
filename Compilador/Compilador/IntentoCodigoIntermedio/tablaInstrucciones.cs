@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Permissions;
+using System.Text;
 
 namespace Compilador.IntentoCodigoIntermedio
 {
@@ -8,8 +10,10 @@ namespace Compilador.IntentoCodigoIntermedio
       public static Dictionary<int, Tuple<InstruccionesCodigoIntermedio, string, string>> tablaINstrucciones =
          new Dictionary<int, Tuple<InstruccionesCodigoIntermedio, string, string>>();
 
-      public static Stack<int> PilaNumerosInstruccionSaltoAmodificar = new Stack<int>();
-      public static int GetNumInstruccion = ContadorInstrucciones;
+      private static Stack<int> PilaNumerosInstruccionSaltoCondicionesAmodificar = new Stack<int>();
+      public static Stack<int> PilaSaltosTerminales = new Stack<int>();
+      public static int GetNumInstruccion => ContadorInstrucciones;
+
       public enum InstruccionesCodigoIntermedio
       {
          InstruccionMayor,
@@ -29,7 +33,8 @@ namespace Compilador.IntentoCodigoIntermedio
          InstruccionReturn,
          InstruccionSalto,
          InstruccionIncremento,
-         InstruccionDecremento
+         InstruccionDecremento,
+         IntruccionFinPrograma
       }
 
       private static string[] instruccionesString =
@@ -51,7 +56,8 @@ namespace Compilador.IntentoCodigoIntermedio
          "Return",
          "SALTO",
          "INCREMENTO",
-         "DECREMENTO"
+         "DECREMENTO",
+         "FINPROGRAMA"
       };
 
       public static string SelectInstruction(InstruccionesCodigoIntermedio Instruccion)
@@ -62,10 +68,21 @@ namespace Compilador.IntentoCodigoIntermedio
       public static void AgregarLlamadaMetodo(InstruccionesCodigoIntermedio instrucciones)
       {
          tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instrucciones, string.Empty, string
-         .Empty));
+            .Empty));
          ContadorInstrucciones += 1;
       }
 
+      public static void AgregarInstruccionFloat(InstruccionesCodigoIntermedio instruccionesCodigoIntermedio, string paraetro1, string parametro2)
+      {
+         int desplazaminetoSeparado = int.Parse(paraetro1);
+         string[] valoresFloat = parametro2.Split('.');
+         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio, 
+         valoresFloat[0], (desplazaminetoSeparado - 2).ToString()));
+         ContadorInstrucciones++;
+         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio, 
+            valoresFloat[1], (desplazaminetoSeparado).ToString()));
+         ContadorInstrucciones++;
+      }
       public static void AgregarInstruccion(string Parametro1, string Parametro2, InstruccionesCodigoIntermedio instruccion)
       {
          if (instruccion == InstruccionesCodigoIntermedio.InstruccionSalto || instruccion == InstruccionesCodigoIntermedio.InstruccionReturn ||
@@ -74,15 +91,17 @@ namespace Compilador.IntentoCodigoIntermedio
              instruccion == InstruccionesCodigoIntermedio.InstruccionMayorIgual || instruccion == InstruccionesCodigoIntermedio.InstruccionMenorIgual
              || instruccion == InstruccionesCodigoIntermedio.InstruccionMenor || instruccion == InstruccionesCodigoIntermedio.InstruccionMayor)
          {
-            tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, Parametro2));
-            ContadorInstrucciones += 1;
+            tablaINstrucciones.Add(ContadorInstrucciones,
+               new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, Parametro2));
+            ContadorInstrucciones++;
             tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
-            .InstruccionSalto, Parametro1, 
-            Parametro2));
-            ContadorInstrucciones += 1;
-            PilaNumerosInstruccionSaltoAmodificar.Push(ContadorInstrucciones);
+                  .InstruccionSalto, string.Empty,
+               string.Empty));
+            PilaNumerosInstruccionSaltoCondicionesAmodificar.Push(ContadorInstrucciones);
+            ContadorInstrucciones++;
             return;
          }
+              
          tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, Parametro2));
          ContadorInstrucciones++;
       }
@@ -92,20 +111,27 @@ namespace Compilador.IntentoCodigoIntermedio
          switch (instruccion)
          {
             case InstruccionesCodigoIntermedio.InstruccionNegacion:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, "FFV"));
-               return;
+               tablaINstrucciones.Add(ContadorInstrucciones,
+                  new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, "FFV"));
+               break;
             case InstruccionesCodigoIntermedio.InstruccionReturn:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, string.Empty, 
-               string.Empty));
-               return;
+               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, string.Empty,
+                  string.Empty));
+               break;
             case InstruccionesCodigoIntermedio.InstruccionSalto:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, 
+               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1,
                   string.Empty));
-               return;
-               case InstruccionesCodigoIntermedio.InstruccionLLamar:
-                  tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1, 
+               PilaSaltosTerminales.Push(ContadorInstrucciones);
+               break;
+            case InstruccionesCodigoIntermedio.InstruccionLLamar:
+               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1,
                   string.Empty));
-                  break;
+               break;
+            case InstruccionesCodigoIntermedio.InstruccionIncremento:
+            case InstruccionesCodigoIntermedio.InstruccionDecremento:
+               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, Parametro1,
+                  string.Empty));
+               break;
          }
 
          ContadorInstrucciones++;
@@ -114,14 +140,73 @@ namespace Compilador.IntentoCodigoIntermedio
 
       private static int ContadorInstrucciones = 0;
 
+      public static void AgregarSaltoInverso(int NumeroInstruccionSalto, InstruccionesCodigoIntermedio instruccionesCodigoIntermedio)
+      {
+         string valorNegativo = (NumeroInstruccionSalto - (ContadorInstrucciones + 2)).ToString();
+         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio,
+            valorNegativo, string.Empty));
+         ContadorInstrucciones++;
+         ModificarInstruccionSaltoCondicion();
+      }
+
+      public static void ModificarInstruccionSaltoCondicion()
+      {
+         int NumeroSaltoInstruccion = PilaNumerosInstruccionSaltoCondicionesAmodificar.Pop();
+         int ProximoSalto = ContadorInstrucciones - NumeroSaltoInstruccion;
+         if (tablaINstrucciones.ContainsKey(NumeroSaltoInstruccion))
+         {
+            tablaINstrucciones[NumeroSaltoInstruccion] = new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
+               .InstruccionSalto, ProximoSalto.ToString(), string.Empty);
+         }
+      }
+
+      public static void ModificarInstruccionSaltoTerminal()
+      {
+         int NumeroSaltoInstruccion = PilaSaltosTerminales.Pop();
+         int ProximoSalto = ContadorInstrucciones - NumeroSaltoInstruccion;
+         if (tablaINstrucciones.ContainsKey(NumeroSaltoInstruccion))
+         {
+            tablaINstrucciones[NumeroSaltoInstruccion] = new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
+               .InstruccionSalto, ProximoSalto.ToString(), string.Empty);
+         }
+      }
+
       public static void ReiniciarInstrucciones()
       {
          ContadorInstrucciones = 0;
       }
 
+      public static void AgregarFinPrograma()
+      {
+         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
+         .IntruccionFinPrograma, string.Empty,string.Empty));
+      }
       public static void LimpiarTablaInstrucciones()
       {
+         ContadorInstrucciones = 0;
          tablaINstrucciones.Clear();
+      }
+
+      public static string ConstruirCodigoIntermedio()
+      {
+         StringBuilder Codigo = new StringBuilder();
+         foreach (var instruccion in tablaINstrucciones)
+         {
+            if (string.IsNullOrEmpty(instruccion.Value.Item3))
+            {
+               Codigo.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}\n");
+               continue;
+            }
+
+            if (instruccion.Value.Item1 == InstruccionesCodigoIntermedio.IntruccionFinPrograma)
+            {
+               Codigo.Append($"{SelectInstruction(instruccion.Value.Item1)}");
+               continue;
+            }
+            Codigo.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}, {instruccion.Value.Item3}\n");
+         }
+
+         return Codigo.ToString();
       }
    }
 }

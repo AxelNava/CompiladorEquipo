@@ -9,8 +9,6 @@ namespace Compilador.AnalizadorSemantico
       /// Esta pila almacena todos los números de la operación así como el resultado
       /// </summary>
       private Stack<float> resultNums = new Stack<float>();
-
-      private float auxResult = 0;
       public string lexemaIdentifier;
       private string memoryLocation;
 
