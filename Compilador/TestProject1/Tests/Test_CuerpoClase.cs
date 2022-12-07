@@ -8,7 +8,7 @@ namespace TestProject1.Tests;
 public class Test_CuerpoClase
 {
    [Theory]
-   [MemberData(nameof(QDataTestStack2))]
+   [MemberData(nameof(QDataTestStack3))]
    public static void CuerpoClaseSHourReturnToken_cuerpoClase(string expected, Stack<string> stackIn)
    {
       PilaTokens.GlobalTokens = stackIn;
@@ -72,7 +72,34 @@ public class Test_CuerpoClase
       string tokens = string.Format($"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO)} " +
                                     $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
                                     $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion)} " +
-                                    $"valores " +
+                                    $"Valores " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
+                                    $"FinCadena");
+      string[] tokensSeparate = tokens.Split(' '); 
+      Stack<string> pilaEntrada = new Stack<string>();
+      for (int i = tokensSeparate.Length - 1; i >= 0; i--)
+      {
+         pilaEntrada.Push(tokensSeparate[i]);
+      }
+      yield return new object[] { "bodyclass", pilaEntrada };
+   }
+   public static IEnumerable<object[]> QDataTestStack3()
+   {
+      string tokens = string.Format($"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion)} " +
+                                    $"Valores " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO)} " +
+                                    $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador)} " +
                                     $"{tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)} " +
                                     $"FinCadena");
       string[] tokensSeparate = tokens.Split(' '); 

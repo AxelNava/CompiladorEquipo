@@ -245,7 +245,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          int referenceState = PilaComprobacion.Peek().Item1;
          if (referenceState == 9)
          {
-            Gramatica_CuerpoClase gramaticaCuerpoClase = new Gramatica_CuerpoClase("");
+            Gramatica_CuerpoClase gramaticaCuerpoClase = new Gramatica_CuerpoClase(_identificadorEncontrado);
             string tokenp = gramaticaCuerpoClase.Ejecutar_Analisis();
             if (!string.IsNullOrEmpty(tokenp))
             {
@@ -264,17 +264,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
          return false;
       }
-
-      private void GetTypeOfLexema()
-      {
-         if (!TablaSimbolos.CheckTokenOfLexema(_identificadorEncontrado))
-         {
-            return;
-         }
-
-         _tipoEncontrado = TablaSimbolos.GetTokensValues()[TablaSimbolos.numRowInTable(_identificadorEncontrado)];
-      }
-
       private void AnalizeIdentifierInSymbolTable(string identifierToAnalize)
       {
          if (!TablaSimbolos.CheckTypeOfLexema(identifierToAnalize))

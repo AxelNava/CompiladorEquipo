@@ -90,6 +90,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   {
                      selectorString(nonTerminalsInstrucciones.ComplementoIdentificador), new AccionFuncion_TablaAnalisis(AbstractActionFunction
                         .ActionEnum.GOTO, 5)
+                  },
+                  //Este es el estado para poder crear una clase
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 25)
                   }
                }
             },
@@ -452,6 +457,104 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                         selectorString(nonTerminalsInstrucciones.ParametroMetodo),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
+                     })
+                  }
+               }
+            },
+            {
+               25, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 26)
+                  }
+               }
+            },
+            {
+               26, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 27)
+                  }
+               }
+            },
+            {
+               27, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28)
+                  }
+               }
+            },
+            {
+               28, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 29)
+                  }
+               }
+            },
+            {
+               29, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 30)
+                  }
+               }
+            },
+            {
+               30, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 31)
+                  }
+               }
+            },
+            {
+               31, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(selectorString
+                     (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                     {
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     })
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(selectorString
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                     {
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
+                     })
+                  },
+                  {
+                     "FinCadena", new ReducedAction(selectorString
+                        (nonTerminalsInstrucciones.ComplementoIdentificador), new []
+                     {
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA),
                      })
                   }
                }

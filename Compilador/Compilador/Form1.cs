@@ -63,10 +63,10 @@ namespace Compilador
             #endregion
 
             fillTableVisual();
-
-            textBoxErrores.Text = ConstructuError(auLex.messasgesErros);
+            string errores = ConstructuError(auLex.messasgesErros);
+            textBoxErrores.Text = errores;
             textBoxErrores.ForeColor = Color.Red;
-            if (!string.IsNullOrEmpty(textBoxErrores.Text))
+            if (string.IsNullOrEmpty(errores))
             {
                string codigoIntermedio = tablaInstrucciones.ConstruirCodigoIntermedio();
                MessageBox.Show(codigoIntermedio);
@@ -136,9 +136,16 @@ namespace Compilador
       private string ConstructuError(string errorLexico)
       {
          StringBuilder errores = new StringBuilder();
-         errores.AppendFormat($"{errorLexico}\n");
-         errores.AppendFormat($"{ErrorSintaxManager.GetMessageError()}\n");
-         errores.AppendFormat($"{Mensajes_ErroresSemanticos.MensajeError}\n");
+         StringBuilder ErroresLexico = new StringBuilder(errorLexico);
+         StringBuilder errorSintactico = new StringBuilder(ErrorSintaxManager.GetMessageError());
+         StringBuilder erroresSemanticos = new StringBuilder(Mensajes_ErroresSemanticos.MensajeError.ToString());
+         errores.AppendFormat($"{ErroresLexico}\n");
+         errores.AppendFormat($"{errorSintactico}\n");
+         errores.AppendFormat($"{erroresSemanticos}\n");
+         if (string.IsNullOrEmpty(ErroresLexico.ToString()) && string.IsNullOrEmpty(errorSintactico.ToString()) && string.IsNullOrEmpty(erroresSemanticos.ToString()))
+         {
+            return string.Empty;
+         }
          return errores.ToString();
       }
    }

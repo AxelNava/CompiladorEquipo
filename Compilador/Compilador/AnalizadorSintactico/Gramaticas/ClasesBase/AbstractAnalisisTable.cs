@@ -79,7 +79,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesBase
                PushPopStacks_Shit_Goto(referenceState);
                if (PilaComprobacion.Peek().Item2 != "Lambda")
                   LexemaCount.CountLexemas++;
-               AnalizadorDeLimites.AnaliceIdentifier_Token();
+               // AnalizadorDeLimites.AnaliceIdentifier_Token();
                break;
             case AbstractActionFunction.ActionEnum.GOTO:
                PushPopStacks_Shit_Goto(referenceState);

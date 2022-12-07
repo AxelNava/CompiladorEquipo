@@ -14,14 +14,6 @@ namespace Compilador.AnalizadorSemantico
 
       public float ExecuteEvaluation(Queue<string> queueIn)
       {
-         int numRowInTable = TablaSimbolos.numRowInTable(lexemaIdentifier);
-         memoryLocation = TablaSimbolos.GetDesplazamientos()[numRowInTable];
-         if (queueIn.Count == 1)
-         {
-            tablaInstrucciones.AgregarInstruccion(memoryLocation, queueIn.Peek(),
-               tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
-         }
-
          while (queueIn.Count > 0)
          {
             float auxNum;

@@ -38,5 +38,10 @@ namespace Compilador.AnalizadorSemantico
       {
          conteoDesplazamiento += desplazamineto;
       }
+
+      public static void AddShiftClass(int desplazamiento)
+      {
+         conteoDesplazamiento += desplazamiento;
+      }
    }
 }

@@ -3,7 +3,6 @@ using Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesBase;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Forms;
 using Compilador.AnalizadorSemantico;
 using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.IntentoCodigoIntermedio;
@@ -22,6 +21,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
       /// Es el lexema de token identificador
       /// </summary>
       private string _identificadorEncontrado;
+
+      private string _identificadorClaseEncontrado;
 
       private string[] _valorEncontrado;
       private int _inicioConteoValor;
@@ -43,17 +44,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             if (!CheckTokenIn_Handler())
             {
-               PilaTokens.GlobalTokens.Push("Lambda");
+               PilaTokens.GlobalTokens.Push("FinCadena");
                if (!CheckTokenIn_Handler())
                {
                   PilaTokens.GlobalTokens.Pop();
-                  PilaTokens.GlobalTokens.Push("FinCadena");
-                  if (!CheckTokenIn_Handler())
-                  {
-                     PilaTokens.GlobalTokens.Pop();
-                     AddError();
-                     return string.Empty;
-                  }
+                  AddError();
+                  return string.Empty;
                }
             }
 
@@ -73,6 +69,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (referenceState == 9 || referenceState == 11)
          {
             ManejadorValores();
+         }
+
+         if (referenceState == 30)
+         {
+            AssignClassTypeToIdentifier(_identificadorEncontrado);
+         }
+
+         if (referenceState == 25)
+         {
+            _identificadorEncontrado = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
          }
 
          if (TablaAnalisis[referenceState].ContainsKey(PilaTokens.GlobalTokens.Peek()))
@@ -97,8 +103,16 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
             {
                PilaTokens.GlobalTokens.Push(tokenAux);
-               tablaInstrucciones.AgregarLlamadaMetodo(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar);
+               tablaInstrucciones.AgregarLlamadaMetodo(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar, _identificadorEncontrado);
+               return;
             }
+         }
+
+         if (referenceState == 28)
+         {
+            if (_identificadorClaseEncontrado != TablaLexemaToken.GetLexema(LexemaCount.CountLexemas))
+               Mensajes_ErroresSemanticos.AddErrorInstanciation(TablaLexemaToken.GetLexema(LexemaCount.CountLexemas), TablaLexemaToken
+                  .LexemaTokensTable[LexemaCount.CountLexemas].Item1);
          }
       }
 
@@ -167,6 +181,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (referenceState == 3 && PilaTokens.GlobalTokens.Peek() != "ComplementoIdenti")
          {
             _identificadorEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
+            _identificadorClaseEncontrado = TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item2;
             if (!TablaSimbolos.CheckLexema(_identificadorEncontrado))
             {
                return;
@@ -208,6 +223,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             return;
          }
 
+         if (TablaSimbolos.GetTypesValues().ContainsValue(identifierToAnalize)) return;
          Mensajes_ErroresSemanticos.AddErrorDobleDeclaracion(identifierToAnalize, TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
       }
 
@@ -226,7 +242,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             ConversionNotacionInfija_PosFija conversion = new ConversionNotacionInfija_PosFija(pilaContadoraMetodos);
             EvaluadorNotacion_PosFija evaluacion = new EvaluadorNotacion_PosFija();
             conversion.ExecuteAnalysis(_inicioConteoValor, finalCounteoValores, _tipoEncontrado);
-            float resultadoEvaluacion = 0;
+            float resultadoEvaluacion;
             if (CheckType(conversion.typeGlobalOfOperation))
             {
                if (conversion.ColaSalida.Count != 0)
@@ -235,14 +251,19 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
                   int resultadoEntero = (int)Math.Floor(resultadoEvaluacion);
                   if (conversion.typeGlobalOfOperation == "int")
+                  {
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
+                     TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
+                     tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
+                        string.Format($"{resultadoEntero.ToString()}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                  }
                   else
                   {
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
+                     TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
+                     tablaInstrucciones.AgregarInstruccionFloat(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion,
+                        (ContadorDesplazamiento.ConteoDesplazamiento + 4).ToString(), resultadoEvaluacion.ToString(CultureInfo.InvariantCulture));
                   }
-                  TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
-                  tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
-                     string.Format($"{resultadoEvaluacion.ToString()}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                }
             }
             else
@@ -321,6 +342,39 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             case "float":
                AnalizadorDeLimites.AnalizeMinMaxFloat(value);
                break;
+         }
+      }
+
+      private void CheckIdentifier(int referenceState)
+      {
+         if (referenceState == 10)
+         {
+            _identificadorEncontrado = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
+         }
+      }
+
+      private void AssignClassTypeToIdentifier(string identifier)
+      {
+         if (!TablaSimbolos.CheckTypeOfLexema(identifier))
+         {
+            int numRow = TablaSimbolos.numRowInTable(identifier);
+            TablaSimbolos.GetTypesValues()[numRow] = _identificadorClaseEncontrado;
+            string desplazamientoClase = TablaSimbolos.GetDesplazamiento(_identificadorClaseEncontrado);
+            // tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(), "000000000000V",
+            //    tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDeclaracion);
+            AssignShiftToIdentifier(identifier);
+            AgregarShiftClase(desplazamientoClase);
+            return;
+         }
+
+         Mensajes_ErroresSemanticos.AddErrorDobleDeclaracion(identifier, TablaLexemaToken.LexemaTokensTable[LexemaCount.CountLexemas].Item1);
+      }
+
+      private void AgregarShiftClase(string desplazamiento)
+      {
+         if (int.TryParse(desplazamiento, out int result))
+         {
+            ContadorDesplazamiento.AddShiftClass(result);
          }
       }
    }

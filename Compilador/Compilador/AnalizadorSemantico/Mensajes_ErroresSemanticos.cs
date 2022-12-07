@@ -58,5 +58,10 @@ namespace Compilador.AnalizadorSemantico
       {
          MensajeError.AppendFormat($"No se puede aplicar un operador a un {type} -- Línea: {numLine}\n");
       }
+
+      public static void AddErrorMethod(string typeMethod, int numLine)
+      {
+         MensajeError.AppendFormat($"Un metodo del tipo {typeMethod} tiene que llevar un return -- Línea {numLine}");
+      }
    }
 }

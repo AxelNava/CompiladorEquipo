@@ -50,7 +50,11 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2)
                   },
                   {
-                     SelectorString(TokensNonTerminal.Declaracion_Metodo), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 1)
+                     SelectorString(TokensNonTerminal.CuerpoInstrucciones), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 1)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28)
                   }
                }
             },
@@ -103,10 +107,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal.Recursion), new[] { string.Empty })
                   },
                   {
-                     SelectorString(TokensNonTerminal.Declaracion_Metodo), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 9)
+                     SelectorString(TokensNonTerminal.CuerpoInstrucciones), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 9)
                   },
                   {
                      SelectorString(TokensNonTerminal.Recursion), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 8)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28)
                   }
                }
             },
@@ -154,7 +162,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                8, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal.Declaracion_Metodo), new[]
+                     "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal.CuerpoInstrucciones), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
@@ -170,7 +178,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                   {
                      "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal.Recursion), new[]
                      {
-                        SelectorString(TokensNonTerminal.Declaracion_Metodo)
+                        SelectorString(TokensNonTerminal.CuerpoInstrucciones)
                      })
                   }
                }
@@ -363,7 +371,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                24, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     SelectorString(TokensNonTerminal.Valores),new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 26)
+                     SelectorString(TokensNonTerminal.Valores), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 26)
                   }
                }
             },
@@ -371,8 +379,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                25, new Dictionary<string, AbstractActionFunction>()
                {
                   {
-                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO),new ReducedAction(SelectorString(TokensNonTerminal
-                     .ComplementoIdenti), new []
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO), new ReducedAction(SelectorString(TokensNonTerminal
+                        .ComplementoIdenti), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
                         SelectorString(TokensNonTerminal.Parametros),
@@ -384,8 +392,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                      })
                   },
                   {
-                     "FinCadena",new ReducedAction(SelectorString(TokensNonTerminal
-                        .ComplementoIdenti), new []
+                     "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal
+                        .ComplementoIdenti), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
                         SelectorString(TokensNonTerminal.Parametros),
@@ -403,7 +411,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA), new AccionFuncion_TablaAnalisis
-                     (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 27)
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 27)
                   }
                }
             },
@@ -412,10 +420,118 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.AnalysisTables
                {
                   {
                      tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA), new ReducedAction(SelectorString
-                     (TokensNonTerminal.ReturnNonTErminal), new []
+                        (TokensNonTerminal.ReturnNonTErminal), new[]
                      {
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Retuuuurrnnn),
                         SelectorString(TokensNonTerminal.Valores),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
+                     })
+                  }
+               }
+            },
+            {
+               28, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 29)
+                  }
+               }
+            },
+            {
+               29, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 30)
+                  }
+               }
+            },
+            {
+               30, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 31)
+                  }
+               }
+            },
+            {
+               31, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 32)
+                  }
+               }
+            },
+            {
+               32, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 33)
+                  }
+               }
+            },
+            {
+               33, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 34)
+                  }
+               }
+            },
+            {
+               34, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA), new AccionFuncion_TablaAnalisis
+                        (AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 35)
+                  }
+               }
+            },
+            {
+               35, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     "FinCadena", new ReducedAction(SelectorString(TokensNonTerminal.Recursion), new[]
+                     {
+                        string.Empty
+                     })
+                  },
+                  {
+                     SelectorString(TokensNonTerminal.CuerpoInstrucciones),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 9)
+                  },
+                  {
+                     SelectorString(TokensNonTerminal.Recursion), new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.GOTO, 36)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 28)
+                  },
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.TIPO),
+                     new AccionFuncion_TablaAnalisis(AbstractActionFunction.ActionEnum.DESPLAZAMIENTO, 2)
+                  }
+               }
+            },
+            {
+               36, new Dictionary<string, AbstractActionFunction>()
+               {
+                  {
+                     tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador), new ReducedAction(SelectorString(TokensNonTerminal
+                        .CuerpoInstrucciones), new[]
+                     {
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Asignacion),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.NEW),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISABRE),
+                        tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PARENTESISCIERRA),
                         tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.PUNTOYCOMA)
                      })
                   }
