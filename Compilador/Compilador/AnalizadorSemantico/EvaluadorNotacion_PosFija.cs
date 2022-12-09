@@ -39,34 +39,34 @@ namespace Compilador.AnalizadorSemantico
          switch (stringCharacter)
          {
             case "+":
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSum);
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSum);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSum);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSum);
                resultOperation = numberX + numberY;
                resultNums.Push(resultOperation);
                break;
             case "-":
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionRes);
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionRes);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionRes);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionRes);
                resultOperation = numberX - numberY;
                resultNums.Push(resultOperation);
                break;
             case "/":
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDiv);
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDiv);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDiv);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDiv);
                resultOperation = numberX / numberY;
                resultNums.Push(resultOperation);
                break;
             case "*":
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMulti);
-               tablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMulti);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberX.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionMulti);
+               TablaInstrucciones.AgregarInstruccion(memoryLocation, $"{numberY.ToString()}",
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionMulti);
                resultOperation = numberX * numberY;
                resultNums.Push(resultOperation);
                break;

@@ -127,7 +127,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                {
                   TablaSimbolos.GetTypesValues()[numRow] = "Metodo";
                }
-               tablaInstrucciones.AgregarInstruccion(_valueIdentifier, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar);
+               TablaInstrucciones.AgregarInstruccion(_valueIdentifier, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionLLamar);
             }
          }
       }
@@ -149,14 +149,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (referenceState == 19 || referenceState == 30 || referenceState == 62)
          {
             string identificador = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1);
-            tablaInstrucciones.AgregarInstruccion(identificador, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIncremento);
+            TablaInstrucciones.AgregarInstruccion(identificador, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionIncremento);
             return;
          }
 
          if (referenceState != 20 && referenceState != 31 && referenceState != 63) return;
          {
             string identificador = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1);
-            tablaInstrucciones.AgregarInstruccion(identificador, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDecremento);
+            TablaInstrucciones.AgregarInstruccion(identificador, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDecremento);
          }
       }
    }

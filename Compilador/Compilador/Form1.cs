@@ -68,7 +68,7 @@ namespace Compilador
             textBoxErrores.ForeColor = Color.Red;
             if (string.IsNullOrEmpty(errores))
             {
-               string codigoIntermedio = tablaInstrucciones.ConstruirCodigoIntermedio();
+               string codigoIntermedio = TablaInstrucciones.ConstruirCodigoIntermedio();
                // MessageBox.Show(codigoIntermedio);
                Convertidor_string_a_txt.Convertidor(codigoIntermedio);
             }
@@ -87,8 +87,8 @@ namespace Compilador
          ContadorDesplazamiento.ConteoDesplazamiento = 0;
          LexemaCount.CountLexemas = 0;
          TablaLexemaToken.ClearTable();
-         tablaInstrucciones.ReiniciarInstrucciones();
-         tablaInstrucciones.LimpiarTablaInstrucciones();
+         TablaInstrucciones.ReiniciarInstrucciones();
+         TablaInstrucciones.LimpiarTablaInstrucciones();
       }
 
       private void EnterPressedEvent(object sender, KeyEventArgs e)

@@ -522,7 +522,7 @@ namespace Compilador.Gramaticas
             {
                while (contadorSaltosIf_finales>=0)
                {
-                  tablaInstrucciones.ModificarInstruccionSaltoTerminal();
+                  TablaInstrucciones.ModificarInstruccionSaltoTerminal();
                   contadorSaltosIf_finales--;
                }
                return "<IF>";
@@ -589,24 +589,24 @@ namespace Compilador.Gramaticas
             case 7:
             case 21:
             case 27:
-               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               TablaInstrucciones.AgregarInstruccion(string.Empty, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
                contadorSaltosIf_finales++;
                break;
             case 6:
             case 15:
-               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               TablaInstrucciones.AgregarInstruccion(string.Empty, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
                contadorSaltosIf_finales++;
                break;
             case 24:
                if (PilaTokens.GlobalTokens.Peek() == selectorString(notTerminalsForThis.CUERPOINSTRUCCIONES) || PilaTokens.GlobalTokens.Peek() ==
                    selectorString(notTerminalsForThis.BODYELSE))
                   break;
-               tablaInstrucciones.ModificarInstruccionSaltoCondicion();
+               TablaInstrucciones.ModificarInstruccionSaltoCondicion();
                contadorSaltosIf_finales--;
                break;
          }
 
-         var tabla = tablaInstrucciones.tablaINstrucciones;
+         var tabla = TablaInstrucciones.TablaINstrucciones;
       }
    }
 }

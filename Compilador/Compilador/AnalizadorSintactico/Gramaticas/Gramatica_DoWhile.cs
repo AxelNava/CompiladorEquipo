@@ -212,7 +212,7 @@ namespace Compilador.Gramaticas
          if (referenceState == 3 && (PilaTokens.GlobalTokens.Peek() != tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.LLAVECIERRA) &&
              PilaTokens.GlobalTokens.Peek() != "Lambda"))
          {
-            NumeroInstruccion = tablaInstrucciones.GetNumInstruccion+2;
+            NumeroInstruccion = TablaInstrucciones.GetNumInstruccion+2;
             string tokenAux = new Gramatica_CuerpoInstrucciones().Ejecutar_Analisis();
             if (!string.IsNullOrEmpty(tokenAux))
             {
@@ -236,7 +236,7 @@ namespace Compilador.Gramaticas
       {
          if (referenceState == 8)
          {
-            tablaInstrucciones.AgregarSaltoInverso(NumeroInstruccion, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+            TablaInstrucciones.AgregarSaltoInverso(NumeroInstruccion, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
          }
       }
    }

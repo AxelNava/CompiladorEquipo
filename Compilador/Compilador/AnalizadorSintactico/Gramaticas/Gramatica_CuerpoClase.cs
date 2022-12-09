@@ -132,7 +132,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
             AssignShiftToIdentifier(numRow);
             ContadorDesplazamiento.AddShiftType(tipoEncontrado);
             string desplazamiento = TablaSimbolos.GetDesplazamiento(identifier);
-            tablaInstrucciones.AgregarInstruccion(desplazamiento, "00000", tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+            TablaInstrucciones.AgregarInstruccion(desplazamiento, "00000", TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
             return true;
          }
 
@@ -206,8 +206,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                   string valorCompleto = string.Join(" ", _valorEncontrado);
                   AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
                   TablaSimbolos.GetValues()[numRow] = valorCompleto;
-                  tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
-                     string.Format($"{valorCompleto}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                  TablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
+                     string.Format($"{valorCompleto}V"), TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                }
                else
                {
@@ -222,8 +222,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                      ? TablaLexemaToken.GetLexema(LexemaCount.CountLexemas)
                      : string
                         .Empty;
-               tablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
-                  string.Format($"{_valorEncontrado[0]}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+               TablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
+                  string.Format($"{_valorEncontrado[0]}V"), TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
             }
          }
       }
@@ -243,15 +243,15 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), tipoReturn);
                string desplazamientoMetodo = TablaSimbolos.GetDesplazamiento(identificadorMetodoEncontrado);
                TablaSimbolos.GetValues()[numRow] = resultadoEntero.ToString(CultureInfo.InvariantCulture);
-               tablaInstrucciones.AgregarInstruccion(desplazamientoMetodo, resultadoEntero.ToString(), tablaInstrucciones
-                  .InstruccionesCodigoIntermedio
+               TablaInstrucciones.AgregarInstruccion(desplazamientoMetodo, resultadoEntero.ToString(), TablaInstrucciones
+                  .IntermidiateCodeInstructions
                   .InstruccionAsignacion);
             }
             else
             {
                CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), tipoReturn);
                string desplazamientoMetodo = TablaSimbolos.GetDesplazamiento(identificadorMetodoEncontrado);
-               tablaInstrucciones.AgregarInstruccionFloat(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion,
+               TablaInstrucciones.AgregarInstruccionFloat(TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion,
                   desplazamientoMetodo, resultadoEvaluacion.ToString(CultureInfo.InvariantCulture));
                TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
             }
@@ -295,8 +295,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                      AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
                      string desplazamiento =
                         TablaSimbolos.GetDesplazamientos()[numRow];
-                     tablaInstrucciones.AgregarInstruccion(desplazamiento, $"{valorCompleto}V",
-                        tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                     TablaInstrucciones.AgregarInstruccion(desplazamiento, $"{valorCompleto}V",
+                        TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                      TablaSimbolos.GetValues()[numRow] = valorCompleto;
                   }
                   else
@@ -312,9 +312,9 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                         ? TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1)
                         : string
                            .Empty;
-                  tablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
+                  TablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
                      $"{TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1)}",
-                     tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                     TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                }
             }
          }

@@ -169,22 +169,22 @@ namespace Compilador.Gramaticas
          switch (lexemaComparador)
          {
             case "<":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMenor);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstructionLower);
                break;
             case ">":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMayor);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstructionGreater);
                break;
             case "==":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIgual);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionIgual);
                break;
             case ">=":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMayorIgual);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionMayorIgual);
                break;
             case "<=":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionMenorIgual);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionMenorIgual);
                break;
             case "!=":
-               tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDiferente);
+               TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDiferente);
                break;
          }
 
@@ -273,8 +273,8 @@ namespace Compilador.Gramaticas
             if (conversion.typeGlobalOfOperation != string.Empty)
             {
                _tokenAfterNegation = conversion.typeGlobalOfOperation;
-               tablaInstrucciones.AgregarInstruccion(TablaLexemaToken.GetLexema(inicioConteo),
-                  tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionNegacion);
+               TablaInstrucciones.AgregarInstruccion(TablaLexemaToken.GetLexema(inicioConteo),
+                  TablaInstrucciones.IntermidiateCodeInstructions.InstruccionNegacion);
                return (_tokenAfterNegation == "bool");
             }
          }

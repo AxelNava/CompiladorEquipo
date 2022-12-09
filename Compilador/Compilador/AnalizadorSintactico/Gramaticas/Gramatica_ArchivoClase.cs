@@ -232,7 +232,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
 
             if (AnalisisFinished)
             {
-               tablaInstrucciones.AgregarFinPrograma();
+               TablaInstrucciones.AgregarFinPrograma();
                return "<archivoclase>";
             }
          }

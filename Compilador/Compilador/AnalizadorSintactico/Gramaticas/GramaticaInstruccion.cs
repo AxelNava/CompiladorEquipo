@@ -103,7 +103,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
             {
                PilaTokens.GlobalTokens.Push(tokenAux);
-               tablaInstrucciones.AgregarLlamadaMetodo(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionLLamar, _identificadorEncontrado);
+               TablaInstrucciones.AddCallMethod(TablaInstrucciones.IntermidiateCodeInstructions.InstruccionLLamar, _identificadorEncontrado);
                return;
             }
          }
@@ -162,7 +162,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             if (numRow != 0)
             {
                string desplazamiento = TablaSimbolos.GetDesplazamientos()[numRow];
-               tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIncremento);
+               TablaInstrucciones.AgregarInstruccion(desplazamiento, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionIncremento);
             }
          }
 
@@ -172,7 +172,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             if (numRow != 0)
             {
                string desplazamiento = TablaSimbolos.GetDesplazamientos()[numRow];
-               tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDecremento);
+               TablaInstrucciones.AgregarInstruccion(desplazamiento, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDecremento);
             }
          }
 
@@ -216,8 +216,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             int numRow = TablaSimbolos.numRowInTable(identifierToAnalize);
             TablaSimbolos.GetTypesValues()[numRow] = _tipoEncontrado;
-            tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(), "000000000000V",
-               tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDeclaracion);
+            TablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(), "000000000000V",
+               TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDeclaracion);
             AssignShiftToIdentifier(identifierToAnalize);
             ContadorDesplazamiento.AddShiftType(_tipoEncontrado);
             return;
@@ -254,14 +254,14 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   {
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
                      TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
-                     tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
-                        string.Format($"{resultadoEntero.ToString()}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                     TablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
+                        string.Format($"{resultadoEntero.ToString()}V"), TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                   }
                   else
                   {
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
                      TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
-                     tablaInstrucciones.AgregarInstruccionFloat(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion,
+                     TablaInstrucciones.AgregarInstruccionFloat(TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion,
                         (ContadorDesplazamiento.ConteoDesplazamiento + 4).ToString(),
                         $"{resultadoEvaluacion.ToString(CultureInfo.InvariantCulture)}");
                   }
@@ -278,8 +278,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                         string valorCompleto = string.Join(" ", _valorEncontrado);
                         AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
                         TablaSimbolos.GetValues()[numRow] = valorCompleto;
-                        tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
-                           string.Format($"{valorCompleto}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                        TablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
+                           string.Format($"{valorCompleto}V"), TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                      }
                      else
                      {
@@ -294,8 +294,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                            ? TablaLexemaToken.GetLexema(LexemaCount.CountLexemas - 1)
                            : string
                               .Empty;
-                     tablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
-                        string.Format($"{_valorEncontrado[0]}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                     TablaInstrucciones.AgregarInstruccion(TablaSimbolos.GetDesplazamientos()[numRow],
+                        string.Format($"{_valorEncontrado[0]}V"), TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                   }
                }
             }

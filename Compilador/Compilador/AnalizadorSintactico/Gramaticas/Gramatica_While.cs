@@ -226,7 +226,7 @@ namespace Compilador.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
             {
                PilaTokens.GlobalTokens.Push(tokenAux);
-               NumeroInstruccionesRegresar = tablaInstrucciones.GetNumInstruccion;
+               NumeroInstruccionesRegresar = TablaInstrucciones.GetNumInstruccion;
             }
          }
 
@@ -255,7 +255,7 @@ namespace Compilador.Gramaticas
       {
          if (referenceState == 7)
          {
-            tablaInstrucciones.AgregarSaltoInverso(NumeroInstruccionesRegresar, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+            TablaInstrucciones.AgregarSaltoInverso(NumeroInstruccionesRegresar, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
          }
       }
    }

@@ -1,25 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Security;
-using System.Security.Permissions;
 using System.Text;
 
 namespace Compilador.IntentoCodigoIntermedio
 {
-   public class tablaInstrucciones
+   public static class TablaInstrucciones
    {
-      public static Dictionary<int, Tuple<InstruccionesCodigoIntermedio, string, string>> tablaINstrucciones =
-         new Dictionary<int, Tuple<InstruccionesCodigoIntermedio, string, string>>();
+      public static readonly Dictionary<int, Tuple<IntermidiateCodeInstructions, string, string>> TablaINstrucciones =
+         new Dictionary<int, Tuple<IntermidiateCodeInstructions, string, string>>();
 
       private static Stack<int> PilaNumerosInstruccionSaltoCondicionesAmodificar = new Stack<int>();
       public static Stack<int> PilaSaltosTerminales = new Stack<int>();
-      public static int GetNumInstruccion => ContadorInstrucciones;
+      public static int GetNumInstruccion => _contadorInstrucciones;
 
-      public enum InstruccionesCodigoIntermedio
+      public enum IntermidiateCodeInstructions
       {
-         InstruccionMayor,
-         InstruccionMenor,
+         InstructionGreater,
+         InstructionLower,
          InstruccionIgual,
          InstruccionMayorIgual,
          InstruccionMenorIgual,
@@ -39,7 +37,7 @@ namespace Compilador.IntentoCodigoIntermedio
          IntruccionFinPrograma
       }
 
-      private static string[] instruccionesString =
+      private static readonly string[] InstruccionesString =
       {
          "SI_MAYOR",
          "SI_MENOR",
@@ -62,19 +60,19 @@ namespace Compilador.IntentoCodigoIntermedio
          "FINPROGRAMA"
       };
 
-      public static string SelectInstruction(InstruccionesCodigoIntermedio Instruccion)
+      public static string SelectInstruction(IntermidiateCodeInstructions instruccion)
       {
-         return instruccionesString.GetValue((int)Convert.ChangeType(Instruccion, Instruccion.GetTypeCode())).ToString();
+         return InstruccionesString.GetValue((int)Convert.ChangeType(instruccion, instruccion.GetTypeCode())).ToString();
       }
 
-      public static void AgregarLlamadaMetodo(InstruccionesCodigoIntermedio instrucciones, string nombreMetodo)
+      public static void AddCallMethod(IntermidiateCodeInstructions instrucciones, string nombreMetodo)
       {
-         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instrucciones, nombreMetodo, string
+         TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(instrucciones, nombreMetodo, string
             .Empty));
-         ContadorInstrucciones += 1;
+         _contadorInstrucciones += 1;
       }
 
-      public static void AgregarInstruccionFloat(InstruccionesCodigoIntermedio instruccionesCodigoIntermedio, string paraetro1, string parametro2)
+      public static void AgregarInstruccionFloat(IntermidiateCodeInstructions intermidiateCodeInstructions, string paraetro1, string parametro2)
       {
          //Desplazamiento original
          int desplazaminetoSeparado = int.Parse(paraetro1, NumberStyles.HexNumber);
@@ -89,127 +87,127 @@ namespace Compilador.IntentoCodigoIntermedio
 
          if (valoresFloat.Length == 1)
          {
-            tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio
+            TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions
                ,desplazamiento1, parametroDecimalHex));
-            ContadorInstrucciones++;
+            _contadorInstrucciones++;
             return;
          }
 
-         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio
+         TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions
             , desplazamiento1, parametroDecimalHex));
-         ContadorInstrucciones++;
-         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio
+         _contadorInstrucciones++;
+         TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions
             , desplazamientoMantisa,parametroMantissaHex));
-         ContadorInstrucciones++;
+         _contadorInstrucciones++;
       }
 
-      public static void AgregarInstruccion(string Parametro1, string Parametro2, InstruccionesCodigoIntermedio instruccion)
+      public static void AgregarInstruccion(string parametro1, string parametro2, IntermidiateCodeInstructions instruccion)
       {
-         if (instruccion == InstruccionesCodigoIntermedio.InstruccionSalto || instruccion == InstruccionesCodigoIntermedio.InstruccionReturn ||
-             instruccion == InstruccionesCodigoIntermedio.InstruccionNegacion) return;
-         string parametro1Hex = ConversorDecimalAHexadecimal(Parametro1);
-         string parametro2Hex = ConversorDecimalAHexadecimal(Parametro2);
-         if (instruccion == InstruccionesCodigoIntermedio.InstruccionIgual || instruccion == InstruccionesCodigoIntermedio.InstruccionDiferente ||
-             instruccion == InstruccionesCodigoIntermedio.InstruccionMayorIgual || instruccion == InstruccionesCodigoIntermedio.InstruccionMenorIgual
-             || instruccion == InstruccionesCodigoIntermedio.InstruccionMenor || instruccion == InstruccionesCodigoIntermedio.InstruccionMayor)
+         if (instruccion == IntermidiateCodeInstructions.InstruccionSalto || instruccion == IntermidiateCodeInstructions.InstruccionReturn ||
+             instruccion == IntermidiateCodeInstructions.InstruccionNegacion) return;
+         string parametro1Hex = ConversorDecimalAHexadecimal(parametro1);
+         string parametro2Hex = ConversorDecimalAHexadecimal(parametro2);
+         if (instruccion == IntermidiateCodeInstructions.InstruccionIgual || instruccion == IntermidiateCodeInstructions.InstruccionDiferente ||
+             instruccion == IntermidiateCodeInstructions.InstruccionMayorIgual || instruccion == IntermidiateCodeInstructions.InstruccionMenorIgual
+             || instruccion == IntermidiateCodeInstructions.InstructionLower || instruccion == IntermidiateCodeInstructions.InstructionGreater)
          {
-            tablaINstrucciones.Add(ContadorInstrucciones,
-               new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1Hex, parametro2Hex));
-            ContadorInstrucciones++;
-            tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
+            TablaINstrucciones.Add(_contadorInstrucciones,
+               new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1Hex, parametro2Hex));
+            _contadorInstrucciones++;
+            TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(IntermidiateCodeInstructions
                   .InstruccionSalto, string.Empty,
                string.Empty));
-            PilaNumerosInstruccionSaltoCondicionesAmodificar.Push(ContadorInstrucciones);
-            ContadorInstrucciones++;
+            PilaNumerosInstruccionSaltoCondicionesAmodificar.Push(_contadorInstrucciones);
+            _contadorInstrucciones++;
             return;
          }
 
-         tablaINstrucciones.Add(ContadorInstrucciones,
-            new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1Hex, parametro2Hex));
-         ContadorInstrucciones++;
+         TablaINstrucciones.Add(_contadorInstrucciones,
+            new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1Hex, parametro2Hex));
+         _contadorInstrucciones++;
       }
 
-      public static void AgregarInstruccion(string parametro1, InstruccionesCodigoIntermedio instruccion)
+      public static void AgregarInstruccion(string parametro1, IntermidiateCodeInstructions instruccion)
       {
          string parametro1Hex = ConversorDecimalAHexadecimal(parametro1);
          switch (instruccion)
          {
-            case InstruccionesCodigoIntermedio.InstruccionNegacion:
-               tablaINstrucciones.Add(ContadorInstrucciones,
-                  new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1Hex, "FFV"));
+            case IntermidiateCodeInstructions.InstruccionNegacion:
+               TablaINstrucciones.Add(_contadorInstrucciones,
+                  new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1Hex, "FFV"));
                break;
-            case InstruccionesCodigoIntermedio.InstruccionReturn:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, string.Empty,
+            case IntermidiateCodeInstructions.InstruccionReturn:
+               TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, string.Empty,
                   string.Empty));
                break;
-            case InstruccionesCodigoIntermedio.InstruccionSalto:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1,
+            case IntermidiateCodeInstructions.InstruccionSalto:
+               TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1,
                   string.Empty));
-               PilaSaltosTerminales.Push(ContadorInstrucciones);
+               PilaSaltosTerminales.Push(_contadorInstrucciones);
                break;
-            case InstruccionesCodigoIntermedio.InstruccionLLamar:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1,
+            case IntermidiateCodeInstructions.InstruccionLLamar:
+               TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1,
                   string.Empty));
                break;
-            case InstruccionesCodigoIntermedio.InstruccionIncremento:
-            case InstruccionesCodigoIntermedio.InstruccionDecremento:
-               tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccion, parametro1Hex,
+            case IntermidiateCodeInstructions.InstruccionIncremento:
+            case IntermidiateCodeInstructions.InstruccionDecremento:
+               TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(instruccion, parametro1Hex,
                   string.Empty));
                break;
          }
 
-         ContadorInstrucciones++;
+         _contadorInstrucciones++;
       }
       // private static bool HandleEstrucutresControl(InstruccionesCodigoIntermedio instruccionesCodigoIntermedio, string )
 
-      private static int ContadorInstrucciones = 0;
+      private static int _contadorInstrucciones;
 
-      public static void AgregarSaltoInverso(int NumeroInstruccionSalto, InstruccionesCodigoIntermedio instruccionesCodigoIntermedio)
+      public static void AgregarSaltoInverso(int numeroInstruccionSalto, IntermidiateCodeInstructions intermidiateCodeInstructions)
       {
-         string valorNegativo = (NumeroInstruccionSalto - (ContadorInstrucciones + 2)).ToString();
-         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(instruccionesCodigoIntermedio,
+         string valorNegativo = (numeroInstruccionSalto - (_contadorInstrucciones + 2)).ToString();
+         TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions,
             valorNegativo, string.Empty));
-         ContadorInstrucciones++;
+         _contadorInstrucciones++;
          ModificarInstruccionSaltoCondicion();
       }
 
       public static void ModificarInstruccionSaltoCondicion()
       {
-         int NumeroSaltoInstruccion = PilaNumerosInstruccionSaltoCondicionesAmodificar.Pop();
-         int ProximoSalto = ContadorInstrucciones - NumeroSaltoInstruccion;
-         if (tablaINstrucciones.ContainsKey(NumeroSaltoInstruccion))
+         int numJumpsInstruction = PilaNumerosInstruccionSaltoCondicionesAmodificar.Pop();
+         int nextJump = _contadorInstrucciones - numJumpsInstruction;
+         if (TablaINstrucciones.ContainsKey(numJumpsInstruction))
          {
-            tablaINstrucciones[NumeroSaltoInstruccion] = new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
-               .InstruccionSalto, ProximoSalto.ToString(), string.Empty);
+            TablaINstrucciones[numJumpsInstruction] = new Tuple<IntermidiateCodeInstructions, string, string>(IntermidiateCodeInstructions
+               .InstruccionSalto, nextJump.ToString(), string.Empty);
          }
       }
 
       public static void ModificarInstruccionSaltoTerminal()
       {
-         int NumeroSaltoInstruccion = PilaSaltosTerminales.Pop();
-         int ProximoSalto = ContadorInstrucciones - NumeroSaltoInstruccion;
-         if (tablaINstrucciones.ContainsKey(NumeroSaltoInstruccion))
+         int numJumpsInstruction = PilaSaltosTerminales.Pop();
+         int nextJump = _contadorInstrucciones - numJumpsInstruction;
+         if (TablaINstrucciones.ContainsKey(numJumpsInstruction))
          {
-            tablaINstrucciones[NumeroSaltoInstruccion] = new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
-               .InstruccionSalto, ProximoSalto.ToString(), string.Empty);
+            TablaINstrucciones[numJumpsInstruction] = new Tuple<IntermidiateCodeInstructions, string, string>(IntermidiateCodeInstructions
+               .InstruccionSalto, nextJump.ToString(), string.Empty);
          }
       }
 
       public static void ReiniciarInstrucciones()
       {
-         ContadorInstrucciones = 0;
+         _contadorInstrucciones = 0;
       }
 
       public static void AgregarFinPrograma()
       {
-         tablaINstrucciones.Add(ContadorInstrucciones, new Tuple<InstruccionesCodigoIntermedio, string, string>(InstruccionesCodigoIntermedio
+         TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(IntermidiateCodeInstructions
             .IntruccionFinPrograma, string.Empty, string.Empty));
       }
 
       public static void LimpiarTablaInstrucciones()
       {
-         ContadorInstrucciones = 0;
-         tablaINstrucciones.Clear();
+         _contadorInstrucciones = 0;
+         TablaINstrucciones.Clear();
       }
 /// <summary>
 /// Devuelve toda la cadena del código intermedio
@@ -217,25 +215,25 @@ namespace Compilador.IntentoCodigoIntermedio
 /// <returns>Cadena que contiene el código intermedio formateado</returns>
       public static string ConstruirCodigoIntermedio()
       {
-         StringBuilder Codigo = new StringBuilder();
-         foreach (var instruccion in tablaINstrucciones)
+         StringBuilder code = new StringBuilder();
+         foreach (var instruccion in TablaINstrucciones)
          {
             if (string.IsNullOrEmpty(instruccion.Value.Item3))
             {
-               Codigo.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}\n");
+               code.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}\n");
                continue;
             }
 
-            if (instruccion.Value.Item1 == InstruccionesCodigoIntermedio.IntruccionFinPrograma)
+            if (instruccion.Value.Item1 == IntermidiateCodeInstructions.IntruccionFinPrograma)
             {
-               Codigo.Append($"{SelectInstruction(instruccion.Value.Item1)}");
+               code.Append($"{SelectInstruction(instruccion.Value.Item1)}");
                continue;
             }
 
-            Codigo.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}, {instruccion.Value.Item3}\n");
+            code.AppendFormat($"{SelectInstruction(instruccion.Value.Item1)} {instruccion.Value.Item2}, {instruccion.Value.Item3}\n");
          }
 
-         return Codigo.ToString();
+         return code.ToString();
       }
 /// <summary>
 /// Formatea el número hexadecimal para que tenga el siguiente formato 0000 0000 0000 0000
@@ -283,47 +281,47 @@ namespace Compilador.IntentoCodigoIntermedio
 /// <returns></returns>
       private static string ConversorDecimalAHexadecimal(string decimalValue)
       {
-         StringBuilder Hex = new StringBuilder();
+         StringBuilder hex = new StringBuilder();
          if (decimalValue[decimalValue.Length - 1].Equals('V'))
          {
             string decimalValueWithoutV = decimalValue.Split('V')[0];
-            if (int.TryParse(decimalValueWithoutV, out var DecimalValueIntV))
+            if (int.TryParse(decimalValueWithoutV, out var decimalValueIntV))
             {
-               Hex.AppendFormat(FormateadorHexadecimal($"{DecimalValueIntV:X}"));
-               Hex.Append("V");
-               return Hex.ToString();
+               hex.AppendFormat(FormateadorHexadecimal($"{decimalValueIntV:X}"));
+               hex.Append("V");
+               return hex.ToString();
             }
 
-            if (float.TryParse(decimalValueWithoutV, out var DecimalValueFloatV))
+            if (float.TryParse(decimalValueWithoutV, result: out var decimalValueFloatV))
             {
-               Hex.AppendFormat(FormateadorHexadecimal($"{DecimalValueFloatV:X}"));
-               Hex.Append("V");
-               return Hex.ToString();
+               hex.AppendFormat(FormateadorHexadecimal($"{decimalValueFloatV:X}"));
+               hex.Append("V");
+               return hex.ToString();
             }
 
 
             var hexString1 = GetHexString(decimalValueWithoutV);
             var valueHex = FormateadorHexadecimal(hexString1);
-            Hex.Append(valueHex);
-            Hex.Append("V");
-            return Hex.ToString();
+            hex.Append(valueHex);
+            hex.Append("V");
+            return hex.ToString();
          }
 
-         if (int.TryParse(decimalValue, out var DecimalValueInt))
+         if (int.TryParse(decimalValue, result: out var decimalValueInt))
          {
-            Hex.AppendFormat(FormateadorHexadecimal($"{DecimalValueInt:X}"));
-            return Hex.ToString();
+            hex.AppendFormat(FormateadorHexadecimal($"{decimalValueInt:X}"));
+            return hex.ToString();
          }
 
-         if (float.TryParse(decimalValue, out var DecimalValueFloat))
+         if (float.TryParse(decimalValue, out var decimalValueFloat))
          {
-            Hex.AppendFormat(FormateadorHexadecimal($"{DecimalValueFloat:X}"));
-            return Hex.ToString();
+            hex.AppendFormat(FormateadorHexadecimal($"{decimalValueFloat:X}"));
+            return hex.ToString();
          }
 
          var hexString = GetHexString(decimalValue);
-         Hex.Append(hexString);
-         return Hex.ToString();
+         hex.Append(hexString);
+         return hex.ToString();
       }
 /// <summary>
 /// Obtiene el valor hexadecimal de un caracter o una cadena

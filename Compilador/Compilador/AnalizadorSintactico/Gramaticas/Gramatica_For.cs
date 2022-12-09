@@ -354,7 +354,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             if (!string.IsNullOrEmpty(tokenAux))
             {
                PilaTokens.GlobalTokens.Push(tokenAux);
-               NumeroInstruccionCondicion = tablaInstrucciones.GetNumInstruccion;
+               NumeroInstruccionCondicion = TablaInstrucciones.GetNumInstruccion;
             }
          }
 
@@ -408,17 +408,17 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             switch (IncrementoDecrementoTokenEncontrado)
             {
                case "++":
-                  tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones
-                     .InstruccionesCodigoIntermedio.InstruccionIncremento);
+                  TablaInstrucciones.AgregarInstruccion(desplazamiento, TablaInstrucciones
+                     .IntermidiateCodeInstructions.InstruccionIncremento);
                   break;
                case "--":
-                  tablaInstrucciones.AgregarInstruccion(desplazamiento, tablaInstrucciones
-                     .InstruccionesCodigoIntermedio.InstruccionDecremento);
+                  TablaInstrucciones.AgregarInstruccion(desplazamiento, TablaInstrucciones
+                     .IntermidiateCodeInstructions.InstruccionDecremento);
                   break;
             }
          }
 
-         tablaInstrucciones.AgregarSaltoInverso(NumeroInstruccionCondicion, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+         TablaInstrucciones.AgregarSaltoInverso(NumeroInstruccionCondicion, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
       }
 
       private void HandleIdentifierAndType(int referenceState)
@@ -492,8 +492,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
                   string desplazamientoIdentificador = TablaSimbolos.GetDesplazamiento(identificadorEncontrado);
                   
-                  tablaInstrucciones.AgregarInstruccion(desplazamientoIdentificador, $"{resultadoEvaluacion.ToString(CultureInfo.InvariantCulture)}V",
-                     tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
+                  TablaInstrucciones.AgregarInstruccion(desplazamientoIdentificador, $"{resultadoEvaluacion.ToString(CultureInfo.InvariantCulture)}V",
+                     TablaInstrucciones.IntermidiateCodeInstructions.InstruccionAsignacion);
                   return;
                }
             }

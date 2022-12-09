@@ -55,7 +55,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             {
                while (contadorCases>0)
                {
-                  tablaInstrucciones.ModificarInstruccionSaltoTerminal();
+                  TablaInstrucciones.ModificarInstruccionSaltoTerminal();
                   contadorCases--;
                }
                return "<Switch>";
@@ -140,12 +140,12 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
             case 9:
                for (int i = contadorCases; i > 0; i--)
                {
-                  tablaInstrucciones.ModificarInstruccionSaltoCondicion();
+                  TablaInstrucciones.ModificarInstruccionSaltoCondicion();
                }
 
                break;
             case 22:
-               tablaInstrucciones.AgregarInstruccion(string.Empty, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionSalto);
+               TablaInstrucciones.AgregarInstruccion(string.Empty, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionSalto);
                break;
          }
       }
@@ -177,7 +177,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             auxF = $"{lexemaafter}V";
          }
-         tablaInstrucciones.AgregarInstruccion(auxB, auxF, tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionIgual);
+         TablaInstrucciones.AgregarInstruccion(auxB, auxF, TablaInstrucciones.IntermidiateCodeInstructions.InstruccionIgual);
       }
    }
 }
