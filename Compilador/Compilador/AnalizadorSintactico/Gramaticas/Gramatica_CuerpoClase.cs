@@ -385,8 +385,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
             int numRow = TablaSimbolos.numRowInTable(identifier);
             TablaSimbolos.GetTypesValues()[numRow] = identificadorClaseEncontrado;
             string desplazamientoClase = TablaSimbolos.GetDesplazamiento(identificadorClaseEncontrado);
-            // tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(), "000000000000V",
-            //    tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDeclaracion);
+            TablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(), "000000000000V",
+               TablaInstrucciones.IntermidiateCodeInstructions.InstruccionDeclaracion);
             AssignShiftToIdentifier(numRow);
             AgregarShiftClase(desplazamientoClase);
             return;
