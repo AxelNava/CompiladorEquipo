@@ -69,7 +69,6 @@ namespace Compilador
             if (string.IsNullOrEmpty(errores))
             {
                string codigoIntermedio = TablaInstrucciones.ConstruirCodigoIntermedio();
-               // MessageBox.Show(codigoIntermedio);
                Convertidor_string_a_txt.Convertidor(codigoIntermedio);
             }
          }

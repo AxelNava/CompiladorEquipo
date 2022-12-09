@@ -88,7 +88,7 @@ namespace Compilador.IntentoCodigoIntermedio
          if (valoresFloat.Length == 1)
          {
             TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions
-               ,desplazamiento1, parametroDecimalHex));
+               , desplazamiento1, parametroDecimalHex));
             _contadorInstrucciones++;
             return;
          }
@@ -97,7 +97,7 @@ namespace Compilador.IntentoCodigoIntermedio
             , desplazamiento1, parametroDecimalHex));
          _contadorInstrucciones++;
          TablaINstrucciones.Add(_contadorInstrucciones, new Tuple<IntermidiateCodeInstructions, string, string>(intermidiateCodeInstructions
-            , desplazamientoMantisa,parametroMantissaHex));
+            , desplazamientoMantisa, parametroMantissaHex));
          _contadorInstrucciones++;
       }
 
@@ -209,10 +209,11 @@ namespace Compilador.IntentoCodigoIntermedio
          _contadorInstrucciones = 0;
          TablaINstrucciones.Clear();
       }
-/// <summary>
-/// Devuelve toda la cadena del código intermedio
-/// </summary>
-/// <returns>Cadena que contiene el código intermedio formateado</returns>
+
+      /// <summary>
+      /// Devuelve toda la cadena del código intermedio
+      /// </summary>
+      /// <returns>Cadena que contiene el código intermedio formateado</returns>
       public static string ConstruirCodigoIntermedio()
       {
          StringBuilder code = new StringBuilder();
@@ -235,11 +236,12 @@ namespace Compilador.IntentoCodigoIntermedio
 
          return code.ToString();
       }
-/// <summary>
-/// Formatea el número hexadecimal para que tenga el siguiente formato 0000 0000 0000 0000
-/// </summary>
-/// <param name="hexValue">Valor número hexadecimal a convertir</param>
-/// <returns></returns>
+
+      /// <summary>
+      /// Formatea el número hexadecimal para que tenga el siguiente formato 0000 0000 0000 0000
+      /// </summary>
+      /// <param name="hexValue">Valor número hexadecimal a convertir</param>
+      /// <returns></returns>
       private static string FormateadorHexadecimal(string hexValue)
       {
          int lengthHex = hexValue.Length;
@@ -247,15 +249,17 @@ namespace Compilador.IntentoCodigoIntermedio
          if (lengthHex <= 16)
          {
             //Agrega 0's hasta llegar a los 15 0's, el limite es 19 por que esta contando los espacios y excluye el último valor
-            for (int i = 0; i < 20-lengthHex; i++)
+            for (int i = 0; i < 20 - lengthHex; i++)
             {
-               if (i % 5 == 0 && i!=0)
+               if (i % 5 == 0 && i != 0)
                {
                   fullStringHex.Append(" ");
                   continue;
                }
+
                fullStringHex.Append("0");
             }
+
             for (var i = 0; i < lengthHex; i++)
             {
                if (fullStringHex.Length % 5 == 0 && fullStringHex.Length != 20)
@@ -263,24 +267,28 @@ namespace Compilador.IntentoCodigoIntermedio
                   fullStringHex.Append(" ");
                   continue;
                }
+
                fullStringHex.AppendFormat(hexValue[i].ToString());
             }
+
             // fullStringHex.Append(decimalValue);
             // int format = int.Parse(fullStringHex.ToString(), NumberStyles.HexNumber);
-               // string intento = format.ToString("X");
+            // string intento = format.ToString("X");
             // return string.Format($"{format:0000 0000 0000 0000}");
             return fullStringHex.ToString();
          }
 
          return hexValue;
       }
-/// <summary>
-/// Convierte los valores decimales a hexadecimales, así como también los valores para los char y string
-/// </summary>
-/// <param name="decimalValue">El valor decimal o el caracter o el string que va a convertir a hexadecimal</param>
-/// <returns></returns>
+
+      /// <summary>
+      /// Convierte los valores decimales a hexadecimales, así como también los valores para los char y string
+      /// </summary>
+      /// <param name="decimalValue">El valor decimal o el caracter o el string que va a convertir a hexadecimal</param>
+      /// <returns></returns>
       private static string ConversorDecimalAHexadecimal(string decimalValue)
       {
+         if (string.IsNullOrEmpty(decimalValue)) return string.Empty;
          StringBuilder hex = new StringBuilder();
          if (decimalValue[decimalValue.Length - 1].Equals('V'))
          {
@@ -323,11 +331,12 @@ namespace Compilador.IntentoCodigoIntermedio
          hex.Append(hexString);
          return hex.ToString();
       }
-/// <summary>
-/// Obtiene el valor hexadecimal de un caracter o una cadena
-/// </summary>
-/// <param name="decimalValue">Valor a convertir, sea cadena o caracter</param>
-/// <returns></returns>
+
+      /// <summary>
+      /// Obtiene el valor hexadecimal de un caracter o una cadena
+      /// </summary>
+      /// <param name="decimalValue">Valor a convertir, sea cadena o caracter</param>
+      /// <returns></returns>
       private static string GetHexString(string decimalValue)
       {
          string pureString = decimalValue.Trim('\"', '\'');

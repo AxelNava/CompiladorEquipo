@@ -345,15 +345,6 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                break;
          }
       }
-
-      private void CheckIdentifier(int referenceState)
-      {
-         if (referenceState == 10)
-         {
-            _identificadorEncontrado = TablaLexemaToken.GetLexema(LexemaCount.CountLexemas);
-         }
-      }
-
       private void AssignClassTypeToIdentifier(string identifier)
       {
          if (!TablaSimbolos.CheckTypeOfLexema(identifier))

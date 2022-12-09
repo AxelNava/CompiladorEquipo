@@ -22,7 +22,7 @@ namespace Compilador.IntentoCodigoIntermedio
          serealizo = true;
 
          if (!serealizo) return;
-         if (MessageBox.Show("Se ha creado el código intermedio Exitosamente\nPulse \"OK\" para abrir la ubicación del archivo", "Conversion",
+         if (MessageBox.Show("Se ha creado el código intermedio Exitosamente\nPulse \"Aceptar\" para abrir la ubicación del archivo", "Conversion",
                 MessageBoxButtons.OK, MessageBoxIcon.Information,
                 MessageBoxDefaultButton.Button3) == DialogResult.OK)
          {
