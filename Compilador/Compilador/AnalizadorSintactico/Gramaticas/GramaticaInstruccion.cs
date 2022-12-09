@@ -216,7 +216,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          {
             int numRow = TablaSimbolos.numRowInTable(identifierToAnalize);
             TablaSimbolos.GetTypesValues()[numRow] = _tipoEncontrado;
-            tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(), "000000000000V",
+            tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(), "000000000000V",
                tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionDeclaracion);
             AssignShiftToIdentifier(identifierToAnalize);
             ContadorDesplazamiento.AddShiftType(_tipoEncontrado);
@@ -254,7 +254,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   {
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
                      TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString();
-                     tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
+                     tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
                         string.Format($"{resultadoEntero.ToString()}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                   }
                   else
@@ -262,7 +262,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                      CheckMinMaxValues(resultadoEntero.ToString(CultureInfo.InvariantCulture), _tipoEncontrado);
                      TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
                      tablaInstrucciones.AgregarInstruccionFloat(tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion,
-                        (ContadorDesplazamiento.ConteoDesplazamiento + 4).ToString(), resultadoEvaluacion.ToString(CultureInfo.InvariantCulture));
+                        (ContadorDesplazamiento.ConteoDesplazamiento + 4).ToString(),
+                        $"{resultadoEvaluacion.ToString(CultureInfo.InvariantCulture)}");
                   }
                }
             }
@@ -277,7 +278,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                         string valorCompleto = string.Join(" ", _valorEncontrado);
                         AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
                         TablaSimbolos.GetValues()[numRow] = valorCompleto;
-                        tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
+                        tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
                            string.Format($"{valorCompleto}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                      }
                      else

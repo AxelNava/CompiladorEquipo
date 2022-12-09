@@ -39,9 +39,9 @@ namespace Compilador.AnalizadorSemantico
          MensajeError.AppendFormat($"Se ha excedido el valor máximo del tipo {tipo}  -- Línea {numLinea}");
       }
 
-      public static void AddErrorOverflowMinValue(string tipo, int numLinea)
+      public static void AddErrorStringoperation(string tipo, string operadorRecibido, int numLine)
       {
-         MensajeError.AppendFormat($"Se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}\n");
+         MensajeError.AppendFormat($"El tipo {tipo} no se puede operar con el operador \"{operadorRecibido}\" -- Linea {numLine}");
       }
 
       public static void AddErrorOverflowMaxMinValue(string lexema, string tipo, int numLinea)
@@ -49,10 +49,6 @@ namespace Compilador.AnalizadorSemantico
          MensajeError.AppendFormat($"El lexema ${lexema} se ha excedido el valo mínimo del tipo {tipo} -- Línea {numLinea}\n");
       }
 
-      public static void AddErrorOperatorWithString(string operatorLexema, int numLine)
-      {
-         MensajeError.AppendFormat($"No se puede aplicar un operador ${operatorLexema} a un string -- Línea {numLine}\n");
-      }
 
       public static void AddErrorWithBoolOrChar(string type, int numLine)
       {

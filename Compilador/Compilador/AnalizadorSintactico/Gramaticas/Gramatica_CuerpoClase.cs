@@ -206,7 +206,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales
                   string valorCompleto = string.Join(" ", _valorEncontrado);
                   AnalizadorDeLimites.AnalizeLenghtString(valorCompleto);
                   TablaSimbolos.GetValues()[numRow] = valorCompleto;
-                  tablaInstrucciones.AgregarInstruccion(ConteoDezplazamiento.CountShift.ToString(),
+                  tablaInstrucciones.AgregarInstruccion(ContadorDesplazamiento.ConteoDesplazamiento.ToString(),
                      string.Format($"{valorCompleto}V"), tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                }
                else

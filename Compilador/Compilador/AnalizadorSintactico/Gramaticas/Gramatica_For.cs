@@ -4,6 +4,7 @@ using Compilador.AnalizadorSintactico.Gramaticas.ClasesGlobales;
 using Compilador.Gramaticas;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using Compilador.AnalizadorSemantico;
 using Compilador.IntentoCodigoIntermedio;
 using Compilador.TablasGlobales;
@@ -403,6 +404,7 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
          if (!string.IsNullOrEmpty(identificadorIncremento))
          {
             string desplazamiento = TablaSimbolos.GetDesplazamiento(identificadorEncontrado);
+
             switch (IncrementoDecrementoTokenEncontrado)
             {
                case "++":
@@ -489,7 +491,8 @@ namespace Compilador.AnalizadorSintactico.Gramaticas
                   resultadoEvaluacion = evaluacion.ExecuteEvaluation(conversion.ColaSalida);
                   TablaSimbolos.GetValues()[numRow] = resultadoEvaluacion.ToString(CultureInfo.InvariantCulture);
                   string desplazamientoIdentificador = TablaSimbolos.GetDesplazamiento(identificadorEncontrado);
-                  tablaInstrucciones.AgregarInstruccion(desplazamientoIdentificador, resultadoEvaluacion.ToString(CultureInfo.InvariantCulture),
+                  
+                  tablaInstrucciones.AgregarInstruccion(desplazamientoIdentificador, $"{resultadoEvaluacion.ToString(CultureInfo.InvariantCulture)}V",
                      tablaInstrucciones.InstruccionesCodigoIntermedio.InstruccionAsignacion);
                   return;
                }

@@ -131,7 +131,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="AnalizadorSintactico\Gramaticas\GramaticaCondicion.cs" />
-    <Compile Include="IntentoCodigoIntermedio\ConteoDezplazamiento.cs" />
     <Compile Include="IntentoCodigoIntermedio\Convertidor string a txt.cs" />
     <Compile Include="IntentoCodigoIntermedio\tablaInstrucciones.cs" />
     <Compile Include="Mensajes.cs" />

@@ -29,7 +29,7 @@ namespace Compilador.AnalizadorSemantico
       /// </summary>
       private Stack<string> operatorsStack = new Stack<string>();
 
-      
+
       private bool ThereAreUnitaryToken = false;
       public string typeGlobalOfOperation = string.Empty;
       public Queue<string> ColaSalida;
@@ -37,6 +37,8 @@ namespace Compilador.AnalizadorSemantico
       #endregion
 
       private Stack<Tuple<int, int>> pilaContadoraMetodos;
+      private bool isAString;
+
       public ConversionNotacionInfija_PosFija(Stack<Tuple<int, int>> pilaContadora)
       {
          nivelProcedenciaOperador = new Dictionary<string, byte>()
@@ -62,6 +64,7 @@ namespace Compilador.AnalizadorSemantico
          };
          pilaContadoraMetodos = pilaContadora;
       }
+
       public ConversionNotacionInfija_PosFija()
       {
          nivelProcedenciaOperador = new Dictionary<string, byte>()
@@ -91,12 +94,6 @@ namespace Compilador.AnalizadorSemantico
       {
          inicioLexema = inicio;
          finLexema = final;
-         // if (typeIdent == "string")
-         // {
-         //    ColaSalida = outQueue;
-         //    return;
-         // }
-
          Conversor(typeIdent);
          ColaSalida = outQueue;
       }
@@ -114,7 +111,7 @@ namespace Compilador.AnalizadorSemantico
 
       private void Conversor()
       {
-         if(TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3))
+         if (TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3))
             typeGlobalOfOperation = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3];
          if (TablaLexemaToken.LexemaTokensTable[inicioLexema].Item3 == tokensNameGlobal.selectorString(tokensNameGlobal.tokensGlobals.Identificador))
             typeGlobalOfOperation = TablaSimbolos.GetTypeOfLexema(TablaLexemaToken.GetLexema(inicioLexema));
@@ -133,6 +130,7 @@ namespace Compilador.AnalizadorSemantico
                   continue;
                }
             }
+
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
             if (int.TryParse(lexemaIn, out _))
             {
@@ -187,6 +185,10 @@ namespace Compilador.AnalizadorSemantico
       private void Conversor(string typeIdent)
       {
          typeGlobalOfOperation = typeIdent;
+         if (typeIdent == "string")
+         {
+            isAString = true;
+         }
          if (HandleUnitaryTokens(inicioLexema))
          {
             ThereAreUnitaryToken = true;
@@ -203,6 +205,7 @@ namespace Compilador.AnalizadorSemantico
                   continue;
                }
             }
+
             string lexemaIn = TablaLexemaToken.LexemaTokensTable[i].Item2;
             if (int.TryParse(lexemaIn, out _))
             {
@@ -343,7 +346,6 @@ namespace Compilador.AnalizadorSemantico
                      outQueue.Enqueue(valueOfIdentifier);
                      return true;
                   }
-                  
                }
 
                return true;
@@ -351,24 +353,9 @@ namespace Compilador.AnalizadorSemantico
 
             if (TablaRelacionTipoToken.TablaTokenTipo.ContainsValue(TablaSimbolos.GetTypeOfLexema(identifier)))
             {
-               if(typeGlobalOfOperation == TablaSimbolos.GetTypesValues()[numRow])
+               if (typeGlobalOfOperation == TablaSimbolos.GetTypesValues()[numRow])
                   return true;
                return false;
-            }
-         }
-
-         return false;
-      }
-
-      private bool HandleStringToken(int posicionTabla)
-      {
-         if (TablaRelacionTipoToken.TablaTokenTipo.ContainsKey(TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3))
-         {
-            string typeReference = TablaRelacionTipoToken.TablaTokenTipo[TablaLexemaToken.LexemaTokensTable[posicionTabla].Item3];
-
-            if (typeReference == "string")
-            {
-               return true;
             }
          }
 
@@ -391,6 +378,12 @@ namespace Compilador.AnalizadorSemantico
 
          if (operatorsStack.Count == 0 && TablaLexemaToken.LexemaTokensTable[i].Item2.Length == 1)
          {
+            if (isAString && TablaLexemaToken.LexemaTokensTable[i].Item2 != "+")
+            {
+               Mensajes_ErroresSemanticos.AddErrorStringoperation("string", TablaLexemaToken.LexemaTokensTable[i].Item2,
+                  TablaLexemaToken.LexemaTokensTable[i].Item1);
+            }
+
             operatorsStack.Push(TablaLexemaToken.LexemaTokensTable[i].Item2);
             return true;
          }
@@ -399,6 +392,11 @@ namespace Compilador.AnalizadorSemantico
          {
             if (OperationWithStackAndQueue(i))
             {
+               if (isAString && TablaLexemaToken.LexemaTokensTable[i].Item2 != "+")
+               {
+                  Mensajes_ErroresSemanticos.AddErrorStringoperation("string", TablaLexemaToken.LexemaTokensTable[i].Item2,
+                     TablaLexemaToken.LexemaTokensTable[i].Item1);
+               }
                return true;
             }
          }
